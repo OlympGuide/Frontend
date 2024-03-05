@@ -1,9 +1,8 @@
 <template>
-  <HelloWorld v-if="userStore.user" :msg="`${user.firstName} ${user.lastName}`" />
+  <RouterView />
 </template>
 
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue'
 import { useUserStore } from '@/stores/UserStore';
 import { User } from '@/types/User';
 
@@ -18,6 +17,3 @@ const user: User = {
 
 userStore.setUser(user);
 </script>
-
-<style scoped>
-</style>
