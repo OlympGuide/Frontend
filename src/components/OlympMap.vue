@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import L, { Icon, Map, MapOptions, Marker } from 'leaflet'
+import L, { DivIcon, Icon, LatLngTuple, Map, MapOptions, Marker } from 'leaflet'
 
 import { Place } from '@/types/Map';
 
@@ -16,7 +16,7 @@ import { data } from '@/testData/data.js';
 import 'leaflet/dist/leaflet.css';
 
 interface IconKeyMap {
-  [key: string]: L.Icon;
+  [key: string]: Icon|DivIcon;
 }
 
 const map = ref<Map>();
@@ -31,8 +31,10 @@ onMounted((): void => {
 });
 
 const createMap = (): Map => {
+  const center: LatLngTuple = [47.4971624, 8.7289052];
+
   const mapOptions: MapOptions = {
-    center: [47.4971624, 8.7289052],
+    center,
     zoom: 15,
     zoomControl: false,
   };
@@ -46,6 +48,13 @@ const createMap = (): Map => {
     maxZoom: 20
   }).addTo(map);
 
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+      const location: LatLngTuple = [position.coords.latitude, position.coords.longitude];
+      map.panTo(location);
+    });
+  }
+  
   return map;
 }
 
@@ -59,7 +68,12 @@ const createIcons = (): IconKeyMap => {
     popupAnchor: [0, -30],
   });
 
+  const stackedIcon: DivIcon = L.divIcon({
+    html: '<span>4</span>',
+  });
+
   iconKeyMap['football'] = footballIcon;
+  iconKeyMap['stackedIcon'] = stackedIcon;
 
   return iconKeyMap;
 }
@@ -67,7 +81,15 @@ const createIcons = (): IconKeyMap => {
 const addMarkers = (): Marker[] => {
   const markers: Marker[] = [];
 
-  testData.forEach((place: Place) => {
+  testData.forEach((place: Place) => {  
+    // markers.forEach((marker: Marker) => {
+    //   console.log(marker.getLatLng().distanceTo(place.coordinates));
+    //   if (marker.getLatLng().distanceTo(place.coordinates) < 2000) {
+    //     console.log('remove');  
+    //     marker.remove();
+    //   }
+    // });
+
     const marker: Marker = L.marker(toLatLng(place.coordinates), { icon: icons.value.football }).addTo(map.value!);
     markers.push(marker);
   });
