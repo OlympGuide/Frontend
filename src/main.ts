@@ -1,6 +1,7 @@
 import {createApp} from 'vue'
 import {createPinia} from 'pinia'
 import {createRouter, createWebHistory} from 'vue-router'
+import PrimeVue from 'primevue/config'
 
 import './style.css'
 import App from '@/App.vue'
@@ -13,6 +14,7 @@ import 'primeicons/primeicons.css'
 
 import Button from "primevue/button"
 import Dialog from "primevue/dialog";
+import InputText from "primevue/inputtext";
 
 
 const routes = [
@@ -31,7 +33,10 @@ const app = createApp(App)
 // Primevue components, add each component as needed
 app.component('Button', Button);
 app.component('Dialog', Dialog);
+app.component('InputText', InputText)
 app.use(router)
+app.use(PrimeVue)
 app.use(pinia)
 
 app.mount('#app')
+
