@@ -15,6 +15,7 @@ import 'primeicons/primeicons.css'
 import Button from "primevue/button"
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
+import FloatLabel from "primevue/floatlabel";
 
 
 const routes = [
@@ -34,6 +35,7 @@ const app = createApp(App)
 app.component('Button', Button);
 app.component('Dialog', Dialog);
 app.component('InputText', InputText)
+app.component('FloatLabel', FloatLabel)
 app.use(router)
 app.use(PrimeVue)
 app.use(pinia)
