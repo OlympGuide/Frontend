@@ -4,20 +4,36 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import L, { Map, MapOptions } from 'leaflet'
+import L, { Icon, Map, MapOptions, Marker } from 'leaflet'
+
+import { Place } from '@/types/Map';
+
+import { toLatLng } from '@/services/leaflet';
+
+// @ts-ignore
+import { data } from '@/testData/data.js';
 
 import 'leaflet/dist/leaflet.css';
 
-const map = ref<Map>();
+interface IconKeyMap {
+  [key: string]: L.Icon;
+}
 
-onMounted(() => {
+const map = ref<Map>();
+const testData: Place[] = data;
+
+const icons = ref<IconKeyMap>({});
+
+onMounted((): void => {
   map.value = createMap();
+  icons.value = createIcons();
+  addMarkers();
 });
 
-const createMap = () => {
+const createMap = (): Map => {
   const mapOptions: MapOptions = {
     center: [47.4971624, 8.7289052],
-    zoom: 16,
+    zoom: 15,
     zoomControl: false,
   };
 
@@ -31,6 +47,32 @@ const createMap = () => {
   }).addTo(map);
 
   return map;
+}
+
+const createIcons = (): IconKeyMap => {
+  const iconKeyMap: IconKeyMap = {};
+
+  const footballIcon: Icon = L.icon({
+    iconUrl: 'src/assets/icons/football.png',
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    popupAnchor: [0, -30],
+  });
+
+  iconKeyMap['football'] = footballIcon;
+
+  return iconKeyMap;
+}
+
+const addMarkers = (): Marker[] => {
+  const markers: Marker[] = [];
+
+  testData.forEach((place: Place) => {
+    const marker: Marker = L.marker(toLatLng(place.coordinates), { icon: icons.value.football }).addTo(map.value!);
+    markers.push(marker);
+  });
+
+  return markers;
 }
 </script>
 
