@@ -1,21 +1,22 @@
-import {createApp} from 'vue'
-import {createPinia} from 'pinia'
-import {createRouter, createWebHistory} from 'vue-router'
-import PrimeVue from 'primevue/config'
+import {createApp} from 'vue';
+import {createPinia} from 'pinia';
+import {createRouter, createWebHistory} from 'vue-router';
+import PrimeVue from 'primevue/config';
 
-import './style.css'
-import App from '@/App.vue'
-import NotFound from '@/pages/NotFound.vue'
-import Map from '@/pages/Map.vue'
+import './style.css';
+import App from '@/App.vue';
+import NotFound from '@/pages/NotFound.vue';
+import Map from '@/pages/Map.vue';
 
-import 'primevue/resources/themes/lara-light-purple/theme.css'
-import 'primevue/resources/primevue.min.css'
-import 'primeicons/primeicons.css'
+import 'primevue/resources/themes/lara-light-purple/theme.css';
+import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css';
 
-import Button from "primevue/button"
+import Button from "primevue/button";
 import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
-
+import Calendar from 'primevue/calendar';
+import InputIcon from 'primevue/inputicon';
 
 const routes = [
     {path: '/', component: Map},
@@ -27,16 +28,18 @@ const router = createRouter({
     routes,
 })
 
-const pinia = createPinia()
-const app = createApp(App)
+const pinia = createPinia();
+const app = createApp(App);
 
 // Primevue components, add each component as needed
 app.component('Button', Button);
 app.component('Dialog', Dialog);
-app.component('InputText', InputText)
-app.use(router)
-app.use(PrimeVue)
-app.use(pinia)
+app.component('InputText', InputText);
+app.component('Calendar', Calendar);
+app.component('InputIcon', InputIcon);
+app.use(router);
+app.use(PrimeVue);
+app.use(pinia);
 
-app.mount('#app')
+app.mount('#app');
 
