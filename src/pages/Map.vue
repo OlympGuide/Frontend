@@ -1,13 +1,10 @@
 <template>
-    <HelloWorld v-if="user" :msg="`${user.firstName} ${user.lastName}`" />
+  <OlympMap/>
+  <Button icon="pi pi-plus" rounded class="absolute bottom-0 z-[1000] m-8 right-0"/>
 </template>
 
 <script setup lang="ts">
-import HelloWorld from '@/components/HelloWorld.vue'
-import { useUserStore } from '@/stores/UserStore';
-
-const userStore = useUserStore();
-const user = userStore.user;
+import OlympMap from '@/components/OlympMap.vue';
 </script>
 
 <style scoped>

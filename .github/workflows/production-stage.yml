@@ -1,0 +1,73 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Frontend-Production CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  # DOCKER env
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/vue
+  ORGANISATION: OlympGuide
+
+  # HELM env
+  HELM_DIRECTORY: helm
+  HELM_RELEASE_NAME: olympguid
+  # K8S env
+  K8S_API: https://pm4.init-lab.ch/k8s/clusters/local
+  K8S_NAMESPACE: olympguide-stage
+    
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: '20.11.1'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Tests
+        run: npm run test
+
+      - name: Build Vue Project
+        run: npm run build
+
+  docker-build:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get latest tag
+        id: latest-tag
+        run: |
+          echo "fetching tags"
+          TAG=$(git describe --tags $(git rev-list --tags --max-count=1) 2>/dev/null || echo "version.${{ github.run_number }}")
+          echo "parsed tag: $TAG"
+          echo "image-tag=$TAG" >> $GITHUB_OUTPUT
+
+      - name: image-build
+        uses: ./.github/workflows/image-build
+        with:
+          registry: ${{ env.REGISTRY }}
+          image-name: ${{ env.IMAGE_NAME }}
+          tags: ${{ steps.latest-tag.outputs.image-tag }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
