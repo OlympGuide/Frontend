@@ -54,7 +54,7 @@ const createMap = (): Map => {
       map.panTo(location);
     });
   }
-  
+
   return map;
 }
 
@@ -81,11 +81,11 @@ const createIcons = (): IconKeyMap => {
 const addMarkers = (): Marker[] => {
   const markers: Marker[] = [];
 
-  testData.forEach((place: Place) => {  
+  testData.forEach((place: Place) => {
     // markers.forEach((marker: Marker) => {
     //   console.log(marker.getLatLng().distanceTo(place.coordinates));
     //   if (marker.getLatLng().distanceTo(place.coordinates) < 2000) {
-    //     console.log('remove');  
+    //     console.log('remove');
     //     marker.remove();
     //   }
     // });
