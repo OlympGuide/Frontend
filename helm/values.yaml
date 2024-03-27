@@ -1,0 +1,28 @@
+frontend:
+  deployment:
+    name: olympguide-frontend
+    replicas: 1
+    forceRedeploy: false
+    image:
+      pullSecret: github-token-secret ## Key for Service Account Secret on K8s
+      repository: ghcr.io/olympguide/frontend
+      pullPolicy: Always
+      tag: version.64
+    resources:
+      requests:
+        memory: "250Mi"
+        cpu: "200m"
+      limits:
+        memory: "1Gi"
+        cpu: "500m"
+    port: 8081
+  service:
+    name: olympguide-frontend
+    port: 8081
+    targetPort: 8081
+  ingress:
+    host: frontend-olympguide-prod.pm4.init-lab.ch
+    path: /
+    pathType: Prefix
+   
+   
