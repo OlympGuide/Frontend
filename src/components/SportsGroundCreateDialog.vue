@@ -7,44 +7,44 @@
     @hide="closeDialog"
     @show="resetDialog"
   >
-    <div class="flex-col flex gap-y-5 pt-5">
+    <div class="flex-col flex gap-3 lg:gap-y-5 pt-5">
       <div class="text-red-300" v-if="errorMessage.length > 0">
         {{ errorMessage }}
       </div>
-      <div class="flex flex-col lg:flex-row gap-2">
-        <div class="flex align-items-center gap-3 mb-3">
-          <FloatLabel>
-            <label for="name" class="font-semibold w-6rem">Name</label>
+      <div class="flex flex-col xl:flex-row gap-5">
+        <div class="flex align-items-center gap-3 mb-5 w-full">
+          <FloatLabel class="w-full">
+            <label for="name" class="font-semibold w-full">Name</label>
             <InputText
               id="name"
-              class="flex-auto"
+              class="flex-auto w-full"
               v-model="name"
               autocomplete="off"
             />
           </FloatLabel>
         </div>
-        <div class="flex align-items-center gap-3 mb-5">
-          <FloatLabel>
-            <label for="coordinates" class="font-semibold w-6rem"
+        <div class="flex align-items-center gap-3 mb-5 w-full">
+          <FloatLabel class="w-full">
+            <label for="coordinates" class="font-semibold w-full"
               >Koordinaten</label
             >
             <InputText
               id="coordinates"
-              class="flex-auto"
+              class="flex-auto w-full"
               v-model="coordinates"
               autocomplete="off"
             />
           </FloatLabel>
         </div>
       </div>
-      <div class="flex align-items-center gap-3 mb-5">
-        <FloatLabel>
-          <label for="description" class="font-semibold w-6rem"
+      <div class="flex align-items-center gap-3 mb-5 w-full">
+        <FloatLabel class="w-full">
+          <label for="description" class="font-semibold w-full"
             >Beschreibung</label
           >
-          <InputText
+          <TextArea
             id="description"
-            class="flex-auto"
+            class="flex-auto w-full h-40"
             v-model="description"
             autocomplete="off"
           />
@@ -54,13 +54,13 @@
     <div class="flex justify-content-end gap-2">
       <Button
         type="button"
-        label="Cancel"
+        label="Verwerfen"
         severity="secondary"
         @click="closeDialog"
       ></Button>
       <Button
         type="button"
-        label="Save"
+        label="Speichern"
         :loading="isLoading"
         @click="submitDialog"
       ></Button>
