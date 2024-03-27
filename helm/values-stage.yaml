@@ -1,4 +1,0 @@
-frontend:
-  deployment:
-    ingress:
-      host: backend-olympguide-dev.pm4.init-lab.ch

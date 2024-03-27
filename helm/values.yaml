@@ -7,7 +7,7 @@ frontend:
       pullSecret: github-token-secret ## Key for Service Account Secret on K8s
       repository: ghcr.io/olympguide/frontend
       pullPolicy: Always
-      tag: version.64
+      tag: lastest
     resources:
       requests:
         memory: "250Mi"
@@ -21,7 +21,7 @@ frontend:
     port: 80
     targetPort: 80
   ingress:
-    host: frontend-olympguide-prod.pm4.init-lab.ch
+    host: frontend-olympguide.pm4.init-lab.ch
     path: /
     pathType: Prefix
    
