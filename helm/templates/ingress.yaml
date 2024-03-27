@@ -7,7 +7,7 @@ spec:
     - host: {{ .Values.frontend.ingress.host }}
       http:
         paths:
-          - frontend:
+          - backend:
               service:
                 name: {{ .Values.frontend.service.name }}
                 port:
