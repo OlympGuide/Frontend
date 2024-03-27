@@ -26,9 +26,6 @@ spec:
         imagePullPolicy: {{ .Values.frontend.deployment.image.pullPolicy }}
         ports:
         - containerPort: {{ .Values.frontend.deployment.port }} # Default port for ASP.NET Core, change if your app uses a different port
-        env:
-        - name: ASPNETCORE_ENVIRONMENT
-          value: "Production" # Set the environment your application is running in
         resources:
             requests:
                 cpu: {{ .Values.frontend.deployment.resources.requests.cpu }}

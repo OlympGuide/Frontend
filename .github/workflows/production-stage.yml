@@ -6,13 +6,11 @@ name: Frontend-Production CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 env:
   # DOCKER env
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/vue
+  IMAGE_NAME: ${{ github.repository }}
   ORGANISATION: OlympGuide
 
   # HELM env
@@ -20,7 +18,7 @@ env:
   HELM_RELEASE_NAME: olympguid
   # K8S env
   K8S_API: https://pm4.init-lab.ch/k8s/clusters/local
-  K8S_NAMESPACE: olympguide-stage
+  K8S_NAMESPACE: olymp-guide-stage
     
 permissions:
   contents: read
@@ -71,3 +69,23 @@ jobs:
           image-name: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.latest-tag.outputs.image-tag }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+
+  deploy-helm-ci:
+    runs-on: ubuntu-22.04
+    needs: [docker-build]
+    environment: production
+
+    steps:
+      - name: checkout sources
+        uses: actions/checkout@v4
+      - name: deploy
+        uses: ./.github/workflows/helm-release
+        with:
+          kube-config: ${{ secrets.KUBE_CONFIG }}
+          helm-directory: ${{ env.HELM_DIRECTORY }}
+          k8s-token: ${{ secrets.K8S_TOKEN }}
+          k8s-api: ${{ env.K8S_API }}
+          k8s-namespace: ${{ env.K8S_NAMESPACE }}
+          helm-release-name: ${{ env.HELM_RELEASE_NAME }}
+          helm-values-file: ${{ env.HELM_VALUES_FILE }}

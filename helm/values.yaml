@@ -15,11 +15,11 @@ frontend:
       limits:
         memory: "1Gi"
         cpu: "500m"
-    port: 8081
+    port: 80
   service:
     name: olympguide-frontend
-    port: 8081
-    targetPort: 8081
+    port: 80
+    targetPort: 80
   ingress:
     host: frontend-olympguide-prod.pm4.init-lab.ch
     path: /
