@@ -1,9 +1,6 @@
 name: image-build
 description: performs a docker build an push
 inputs:
-  working-directory:
-    required: true
-    description: directory of docker sources
   registry: 
     required: true
     description: docker registry
@@ -39,6 +36,6 @@ runs:
     - name: build and push docker image
       uses: docker/build-push-action@v5.2.0
       with:
-        context: ./${{ inputs.working-directory }}
+        context: ./
         push: true
         tags: ${{ steps.image-meta.outputs.tags }}

@@ -12,7 +12,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/vue
   ORGANISATION: OlympGuide
-  WORKING_DIRECTORY : ${{ github.repository }}
+
   # HELM env
   HELM_DIRECTORY: helm
   HELM_RELEASE_NAME: olympguide-frontend
@@ -58,7 +58,6 @@ jobs:
       - name: image-build
         uses: ./.github/workflows/image-build
         with:
-          working-directory: ${{ env.WORKING_DIRECTORY }}
           registry: ${{ env.REGISTRY }}
           image-name: ${{ env.IMAGE_NAME }}
           tags: latest
