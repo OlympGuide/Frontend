@@ -3,7 +3,7 @@
   <Button
     icon="pi pi-plus"
     rounded
-    class="absolute bottom-0 z-[1000] m-8 right-0"
+    class="absolute bottom-0 right-0 z-[1000] m-8"
     @click="openDialog"
   />
   <SportsGroundCreateDialog :is-visible="visible" @close="visible = false" />
