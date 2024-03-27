@@ -104,7 +104,18 @@ const resetDialog = () => {
   errorMessage.value = "";
 };
 
+const coordinateRegex = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
+const isCoordinate = (coordinateString: string): boolean => {
+  return coordinateRegex.test(coordinateString);
+};
+
 const submitDialog = async () => {
+  if (!isCoordinate(coordinates.value)) {
+    errorMessage.value =
+      "Ungültiges Koordinatenformat. Bitte verwenden Sie das Format: Breitengrad, Längengrad";
+
+    return;
+  }
   const testObject = {
     name: name.value,
     description: description.value,
