@@ -116,20 +116,24 @@ const submitDialog = async () => {
 
     return;
   }
-  const testObject = {
+
+  const [latitude, longitude] = coordinates.value.split(/\s*,\s*/);
+
+  const creatSportField: CreateSportFieldRequestDTO = {
     name: name.value,
     description: description.value,
-    coordinates: coordinates.value,
+    longitude: longitude,
+    latitude: latitude,
   };
 
   try {
     isLoading.value = true;
     errorMessage.value = "";
-    await postSportsGroundData(testObject);
+    await postSportsGroundData(creatSportField);
     closeDialog();
   } catch (e: any) {
     console.log("Error while creating new sports ground: ", e);
-    errorMessage.value = "Error while creating new sports ground";
+    errorMessage.value = "Es gab ein Problem beim Übermitteln der Daten";
   } finally {
     isLoading.value = false;
   }

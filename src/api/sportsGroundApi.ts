@@ -1,5 +1,5 @@
 import { apiClient } from "@/api/axiosConfig.ts";
 
-export const postSportsGroundData = (data: any) => {
-  return apiClient.post("/sportsGround", data); //TODO to be changed
+export const postSportsGroundData = (data: CreateSportFieldRequestDTO) => {
+  return apiClient.post("/controller/AddSportField", data);
 };
