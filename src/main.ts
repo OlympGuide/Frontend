@@ -18,6 +18,9 @@ import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
 import Textarea from "primevue/textarea";
 
+import { defineRule } from "vee-validate";
+import { required, min } from "@vee-validate/rules";
+
 const routes = [
   { path: "/", component: Map },
   { path: "/:pathMatch(.*)*", component: NotFound },
@@ -37,6 +40,18 @@ app.component("Dialog", Dialog);
 app.component("InputText", InputText);
 app.component("FloatLabel", FloatLabel);
 app.component("TextArea", Textarea);
+
+//Vee Validate Rules
+defineRule("required", required);
+defineRule("min", min);
+defineRule("coordinatePair", (value: string) => {
+  const coordinateRegex = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
+  return (
+    !value ||
+    coordinateRegex.test(value) ||
+    "Ungültiges Koordinatenformat. Bitte verwenden Sie das Format: Breitengrad, Längengrad"
+  );
+});
 
 app.use(router);
 app.use(PrimeVue);
