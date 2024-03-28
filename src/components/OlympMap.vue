@@ -1,33 +1,33 @@
 <template>
   <div id="map"></div>
   <SportFieldInfoDialog
-    v-if="selectedSportField"
-    v-model:visible="sportFieldInfoDialogVisible"
-    :sport-field="selectedSportField"
+      v-if="selectedSportField"
+      v-model:visible="sportFieldInfoDialogVisible"
+      :sport-field="selectedSportField"
   />
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import L, { DivIcon, Icon, LatLngTuple, Map, MapOptions, Marker } from 'leaflet'
+import {onMounted, ref} from 'vue'
+import L, {DivIcon, Icon, LatLngTuple, Map, MapOptions, Marker} from 'leaflet'
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
-import { Place } from '@/types/Map';
+import {Place} from '@/types/Map';
 
-import { toLatLng } from '@/services/leaflet';
+import {toLatLng} from '@/services/leaflet';
 
 // @ts-ignore
-import { data } from '@/testData/data.js';
+import {data} from '@/testData/data.js';
 
 import 'leaflet/dist/leaflet.css';
 
 interface IconKeyMap {
-  [key: string]: Icon|DivIcon;
+  [key: string]: Icon | DivIcon;
 }
 
 const map = ref<Map>();
 const sportFieldInfoDialogVisible = ref<boolean>(false);
-const selectedSportField = ref<Place|null>(null);
+const selectedSportField = ref<Place | null>(null);
 const testData: Place[] = data;
 
 const icons = ref<IconKeyMap>({});
@@ -97,7 +97,7 @@ const addMarkers = (): Marker[] => {
     //     marker.remove();
     //   }
     // });
-    const marker: Marker = L.marker(toLatLng(place.coordinates), { icon: icons.value.football }).addTo(map.value!);
+    const marker: Marker = L.marker(toLatLng(place.coordinates), {icon: icons.value.football}).addTo(map.value!);
     marker.on('click', () => openModal(place));
     markers.push(marker);
   });
