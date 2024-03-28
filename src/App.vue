@@ -1,10 +1,10 @@
 <template>
-  <RouterView />
+  <RouterView/>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/UserStore';
-import { User } from '@/types/User';
+import {useUserStore} from '@/stores/UserStore';
+import {User} from '@/types/User';
 
 const userStore = useUserStore();
 
