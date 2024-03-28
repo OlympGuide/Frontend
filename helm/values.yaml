@@ -5,7 +5,7 @@ frontend:
     forceRedeploy: false
     image:
       pullSecret: github-token-secret ## Key for Service Account Secret on K8s
-      repository: ghcr.io/olympguide/frontend
+      repository: ghcr.io/olympguide/frontend/vue
       pullPolicy: Always
       tag: latest
     resources:
