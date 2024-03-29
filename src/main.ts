@@ -42,15 +42,16 @@ app.component("FloatLabel", FloatLabel);
 app.component("TextArea", Textarea);
 
 //Vee Validate Rules
+
 defineRule("required", (value: string) => {
-  return !value || value.length > 0 || "Das Feld darf nicht leer sein";
+  return value.length > 0 || "Das Feld darf nicht leer sein";
 });
+//defineRule("required", required);
 defineRule("min", min);
 
 defineRule("coordinatePair", (value: string) => {
   const coordinateRegex = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
   return (
-    !value ||
     coordinateRegex.test(value) ||
     "Bitte verwenden Sie das Format: Breitengrad, Längengrad"
   );
