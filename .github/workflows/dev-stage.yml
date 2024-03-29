@@ -47,13 +47,23 @@ jobs:
       - name: Build Vue Project
         run: npm run build
 
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: vue-build-artifact
+          path: dist/
+          retention-days: 10
+
+
   docker-build:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v2
         with:
-          fetch-depth: 0
+          name: vue-build-artifact
+          path: dist
     
       - name: image-build
         uses: ./.github/workflows/image-build
@@ -62,6 +72,7 @@ jobs:
           image-name: ${{ env.IMAGE_NAME }}
           tags: latest
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          
   deploy-helm-ci:
     runs-on: ubuntu-22.04
     needs: [docker-build]
