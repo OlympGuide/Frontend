@@ -1,0 +1,5 @@
+frontend:
+  ingress:
+    host: olympguide-frontend-stage.pm4.init-lab.ch
+    path: /
+    pathType: Prefix

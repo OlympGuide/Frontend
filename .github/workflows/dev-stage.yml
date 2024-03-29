@@ -16,7 +16,7 @@ env:
   # HELM env
   HELM_DIRECTORY: helm
   HELM_RELEASE_NAME: olympguide-frontend
-  HELM_VALUES_FILE : values.yaml
+  HELM_VALUES_FILE : values-stage.yaml
   # K8S env
   K8S_API: https://pm4.init-lab.ch/k8s/clusters/local
   K8S_NAMESPACE: olymp-guide-stage
