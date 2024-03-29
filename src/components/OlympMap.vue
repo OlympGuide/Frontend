@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
-import L, {DivIcon, Icon, LatLngTuple, Map, MapOptions, Marker} from 'leaflet'
+import L, {DivIcon, Icon, latLng, LatLng, LatLngTuple, Map, MapOptions, Marker} from 'leaflet'
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
 import {Place} from '@/types/Map';
@@ -59,7 +59,8 @@ const createMap = (): Map => {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
       const location: LatLngTuple = [position.coords.latitude, position.coords.longitude];
-      map.panTo(location);
+      // TODO: activate on prod
+      // map.panTo(location);
     });
   }
 
@@ -77,7 +78,7 @@ const createIcons = (): IconKeyMap => {
   });
 
   const stackedIcon: DivIcon = L.divIcon({
-    html: '<span>4</span>',
+    html: '<span>1</span>',
   });
 
   iconKeyMap['football'] = footballIcon;
@@ -89,18 +90,34 @@ const createIcons = (): IconKeyMap => {
 const addMarkers = (): Marker[] => {
   const markers: Marker[] = [];
 
-  testData.forEach((place: Place) => {
-    // markers.forEach((marker: Marker) => {
-    //   console.log(marker.getLatLng().distanceTo(place.coordinates));
-    //   if (marker.getLatLng().distanceTo(place.coordinates) < 2000) {
-    //     console.log('remove');
-    //     marker.remove();
+  for (const place of testData) {
+    // let stackCounter: number = 0;
+
+    // for (const nextPlace of testData) {
+    //   if (place === nextPlace) {
+    //     break;
     //   }
-    // });
-    const marker: Marker = L.marker(toLatLng(place.coordinates), {icon: icons.value.football}).addTo(map.value!);
-    marker.on('click', () => openModal(place));
-    markers.push(marker);
-  });
+
+      // TODO: Finish in KAN-39: https://olympguide.atlassian.net/browse/KAN-39
+      // const latLngThis: LatLng = latLng(place.coordinates);
+      // const latLngNext: LatLng = latLng(nextPlace.coordinates);
+
+      // if (latLngThis.distanceTo(latLngNext) < 2000) {
+      //   stackCounter++;
+      // }
+    // }
+
+    // if (stackCounter === 0) {
+      const marker: Marker = L.marker(toLatLng(place.coordinates), {icon: icons.value.football});
+      marker.addTo(map.value!);
+      marker.on('click', () => openModal(place));
+      markers.push(marker);
+    // } else if (stackCounter === 1) {
+    //   const marker: Marker = L.marker(toLatLng(place.coordinates), {icon: icons.value.stackedIcon});
+    //   marker.addTo(map.value!);
+    //   markers.push(marker);
+    // }
+  }
 
   return markers;
 }
