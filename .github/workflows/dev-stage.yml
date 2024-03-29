@@ -52,7 +52,7 @@ jobs:
         with:
           name: vue-build-artifact
           path: dist/
-          retention-days: 10
+          retention-days: 5
 
 
   docker-build:
