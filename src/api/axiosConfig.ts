@@ -1,13 +1,10 @@
 import axios from "axios";
 
-// Determine the base URL based on the NODE_ENV value
-const baseURL =
-  process.env.NODE_ENV === "production"
-    ? "https://olympguide-backend.pm4.init-lab.ch/"
-    : "http://localhost:3000/";
+// Access the base URL from Vite's environment-specific configuration
+const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const apiClient = axios.create({
-  baseURL: baseURL,
+  baseURL: baseURL, // Use the dynamically assigned base URL
 });
 
 export { apiClient };
