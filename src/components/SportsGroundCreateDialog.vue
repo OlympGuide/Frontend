@@ -79,6 +79,7 @@
 import { ref, watch } from "vue";
 import { postSportsGroundData } from "@/api/sportsGroundApi.ts";
 import { useField, useForm } from "vee-validate";
+import { CreateSportFieldRequest } from "@/types/CreateSportFieldRequest.ts";
 
 const { handleSubmit, validate, resetForm } = useForm({
   initialValues: {
@@ -104,7 +105,6 @@ const { value: description, errorMessage: descriptionError } = useField<string>(
   "required",
 );
 
-//const name = ref("");
 const errorMessage = ref("");
 const isLoading = ref(false);
 
@@ -115,6 +115,7 @@ const props = defineProps({
 const emit = defineEmits(["close"]);
 
 const visible = ref(props.isVisible);
+
 watch(
   () => props.isVisible,
   (value) => {
@@ -136,7 +137,7 @@ const submitDialog = handleSubmit(async (values: any) => {
 
   const [latitude, longitude] = values.coordinates.split(/\s*,\s*/);
 
-  const creatSportField: CreateSportFieldRequestDTO = {
+  const creatSportField: CreateSportFieldRequest = {
     name: values.name,
     description: values.description,
     longitude: longitude,
