@@ -22,9 +22,10 @@
               v-model="name"
               autocomplete="off"
             />
-            <small class="p-error absolute left-0 bottom-0 -mb-5 ml-2">{{
-              nameError
-            }}</small>
+            <small
+              class="p-error absolute left-0 bottom-0 -mb-5 ml-2 text-xs"
+              >{{ nameError }}</small
+            >
           </FloatLabel>
 
           <FloatLabel class="w-full relative">
@@ -38,9 +39,10 @@
               v-model="coordinates"
               autocomplete="off"
             />
-            <small class="p-error absolute left-0 bottom-0 -mb-5 ml-2">{{
-              coordinatesError
-            }}</small>
+            <small
+              class="p-error absolute left-0 bottom-0 -mb-5 ml-2 text-xs"
+              >{{ coordinatesError }}</small
+            >
           </FloatLabel>
         </div>
 
@@ -55,7 +57,7 @@
             v-model="description"
             autocomplete="off"
           />
-          <small class="p-error absolute left-0 bottom-0 -mb-5 ml-2">{{
+          <small class="p-error absolute left-0 bottom-0 -mb-3 ml-2 text-xs">{{
             descriptionError
           }}</small>
         </FloatLabel>
