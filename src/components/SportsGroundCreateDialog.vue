@@ -7,7 +7,7 @@
     @hide="closeDialog"
     @show="resetForm"
     ><form @submit.prevent="submitDialog" novalidate>
-      <div class="flex-col flex gap-y-10 lg:gap-y-10 pt-5">
+      <div class="flex flex-col gap-y-10 lg:gap-y-10 pt-5">
         <div class="text-red-300" v-if="errorMessage.length > 0">
           {{ errorMessage }}
         </div>
@@ -21,10 +21,7 @@
               v-model="name"
               autocomplete="off"
             />
-            <small
-              class="p-error absolute left-0 bottom-0 -mb-5 ml-2 text-xs"
-              >{{ nameError }}</small
-            >
+            <small class="p-error input-error">{{ nameError }}</small>
           </FloatLabel>
 
           <FloatLabel class="w-full relative">
@@ -38,10 +35,7 @@
               v-model="coordinates"
               autocomplete="off"
             />
-            <small
-              class="p-error absolute left-0 bottom-0 -mb-5 ml-2 text-xs"
-              >{{ coordinatesError }}</small
-            >
+            <small class="p-error input-error">{{ coordinatesError }}</small>
           </FloatLabel>
         </div>
 
@@ -56,9 +50,6 @@
             v-model="description"
             autocomplete="off"
           />
-          <small class="p-error absolute left-0 bottom-0 -mb-3 ml-2 text-xs">{{
-            descriptionError
-          }}</small>
         </FloatLabel>
       </div>
       <div class="flex justify-content-end gap-2">
@@ -122,7 +113,7 @@ watch(
 );
 
 const closeDialog = () => {
-  console.log("close Dialog");
+  errorMessage.value = "";
   emit("close");
 };
 
