@@ -13,7 +13,9 @@
         </div>
         <div class="flex flex-col xl:flex-row gap-y-10 gap-5">
           <FloatLabel class="w-full relative">
-            <label for="name" class="font-semibold w-full">Name</label>
+            <label for="name" class="font-semibold w-full"
+              >Name <span class="text-red-800">*</span></label
+            >
             <InputText
               id="name"
               class="flex-auto w-full"
@@ -26,7 +28,7 @@
 
           <FloatLabel class="w-full relative">
             <label for="coordinates" class="font-semibold w-full"
-              >Koordinaten</label
+              >Koordinaten <span class="text-red-800">*</span></label
             >
             <InputText
               id="coordinates"
