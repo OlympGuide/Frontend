@@ -6,8 +6,7 @@
     class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
     @hide="closeDialog"
     @show="resetForm"
-  >
-    <form @submit.prevent="submitDialog" novalidate>
+    ><form @submit.prevent="submitDialog" novalidate>
       <div class="flex-col flex gap-y-10 lg:gap-y-10 pt-5">
         <div class="text-red-300" v-if="errorMessage.length > 0">
           {{ errorMessage }}
@@ -77,9 +76,10 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { postSportsGroundData } from "@/api/sportsGroundApi.ts";
 import { useField, useForm } from "vee-validate";
 import { CreateSportFieldRequest } from "@/types/CreateSportFieldRequest.ts";
+import { storeToRefs } from "pinia";
+import { useSportsGroundStore } from "@/stores/SportsGroundStore.ts";
 
 const { handleSubmit, validate, resetForm } = useForm({
   initialValues: {
@@ -100,13 +100,11 @@ const { value: coordinates, errorMessage: coordinatesError } = useField<string>(
   "required|coordinatePair",
 );
 
-const { value: description, errorMessage: descriptionError } = useField<string>(
-  "description",
-  "required",
-);
+const { value: description, errorMessage: descriptionError } =
+  useField<string>("description");
 
-const errorMessage = ref("");
-const isLoading = ref(false);
+const sportsGroundStore = useSportsGroundStore();
+const { isLoading, errorMessage } = storeToRefs(sportsGroundStore);
 
 const props = defineProps({
   isVisible: { type: Boolean, required: true },
@@ -145,16 +143,11 @@ const submitDialog = handleSubmit(async (values: any) => {
   };
 
   try {
-    isLoading.value = true;
-    errorMessage.value = "";
-    await postSportsGroundData(creatSportField);
+    await sportsGroundStore.createNewSportsFieldRequest(creatSportField);
     resetForm();
     closeDialog();
   } catch (e: any) {
-    console.log("Error while creating new sports ground: ", e);
-    errorMessage.value = "Es gab ein Problem beim Übermitteln der Daten";
-  } finally {
-    isLoading.value = false;
+    console.log(e);
   }
 });
 </script>
