@@ -1,11 +1,7 @@
-export interface Place {
+export interface SportField {
     id: string
     name: string
     description?: string
-    coordinates: Coordinates
-}
-
-export interface Coordinates {
-    lat: number
-    lng: number
+    latitude: number
+    longitude: number
 }

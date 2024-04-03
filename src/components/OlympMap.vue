@@ -12,9 +12,7 @@ import {onMounted, ref} from 'vue'
 import L, {DivIcon, Icon, latLng, LatLng, LatLngTuple, Map, MapOptions, Marker} from 'leaflet'
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
-import {Place} from '@/types/Map';
-
-import {toLatLng} from '@/services/leaflet';
+import {SportField} from '@/types/Map';
 
 // @ts-ignore
 import {data} from '@/testData/data.js';
@@ -27,8 +25,8 @@ interface IconKeyMap {
 
 const map = ref<Map>();
 const sportFieldInfoDialogVisible = ref<boolean>(false);
-const selectedSportField = ref<Place | null>(null);
-const testData: Place[] = data;
+const selectedSportField = ref<SportField | null>(null);
+const testData: SportField[] = data;
 
 const icons = ref<IconKeyMap>({});
 
@@ -90,16 +88,16 @@ const createIcons = (): IconKeyMap => {
 const addMarkers = (): Marker[] => {
   const markers: Marker[] = [];
 
-  for (const place of testData) {
+  for (const sportField of testData) {
     // let stackCounter: number = 0;
 
     // for (const nextPlace of testData) {
-    //   if (place === nextPlace) {
+    //   if (sportField === nextPlace) {
     //     break;
     //   }
 
       // TODO: Finish in KAN-39: https://olympguide.atlassian.net/browse/KAN-39
-      // const latLngThis: LatLng = latLng(place.coordinates);
+      // const latLngThis: LatLng = latLng(sportField.coordinates);
       // const latLngNext: LatLng = latLng(nextPlace.coordinates);
 
       // if (latLngThis.distanceTo(latLngNext) < 2000) {
@@ -108,12 +106,12 @@ const addMarkers = (): Marker[] => {
     // }
 
     // if (stackCounter === 0) {
-      const marker: Marker = L.marker(toLatLng(place.coordinates), {icon: icons.value.football});
+      const marker: Marker = L.marker([sportField.latitude, sportField.longitude], {icon: icons.value.football});
       marker.addTo(map.value!);
-      marker.on('click', () => openModal(place));
+      marker.on('click', () => openModal(sportField));
       markers.push(marker);
     // } else if (stackCounter === 1) {
-    //   const marker: Marker = L.marker(toLatLng(place.coordinates), {icon: icons.value.stackedIcon});
+    //   const marker: Marker = L.marker([sportField.latitude, sportField.longitude], {icon: icons.value.stackedIcon});
     //   marker.addTo(map.value!);
     //   markers.push(marker);
     // }
@@ -122,7 +120,7 @@ const addMarkers = (): Marker[] => {
   return markers;
 }
 
-const openModal = (sportField: Place): void => {
+const openModal = (sportField: SportField): void => {
   sportFieldInfoDialogVisible.value = true;
   selectedSportField.value = sportField;
 }
