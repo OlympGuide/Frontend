@@ -1,7 +1,7 @@
 name: PR-Workflow
 on:
   pull_request:
-    branches: [ "main", "development"]
+    branches: [ "main", "dev"]
     types: [opened, synchronize]
 
 env:

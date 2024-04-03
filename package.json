@@ -10,9 +10,14 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@vee-validate/rules": "^4.12.6",
     "axios": "^1.6.7",
     "leaflet": "^1.9.4",
     "pinia": "^2.1.7",
+    "prettier": "^3.2.5",
+    "primeicons": "^6.0.1",
+    "primevue": "3.50.0",
+    "vee-validate": "^4.12.6",
     "vue": "^3.4.19",
     "vue-router": "^4.3.0"
   },
