@@ -1,6 +1,6 @@
 <template>
-  <Dialog v-model:visible="visible" modal :header="sportField.name" :style="{ width: '25rem' }">
-    <span v-if="sportField.description" class="p-text-secondary block mb-5">{{ sportField.description }}</span>
+  <Dialog v-model:visible="visible" modal :header="props.sportField.name" :style="{ width: '25rem' }">
+    <span v-if="props.sportField.description" class="p-text-secondary block mb-5">{{ props.sportField.description }}</span>
 
     <div class="flex flex-col gap-y-3">
       <div class="formItem">
