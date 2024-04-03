@@ -17,6 +17,8 @@ import Dialog from "primevue/dialog";
 import InputText from "primevue/inputtext";
 import FloatLabel from "primevue/floatlabel";
 import Textarea from "primevue/textarea";
+import Calendar from 'primevue/calendar';
+import InputIcon from 'primevue/inputicon';
 
 import { defineRule } from "vee-validate";
 import { min } from "@vee-validate/rules";
@@ -40,9 +42,10 @@ app.component("Dialog", Dialog);
 app.component("InputText", InputText);
 app.component("FloatLabel", FloatLabel);
 app.component("TextArea", Textarea);
+app.component('Calendar', Calendar);
+app.component('InputIcon', InputIcon);
 
 //Vee Validate Rules
-
 defineRule("required", (value: string) => {
   return value.length > 0 || "Das Feld darf nicht leer sein";
 });
