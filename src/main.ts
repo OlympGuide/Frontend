@@ -1,12 +1,9 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import { createRouter, createWebHistory } from "vue-router";
 import PrimeVue from "primevue/config";
 
 import "./style.css";
 import App from "@/App.vue";
-import NotFound from "@/pages/NotFound.vue";
-import Map from "@/pages/Map.vue";
 
 import "./olympGuideTheme.css";
 import "primevue/resources/primevue.min.css";
@@ -23,15 +20,7 @@ import InputIcon from 'primevue/inputicon';
 import { defineRule } from "vee-validate";
 import { min } from "@vee-validate/rules";
 
-const routes = [
-  { path: "/", component: Map },
-  { path: "/:pathMatch(.*)*", component: NotFound },
-];
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
+import router from "@/router";
 
 const pinia = createPinia();
 const app = createApp(App);

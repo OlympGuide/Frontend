@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
-import L, {DivIcon, Icon, latLng, LatLng, LatLngTuple, Map, MapOptions, Marker} from 'leaflet'
+import L, {DivIcon, Icon, LatLngTuple, Map, MapOptions, Marker} from 'leaflet'
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
 import {SportField} from '@/types/Map';
