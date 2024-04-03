@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import {onMounted, ref} from 'vue'
-import L, {DivIcon, Icon, latLng, LatLng, LatLngTuple, Map, MapOptions, Marker} from 'leaflet'
+import L, {DivIcon, Icon, LatLngTuple, Map, MapOptions, Marker} from 'leaflet'
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
 import {SportField} from '@/types/Map';
@@ -54,13 +54,13 @@ const createMap = (): Map => {
     maxZoom: 20
   }).addTo(map);
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
-      const location: LatLngTuple = [position.coords.latitude, position.coords.longitude];
-      // TODO: activate on prod
-      // map.panTo(location);
-    });
-  }
+  // TODO: activate on dev/prod
+  // if (navigator.geolocation) {
+  //   navigator.geolocation.getCurrentPosition((position: GeolocationPosition) => {
+  //     const location: LatLngTuple = [position.coords.latitude, position.coords.longitude];
+  //     map.panTo(location);
+  //   });
+  // }
 
   return map;
 }

@@ -28,8 +28,8 @@
     </div>
 
     <template #footer>
-      <Button label="Cancel" text severity="secondary" @click="closeDialog()"></Button>
-      <Button label="Book" outlined severity="secondary" @click="book()" autofocus></Button>
+      <Button label="Cancel" text @click="closeDialog()"></Button>
+      <Button label="Book" outlined @click="book()" autofocus></Button>
     </template>
   </Dialog>
 </template>
