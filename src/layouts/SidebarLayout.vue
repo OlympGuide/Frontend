@@ -37,6 +37,12 @@ const menuItems = ref<MenuItem[]>([
     spacer: true,
   },
   {
+    text: 'Karte',
+    link: '/',
+    icon: 'map.png',
+    iconClasses: '!w-10',
+  },
+  {
     text: 'Reservationen',
     link: '/reservations',
     icon: 'calendar.png',
