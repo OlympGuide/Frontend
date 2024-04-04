@@ -27,4 +27,12 @@ body {
         @apply absolute left-0 bottom-0 -mb-5 ml-2 text-xs;
     }
 
+    .page-container-placement{
+        @apply pl-80 pt-[42px]
+    }
+
+    .page-title{
+        @apply text-3xl
+    }
+
 }
