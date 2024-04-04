@@ -1,7 +1,7 @@
 export interface SportField {
-    id: string
-    name: string
-    description?: string
-    latitude: number
-    longitude: number
+  id: string;
+  name: string;
+  description?: string;
+  latitude: number;
+  longitude: number;
 }

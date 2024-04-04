@@ -1,15 +1,15 @@
-import {defineStore} from "pinia";
-import {User} from "@/types/User.ts";
+import { defineStore } from 'pinia';
+import { User } from '@/types/User.ts';
 
 export const useUserStore = defineStore('user', {
-    state: () => {
-        return {
-            user: null as User | null,
-        };
+  state: () => {
+    return {
+      user: null as User | null,
+    };
+  },
+  actions: {
+    setUser(user: User) {
+      this.user = user;
     },
-    actions: {
-        setUser(user: User) {
-            this.user = user;
-        },
-    },
+  },
 });
