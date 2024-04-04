@@ -1,10 +1,5 @@
 <template>
-  <aside
-    class="sidebar"
-    :class="{ hover: isHover }"
-    @mouseover="onHover()"
-    @mouseleave="onUnhover()"
-  >
+  <aside class="sidebar">
     <div v-for="item in menuItems" :key="item.link" class="w-full">
       <RouterLink :to="item.link" class="sidebar-item">
         <div class="icon-wrapper">
@@ -14,7 +9,7 @@
             :alt="item.text"
           />
         </div>
-        <span v-if="isHover">{{ item.text }}</span>
+        <span class="text">{{ item.text }}</span>
       </RouterLink>
       <div v-if="item.spacer" class="spacer"></div>
     </div>
@@ -33,10 +28,9 @@ interface MenuItem {
   spacer?: boolean;
 }
 
-const isHover = ref<boolean>(false);
 const menuItems = ref<MenuItem[]>([
   {
-    text: 'Login / Register',
+    text: 'Login',
     link: '/login',
     icon: 'user.png',
     iconClasses: '!w-16',
@@ -63,20 +57,6 @@ const menuItems = ref<MenuItem[]>([
 const getImageUrl = (name: string): string => {
   return new URL(`../assets/icons/${name}`, import.meta.url).href;
 };
-
-const onHover = (): void => {
-  if (isHover.value) {
-    return;
-  }
-
-  setTimeout(() => {
-    isHover.value = true;
-  }, 100);
-};
-
-const onUnhover = (): void => {
-  isHover.value = false;
-};
 </script>
 
 <style lang="scss" scoped>
@@ -88,23 +68,32 @@ const onUnhover = (): void => {
     @apply w-64;
   }
 
+  &:hover .sidebar-item {
+    @apply gap-5;
+  }
+
+  &:hover .text {
+    @apply grow transition-all;
+    opacity: 100 !important;
+  }
+
   .sidebar-item {
-    @apply flex justify-between items-center gap-5 w-full;
+    @apply flex justify-between items-center w-full;
 
     .icon-wrapper {
-      @apply flex justify-center w-14;
+      @apply flex justify-center min-w-14 max-w-14;
 
       img {
         @apply w-12;
       }
     }
 
-    &:hover span {
+    &:hover .text {
       @apply text-red-700;
     }
 
-    span {
-      @apply grow;
+    .text {
+      @apply opacity-0 w-0;
     }
   }
 
