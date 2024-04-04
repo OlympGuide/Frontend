@@ -23,8 +23,8 @@ body {
 }
 
 @layer components {
-  .input-error {
-    @apply absolute left-0 bottom-0 -mb-5 ml-2 text-xs;
-  }
+    .input-error {
+        @apply absolute left-0 bottom-0 -mb-5 ml-2 text-xs;
+    }
 
 }

@@ -6,7 +6,8 @@
     class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
     @hide="closeDialog"
     @show="resetForm"
-    ><form @submit.prevent="submitDialog" novalidate>
+  >
+    <form @submit.prevent="submitDialog" novalidate>
       <div class="flex flex-col gap-y-10 lg:gap-y-10 pt-5">
         <div class="text-red-300" v-if="errorMessage.length > 0">
           {{ errorMessage }}
@@ -68,33 +69,33 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useField, useForm } from "vee-validate";
-import { CreateSportFieldRequest } from "@/types/CreateSportFieldRequest.ts";
-import { storeToRefs } from "pinia";
-import { useSportsGroundStore } from "@/stores/SportsGroundStore.ts";
+import { ref, watch } from 'vue';
+import { useField, useForm } from 'vee-validate';
+import { CreateSportFieldRequest } from '@/types/CreateSportFieldRequest.ts';
+import { storeToRefs } from 'pinia';
+import { useSportsGroundStore } from '@/stores/SportsGroundStore.ts';
 
 const { handleSubmit, validate, resetForm } = useForm({
   initialValues: {
-    name: "",
-    coordinates: "",
-    description: "",
+    name: '',
+    coordinates: '',
+    description: '',
   },
   validateOnMount: false,
 });
 
 const { value: name, errorMessage: nameError } = useField<string>(
-  "name",
-  "required",
+  'name',
+  'required'
 );
 
 const { value: coordinates, errorMessage: coordinatesError } = useField<string>(
-  "coordinates",
-  "required|coordinatePair",
+  'coordinates',
+  'required|coordinatePair'
 );
 
 const { value: description, errorMessage: descriptionError } =
-  useField<string>("description");
+  useField<string>('description');
 
 const sportsGroundStore = useSportsGroundStore();
 const { isLoading, errorMessage } = storeToRefs(sportsGroundStore);
@@ -103,7 +104,7 @@ const props = defineProps({
   isVisible: { type: Boolean, required: true },
 });
 
-const emit = defineEmits(["close"]);
+const emit = defineEmits(['close']);
 
 const visible = ref(props.isVisible);
 
@@ -111,12 +112,12 @@ watch(
   () => props.isVisible,
   (value) => {
     visible.value = value;
-  },
+  }
 );
 
 const closeDialog = () => {
-  errorMessage.value = "";
-  emit("close");
+  errorMessage.value = '';
+  emit('close');
 };
 
 const submitDialog = handleSubmit(async (values: any) => {
