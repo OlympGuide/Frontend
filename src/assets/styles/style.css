@@ -35,4 +35,8 @@ body {
         @apply text-3xl
     }
 
+    .button-text-center{
+        @apply flex justify-center items-center
+    }
+
 }

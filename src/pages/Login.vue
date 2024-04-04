@@ -1,13 +1,11 @@
 <template>
-  <Dialog
-    modal
-    header="Login"
-    class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
-    v-model:visible="visible"
-  >
+  <div class="page-container-placement z-[1000] w-4/6" >
+    <p class="page-title pb-10">Login</p>
+  <form @submit.prevent="submitLogin" novalidate>
+    <div class="flex flex-col gap-y-10 gap-5">
     <FloatLabel class="w-full relative">
-      <label for="name" class="font-semibold w-full"
-      >Name <span class="text-red-800">*</span></label
+      <label for="email" class="font-semibold w-full"
+      >Email</label
       >
       <InputText
           id="name"
@@ -18,11 +16,27 @@
       />
       <small class="p-error input-error">{{ emailError }}</small>
     </FloatLabel>
-  </Dialog>
+    <FloatLabel class="w-full relative">
+      <label for="password" class="font-semibold w-full"
+      >Passwort</label
+      >
+      <InputText
+          id="password"
+          class="flex-auto w-full"
+          :class="{ 'p-invalid': passwordError }"
+          v-model="password"
+          autocomplete="off"
+      />
+      <small class="p-error input-error">{{ passwordError }}</small>
+    </FloatLabel>
+      <Button class="w-[130px] button-text-center">Einloggen</Button>
+    </div>
+
+  </form>
+  </div>
 </template>
 
 <script setup lang="ts">
-import OlympMap from "@/components/OlympMap.vue";
 import {useField, useForm} from "vee-validate";
 const { handleSubmit, validate, resetForm } = useForm({
   initialValues: {
@@ -34,10 +48,13 @@ const { handleSubmit, validate, resetForm } = useForm({
 
 const { value: email, errorMessage: emailError } = useField<string>(
     'email',
-    'required'
 );
 
-const visible = true;
+const { value: password, errorMessage: passwordError } = useField<string>(
+    'password',
+);
+
+const submitLogin=()=>{}
 
 </script>
 
