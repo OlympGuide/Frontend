@@ -5,3 +5,5 @@ export interface SportField {
   latitude: number;
   longitude: number;
 }
+
+export type PostSportField = Omit<SportField, 'id'>;

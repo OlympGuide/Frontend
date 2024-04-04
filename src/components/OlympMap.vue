@@ -25,21 +25,26 @@ import { SportField } from '@/types/Map';
 import { data } from '@/testData/data.js';
 
 import 'leaflet/dist/leaflet.css';
+import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 
 interface IconKeyMap {
   [key: string]: Icon | DivIcon;
 }
 
+const sportFieldStore = useSportFieldStore();
+
 const map = ref<Map>();
 const sportFieldInfoDialogVisible = ref<boolean>(false);
 const selectedSportField = ref<SportField | null>(null);
-const testData: SportField[] = data;
+const sportFields = ref<SportField[]>([]);
 
 const icons = ref<IconKeyMap>({});
 
 onMounted((): void => {
   map.value = createMap();
   icons.value = createIcons();
+
+  loadSportFields();
   addMarkers();
 });
 
@@ -96,10 +101,15 @@ const createIcons = (): IconKeyMap => {
   return iconKeyMap;
 };
 
+const loadSportFields = (): void => {
+  sportFieldStore.loadSportFields();
+  sportFields.value = sportFieldStore.sportFields;
+};
+
 const addMarkers = (): Marker[] => {
   const markers: Marker[] = [];
 
-  for (const sportField of testData) {
+  for (const sportField of sportFields.value) {
     // let stackCounter: number = 0;
 
     // for (const nextPlace of testData) {

@@ -533,7 +533,7 @@
 
     .p-autocomplete-dd .p-autocomplete-dropdown {
         border-top-left-radius: 0;
-        border-bottom-left-radius: 0px;
+        border-bottom-left-radius: 0;
     }
 
     .p-autocomplete .p-autocomplete-panel {
@@ -1087,10 +1087,7 @@
 
     .p-datepicker.p-datepicker-multiple-month .p-datepicker-group {
         border-left: 1px solid #e5e7eb;
-        padding-right: 0.5rem;
-        padding-left: 0.5rem;
-        padding-top: 0;
-        padding-bottom: 0;
+        padding: 0 0.5rem;
     }
 
     .p-datepicker.p-datepicker-multiple-month .p-datepicker-group:first-child {
@@ -4435,7 +4432,7 @@
     }
 
     .p-datatable-table {
-        border-spacing: 0px;
+        border-spacing: 0;
         width: 100%;
     }
 
@@ -4532,7 +4529,7 @@
         margin: 0;
         width: 0.5rem;
         height: 100%;
-        padding: 0px;
+        padding: 0;
         cursor: col-resize;
         border: 1px solid transparent;
     }
@@ -4678,7 +4675,7 @@
     .p-datatable .p-datatable-header {
         background: #f9fafb;
         color: #374151;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 1px 0 1px 0;
         padding: 1rem 1rem;
         font-weight: 700;
@@ -4687,7 +4684,7 @@
     .p-datatable .p-datatable-footer {
         background: #f9fafb;
         color: #374151;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         padding: 1rem 1rem;
         font-weight: 700;
@@ -4696,7 +4693,7 @@
     .p-datatable .p-datatable-thead > tr > th {
         text-align: left;
         padding: 1rem 1rem;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         font-weight: 700;
         color: #374151;
@@ -4707,7 +4704,7 @@
     .p-datatable .p-datatable-tfoot > tr > td {
         text-align: left;
         padding: 1rem 1rem;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         font-weight: 700;
         color: #374151;
@@ -4769,7 +4766,7 @@
 
     .p-datatable .p-datatable-tbody > tr > td {
         text-align: left;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         padding: 1rem 1rem;
     }
@@ -5003,7 +5000,7 @@
     .p-dataview .p-dataview-header {
         background: #f9fafb;
         color: #374151;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 1px 0 1px 0;
         padding: 1rem 1rem;
         font-weight: 700;
@@ -5019,7 +5016,7 @@
     .p-dataview .p-dataview-footer {
         background: #f9fafb;
         color: #374151;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         padding: 1rem 1rem;
         font-weight: 700;
@@ -5343,7 +5340,7 @@
     }
 
     .p-organizationchart-line-right {
-        border-radius: 0px;
+        border-radius: 0;
     }
 
     .p-organizationchart-line-left {
@@ -5374,12 +5371,10 @@
 
     .p-organizationchart .p-organizationchart-line-left {
         border-right: 1px solid #e5e7eb;
-        border-color: #e5e7eb;
     }
 
     .p-organizationchart .p-organizationchart-line-top {
         border-top: 1px solid #e5e7eb;
-        border-color: #e5e7eb;
     }
 
     .p-organizationchart .p-organizationchart-node-content {
@@ -5445,8 +5440,7 @@
     .p-paginator {
         background: #ffffff;
         color: #6b7280;
-        border: solid #f3f4f6;
-        border-width: 0;
+        border: 0 solid #f3f4f6;
         padding: 0.5rem 1rem;
         border-radius: 6px;
     }
@@ -6065,7 +6059,7 @@
         margin: 0;
         width: 0.5rem;
         height: 100%;
-        padding: 0px;
+        padding: 0;
         cursor: col-resize;
         border: 1px solid transparent;
     }
@@ -6172,7 +6166,7 @@
     .p-treetable .p-treetable-header {
         background: #f9fafb;
         color: #374151;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 1px 0 1px 0;
         padding: 1rem 1rem;
         font-weight: 700;
@@ -6181,7 +6175,7 @@
     .p-treetable .p-treetable-footer {
         background: #f9fafb;
         color: #374151;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         padding: 1rem 1rem;
         font-weight: 700;
@@ -6190,7 +6184,7 @@
     .p-treetable .p-treetable-thead > tr > th {
         text-align: left;
         padding: 1rem 1rem;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         font-weight: 700;
         color: #374151;
@@ -6201,7 +6195,7 @@
     .p-treetable .p-treetable-tfoot > tr > td {
         text-align: left;
         padding: 1rem 1rem;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         font-weight: 700;
         color: #374151;
@@ -6253,7 +6247,7 @@
 
     .p-treetable .p-treetable-tbody > tr > td {
         text-align: left;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 1px 0;
         padding: 1rem 1rem;
     }
@@ -6467,10 +6461,7 @@
         background: #ffffff;
         color: #4b5563;
         border-top: 0;
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-        border-bottom-right-radius: 6px;
-        border-bottom-left-radius: 6px;
+        border-radius: 0 0 6px 6px;
     }
 
     .p-accordion .p-accordion-tab {
@@ -6998,8 +6989,7 @@
 
     .p-stepper .p-stepper-header .p-stepper-action .p-stepper-number {
         color: #4b5563;
-        border: 1px solid #f3f4f6;
-        border-width: 2px;
+        border: 2px solid #f3f4f6;
         background: #ffffff;
         min-width: 2rem;
         height: 2rem;
@@ -7173,7 +7163,7 @@
 
     .p-tabview .p-tabview-nav {
         background: #ffffff;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 2px 0;
     }
 
@@ -7182,9 +7172,8 @@
     }
 
     .p-tabview .p-tabview-nav li .p-tabview-nav-link {
-        border: solid #e5e7eb;
-        border-width: 0 0 2px 0;
-        border-color: transparent transparent #e5e7eb transparent;
+        border: 0 solid transparent;
+        border-bottom: 2px #e5e7eb;
         background: #ffffff;
         color: #6b7280;
         padding: 1.25rem;
@@ -7303,7 +7292,7 @@
     .p-confirm-popup:after,
     .p-confirm-popup:before {
         bottom: 100%;
-        left: calc(var(--overlayArrowLeft, 0) + 1.25rem);
+        /*left: calc(var(--overlayArrowLeft, 0) + 1.25rem);*/
         content: " ";
         height: 0;
         width: 0;
@@ -7521,10 +7510,9 @@
     .p-dialog-maximized {
         width: 100vw !important;
         height: 100vh !important;
-        top: 0px !important;
-        left: 0px !important;
+        top: 0 !important;
+        left: 0 !important;
         max-height: 100%;
-        height: 100%;
     }
 
     .p-dialog-maximized .p-dialog-content {
@@ -7653,7 +7641,7 @@
     .p-overlaypanel:after,
     .p-overlaypanel:before {
         bottom: 100%;
-        left: calc(var(--overlayArrowLeft, 0) + 1.25rem);
+        /*left: calc(var(--overlayArrowLeft, 0) + 1.25rem);*/
         content: " ";
         height: 0;
         width: 0;
@@ -7784,8 +7772,8 @@
         width: 100vw !important;
         height: 100vh !important;
         max-height: 100%;
-        top: 0px !important;
-        left: 0px !important;
+        top: 0 !important;
+        left: 0 !important;
     }
 
     /* Animation */
@@ -9542,10 +9530,7 @@
         background: #ffffff;
         color: #4b5563;
         border-top: 0;
-        border-top-right-radius: 0;
-        border-top-left-radius: 0;
-        border-bottom-right-radius: 6px;
-        border-bottom-left-radius: 6px;
+        border-radius: 0 0 6px 6px;
     }
 
     .p-panelmenu .p-panelmenu-content .p-panelmenu-root-list {
@@ -9716,7 +9701,6 @@
     }
 
     .p-steps .p-steps-item .p-menuitem-link {
-        background: transparent;
         transition: box-shadow 0.2s;
         border-radius: 6px;
         background: #ffffff;
@@ -9786,7 +9770,6 @@
         align-items: center;
         position: relative;
         text-decoration: none;
-        text-decoration: none;
         overflow: hidden;
     }
 
@@ -9809,7 +9792,7 @@
 
     .p-tabmenu .p-tabmenu-nav {
         background: #ffffff;
-        border: 1px solid #e5e7eb;
+        border: solid #e5e7eb;
         border-width: 0 0 2px 0;
     }
 
@@ -9818,9 +9801,8 @@
     }
 
     .p-tabmenu .p-tabmenu-nav .p-tabmenuitem .p-menuitem-link {
-        border: solid #e5e7eb;
-        border-width: 0 0 2px 0;
-        border-color: transparent transparent #e5e7eb transparent;
+        border: 0 solid transparent;
+        border-bottom: 2px #e5e7eb;
         background: #ffffff;
         color: #6b7280;
         padding: 1.25rem;
@@ -10065,8 +10047,7 @@
 
     .p-inline-message.p-inline-message-info {
         background: rgba(219, 234, 254, 0.7);
-        border: solid #3b82f6;
-        border-width: 0px;
+        border: 0 solid #3b82f6;
         color: #3b82f6;
     }
 
@@ -10076,8 +10057,7 @@
 
     .p-inline-message.p-inline-message-success {
         background: rgba(228, 248, 240, 0.7);
-        border: solid #1ea97c;
-        border-width: 0px;
+        border: 0 solid #1ea97c;
         color: #1ea97c;
     }
 
@@ -10087,8 +10067,7 @@
 
     .p-inline-message.p-inline-message-warn {
         background: rgba(255, 242, 226, 0.7);
-        border: solid #cc8925;
-        border-width: 0px;
+        border: 0 solid #cc8925;
         color: #cc8925;
     }
 
@@ -10098,8 +10077,7 @@
 
     .p-inline-message.p-inline-message-error {
         background: rgba(255, 231, 230, 0.7);
-        border: solid #ff5757;
-        border-width: 0px;
+        border: 0 solid #ff5757;
         color: #ff5757;
     }
 
@@ -10109,8 +10087,7 @@
 
     .p-inline-message.p-inline-message-secondary {
         background: #64748B;
-        border: solid #64748B;
-        border-width: 0px;
+        border: 0 solid #64748B;
         color: #ffffff;
     }
 
@@ -10120,8 +10097,7 @@
 
     .p-inline-message.p-inline-message-contrast {
         background: #1f2937;
-        border: solid #1f2937;
-        border-width: 0px;
+        border: 0 solid #1f2937;
         color: #ffffff;
     }
 
@@ -11464,9 +11440,8 @@
 
     .p-progressbar-determinate .p-progressbar-value {
         height: 100%;
-        width: 0%;
+        width: 0;
         position: absolute;
-        display: none;
         border: 0 none;
         display: flex;
         align-items: center;
