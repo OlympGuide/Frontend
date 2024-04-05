@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container-placement">
+  <div class="page-container-placement w-5/6">
     <p class="page-title">Einstellungen</p>
   </div>
 </template>
