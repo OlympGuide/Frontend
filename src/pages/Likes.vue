@@ -1,12 +1,9 @@
 <template>
-  <div class="page-container-placement w-5/6"><p class="page-title">Meine Lieblingsplätze</p></div>
+  <div class="page-container-placement w-5/6">
+    <p class="page-title">Meine Lieblingsplätze</p>
+  </div>
 </template>
 
-<script setup lang="ts">
+<script setup lang="ts"></script>
 
-</script>
-
-
-<style scoped>
-
-</style>
+<style scoped></style>
