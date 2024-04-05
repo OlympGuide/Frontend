@@ -3,23 +3,23 @@
     v-model:visible="visible"
     modal
     header="Erstelle einen neuen Sportplatz"
-    class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
+    class="dialog"
     @hide="closeDialog"
     @show="resetForm"
   >
     <form @submit.prevent="submitDialog" novalidate>
-      <div class="flex flex-col gap-y-10 lg:gap-y-10 pt-5">
+      <div class="col-layout">
         <div class="text-red-300" v-if="errorMessage.length > 0">
           {{ errorMessage }}
         </div>
-        <div class="flex flex-col xl:flex-row gap-y-10 gap-5">
-          <FloatLabel class="w-full relative">
-            <label for="name" class="font-semibold w-full"
+        <div class="switch-row-col-layout">
+          <FloatLabel class="float-label-input">
+            <label for="name" class="label"
               >Name <span class="text-red-800">*</span></label
             >
             <InputText
               id="name"
-              class="flex-auto w-full"
+              class="basic-input-area"
               :class="{ 'p-invalid': nameError }"
               v-model="name"
               autocomplete="off"
@@ -27,13 +27,13 @@
             <small class="p-error input-error">{{ nameError }}</small>
           </FloatLabel>
 
-          <FloatLabel class="w-full relative">
-            <label for="coordinates" class="font-semibold w-full"
+          <FloatLabel class="float-label-input">
+            <label for="coordinates" class="label"
               >Koordinaten <span class="text-red-800">*</span></label
             >
             <InputText
               id="coordinates"
-              class="flex-auto w-full"
+              class="basic-input-area"
               :class="{ 'p-invalid': coordinatesError }"
               v-model="coordinates"
               autocomplete="off"
@@ -42,20 +42,18 @@
           </FloatLabel>
         </div>
 
-        <FloatLabel class="w-full mb-5 relative">
-          <label for="description" class="font-semibold w-full"
-            >Beschreibung</label
-          >
+        <FloatLabel class="float-label-input mb-5">
+          <label for="description" class="label">Beschreibung</label>
           <TextArea
             id="description"
-            class="flex-auto w-full h-40"
+            class="basic-input-area h-40"
             :class="{ 'p-invalid': descriptionError }"
             v-model="description"
             autocomplete="off"
           />
         </FloatLabel>
       </div>
-      <div class="flex justify-content-end gap-2">
+      <div class="button-layout">
         <Button
           type="button"
           label="Verwerfen"
@@ -146,4 +144,32 @@ const submitDialog = handleSubmit(async (values: any) => {
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.dialog {
+  @apply z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6;
+}
+
+.float-label-input {
+  @apply w-full relative;
+}
+
+.label {
+  @apply font-semibold w-full;
+}
+
+.basic-input-area {
+  @apply flex-auto w-full;
+}
+
+.button-layout {
+  @apply flex gap-2;
+}
+
+.switch-row-col-layout {
+  @apply flex flex-col xl:flex-row gap-y-10 gap-5;
+}
+
+.col-layout {
+  @apply flex flex-col gap-y-10 lg:gap-y-10 pt-5;
+}
+</style>
