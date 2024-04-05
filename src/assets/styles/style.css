@@ -28,7 +28,7 @@ body {
     }
 
     .page-container-placement{
-        @apply pl-80 pt-[42px]
+        @apply pl-80 pt-[42px] w-5/6
     }
 
     .page-title{
@@ -37,6 +37,10 @@ body {
 
     .button-text-center{
         @apply flex justify-center items-center
+    }
+
+    .regular-page-width{
+
     }
 
 }
