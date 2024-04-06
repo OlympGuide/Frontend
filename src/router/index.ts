@@ -25,4 +25,4 @@ export const routerOptions: RouterOptions = {
 
 const router = createRouter(routerOptions);
 
-export default router;
+export default router
