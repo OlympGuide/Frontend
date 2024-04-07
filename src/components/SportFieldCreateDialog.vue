@@ -42,7 +42,7 @@
           </FloatLabel>
         </div>
 
-        <FloatLabel class="float-label-input mb-5">
+        <FloatLabel class="float-label-input">
           <label for="description" class="label">Beschreibung</label>
           <TextArea
             id="description"
@@ -52,6 +52,14 @@
             autocomplete="off"
           />
         </FloatLabel>
+        <div class="flex align-items-center">
+          <Checkbox v-model="checked" :binary="true" id="owner" class="mb-5" />
+          <label @click="checked = !checked" class="ml-2 clickable">Ich bin Eigentümer:in</label>
+        </div>
+
+        <div v-if="checked">
+          <SportFieldOwnerDialog />
+        </div>
       </div>
       <div class="button-layout">
         <Button
@@ -70,6 +78,9 @@
 import { ref, watch } from 'vue';
 import { useField, useForm } from 'vee-validate';
 import { storeToRefs } from 'pinia';
+import SportFieldOwnerDialog from '@/components/SportFieldOwnerDialog.vue';
+
+const checked = ref(false);
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { PostSportFieldProposal } from '@/types/Proposal';
 
@@ -172,5 +183,9 @@ const submitDialog = handleSubmit(async (values: any) => {
 
 .col-layout {
   @apply flex flex-col gap-y-10 lg:gap-y-10 pt-5;
+}
+
+.clickable {
+  @apply cursor-pointer
 }
 </style>
