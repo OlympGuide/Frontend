@@ -5,7 +5,6 @@
     header="Erstelle einen neuen Sportplatz"
     class="dialog"
     @hide="closeDialog"
-    @show="resetForm"
   >
     <form @submit.prevent="submitDialog" novalidate>
       <div class="col-layout">
@@ -54,7 +53,9 @@
         </FloatLabel>
         <div class="flex align-items-center">
           <Checkbox v-model="checked" :binary="true" id="owner" class="mb-5" />
-          <label @click="checked = !checked" class="ml-2 clickable">Ich bin Eigentümer:in</label>
+          <label @click="checked = !checked" class="ml-2 clickable"
+            >Ich bin Eigentümer:in</label
+          >
         </div>
 
         <div v-if="checked">
@@ -84,10 +85,20 @@ import SportFieldOwnerDialog from '@/components/SportFieldOwnerDialog.vue';
 
 const checked = ref(false);
 
+const props = defineProps({
+  isVisible: { type: Boolean, required: true },
+  coordinates: {
+    type: String,
+    required: false,
+  },
+});
+
+const emit = defineEmits(['close']);
+
 const { handleSubmit, validate, resetForm } = useForm({
   initialValues: {
     name: '',
-    coordinates: '',
+    coordinates: props.coordinates ?? '',
     description: '',
   },
   validateOnMount: false,
@@ -108,13 +119,6 @@ const { value: description, errorMessage: descriptionError } =
 
 const sportFieldStore = useSportFieldStore();
 const { isLoading, errorMessage } = storeToRefs(sportFieldStore);
-
-const props = defineProps({
-  isVisible: { type: Boolean, required: true },
-});
-
-const emit = defineEmits(['close']);
-
 const visible = ref(props.isVisible);
 
 watch(
@@ -124,8 +128,16 @@ watch(
   }
 );
 
+watch(
+  () => props.coordinates,
+  (value) => {
+    coordinates.value = value;
+  }
+);
+
 const closeDialog = () => {
   errorMessage.value = '';
+  resetForm();
   emit('close');
 };
 
@@ -185,6 +197,6 @@ const submitDialog = handleSubmit(async (values: any) => {
 }
 
 .clickable {
-  @apply cursor-pointer
+  @apply cursor-pointer;
 }
 </style>
