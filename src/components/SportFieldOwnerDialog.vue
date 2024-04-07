@@ -5,14 +5,23 @@
       Bitte laden Sie eine Datei hoch, die Ihre Eigentümerschaft bestätigt.
     </p>
     <FileUpload
-      mode="basic"
+      mode="advanced"
       name="demo[]"
       accept=".zip,.pdf"
-      :maxFileSize="2097152"
       invalidFileSizeMessage="File ist zu gross, es sollte kleiner als 2MB sein"
+      :auto="false"
+      :show-cancel-button="false"
+      :show-upload-button="false"
+      :maxFileSize="2097152"
       @select="onSelect"
       @remove="onRemove"
-    />
+    >
+      <template #empty>
+        <div class="flex justify-center">
+        <p >Ziehen Sie Dateien hierher, um sie hochzuladen.</p>
+        </div>
+      </template>
+    </FileUpload>
   </div>
 </template>
 
@@ -32,4 +41,6 @@ function onRemove(event: { file: File }) {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

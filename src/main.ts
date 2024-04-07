@@ -9,6 +9,7 @@ import '@/assets/styles/olympGuideTheme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 
+
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
@@ -18,6 +19,9 @@ import Calendar from 'primevue/calendar';
 import InputIcon from 'primevue/inputicon';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import ConfirmPopup from 'primevue/confirmpopup';
+import Checkbox from 'primevue/checkbox';
+import FileUpload from "primevue/fileupload";
 import Toast from 'primevue/toast';
 
 import { defineRules } from '@/validation/rules.ts';
@@ -40,6 +44,10 @@ app.component('InputIcon', InputIcon);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('Toast', Toast);
+app.component('ConfirmPopup', ConfirmPopup);
+app.component('Checkbox', Checkbox);
+app.component('Toast', Toast);
+app.component("FileUpload",FileUpload)
 
 //Vee Validate Rules
 defineRules();
