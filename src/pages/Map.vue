@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import OlympMap from '@/components/OlympMap.vue';
 import { ref } from 'vue';
-import SportsGroundCreateDialog from '@/components/SportsGroundCreateDialog.vue';
+import SportsGroundCreateDialog from '@/components/SportFieldCreateDialog.vue';
 
 const visible = ref(false);
 

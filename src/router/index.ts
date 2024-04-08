@@ -3,6 +3,10 @@ import { createRouter, createWebHistory, RouterOptions } from 'vue-router';
 import NotFound from '@/pages/NotFound.vue';
 import Map from '@/pages/Map.vue';
 import SidebarLayout from '@/layouts/SidebarLayout.vue';
+import Reservations from '@/pages/Reservations.vue';
+import Likes from '@/pages/Likes.vue';
+import Settings from '@/pages/Settings.vue';
+import Login from "@/pages/Login.vue";
 
 export const routerOptions: RouterOptions = {
   history: createWebHistory(),
@@ -14,6 +18,38 @@ export const routerOptions: RouterOptions = {
         layout: SidebarLayout,
       },
       component: Map,
+    },
+    {
+      path: '/login',
+      name: 'Login',
+      meta: {
+        layout: SidebarLayout,
+      },
+      component: Login,
+    },
+    {
+      path: '/reservations',
+      name: 'Reservations',
+      meta: {
+        layout: SidebarLayout,
+      },
+      component: Reservations,
+    },
+    {
+      path: '/likes',
+      name: 'Likes',
+      meta: {
+        layout: SidebarLayout,
+      },
+      component: Likes,
+    },
+    {
+      path: '/settings',
+      name: 'Settings',
+      meta: {
+        layout: SidebarLayout,
+      },
+      component: Settings,
     },
     {
       path: '/:pathMatch(.*)*',
