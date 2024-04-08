@@ -1,37 +1,44 @@
 <template>
   <aside class="sidebar">
     <div v-for="item in menuItems" :key="item.link" class="w-full">
-      <RouterLink :to="item.link" class="sidebar-item">
-        <div class="icon-wrapper">
-          <img
-            :class="item.iconClasses"
-            :src="getImageUrl(item.icon)"
-            :alt="item.text"
-          />
-        </div>
-        <span class="text">{{ item.text }}</span>
+      <RouterLink v-if="item.link" :to="item.link" class="sidebar-item">
+        <SidebarItem :item="item"></SidebarItem>
       </RouterLink>
+      <div
+        v-if="item.click"
+        @click="item.click"
+        class="sidebar-item cursor-pointer"
+      >
+        <SidebarItem :item="item"></SidebarItem>
+      </div>
       <div v-if="item.spacer" class="spacer"></div>
     </div>
   </aside>
+
+  <div
+    v-if="showLoginDialog"
+    class="absolute w-full h-full bg-gray-700 z-[1000] opacity-70"
+  ></div>
+  <LoginDialog
+    v-if="showLoginDialog"
+    :visible="showLoginDialog"
+    @close="showLoginDialog = false"
+  ></LoginDialog>
   <slot></slot>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-
-interface MenuItem {
-  icon: string;
-  iconClasses?: string;
-  link: string;
-  text: string;
-  spacer?: boolean;
-}
+import SidebarItem from '@/layouts/SidebarItem.vue';
+import { MenuItem } from '@/types/Menu.ts';
+import LoginDialog from '@/components/LoginDialog.vue';
 
 const menuItems = ref<MenuItem[]>([
   {
     text: 'Login',
-    link: '/login',
+    click: () => {
+      showLoginDialog.value = !showLoginDialog.value;
+    },
     icon: 'user.png',
     iconClasses: '!w-16',
     spacer: true,
@@ -40,7 +47,7 @@ const menuItems = ref<MenuItem[]>([
     text: 'Karte',
     link: '/',
     icon: 'map.png',
-    iconClasses: '!w-10',
+    iconClasses: '!w-12',
   },
   {
     text: 'Reservationen',
@@ -60,12 +67,10 @@ const menuItems = ref<MenuItem[]>([
   },
 ]);
 
-const getImageUrl = (name: string): string => {
-  return new URL(`../assets/icons/${name}`, import.meta.url).href;
-};
+const showLoginDialog = ref<boolean>(false);
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .sidebar {
   @apply fixed top-5 left-5 w-20 bg-white z-[1000] rounded-2xl px-3 py-4 flex flex-col justify-center items-center gap-4;
   @apply shadow-lg transition-all;

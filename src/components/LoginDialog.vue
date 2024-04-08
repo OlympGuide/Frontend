@@ -1,6 +1,11 @@
 <template>
-  <div class="page-container-placement z-[1000] w-4/6">
-    <p class="page-title pb-10">Login</p>
+  <Dialog
+    v-model:visible="visible"
+    modal
+    header="Login"
+    :style="{ width: '25rem' }"
+    @hide="() => $emit('close')"
+  >
     <form @submit.prevent="submitLogin" novalidate>
       <div class="flex flex-col gap-y-10 gap-5">
         <FloatLabel class="w-full relative">
@@ -28,11 +33,13 @@
         <Button class="w-[130px] button-text-center">Einloggen</Button>
       </div>
     </form>
-  </div>
+  </Dialog>
 </template>
 
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate';
+
+const visible = defineModel('visible', { default: false });
 
 const {} = useForm({
   initialValues: {
