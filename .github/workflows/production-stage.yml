@@ -45,7 +45,7 @@ jobs:
         run: npm run test
 
       - name: Build Vue Project
-        run: npm run build
+        run: npm run build:production
 
   docker-build:
     needs: build
