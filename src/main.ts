@@ -22,7 +22,8 @@ import Column from 'primevue/column';
 import ConfirmPopup from 'primevue/confirmpopup';
 import Checkbox from 'primevue/checkbox';
 import FileUpload from "primevue/fileupload";
-import Toast from 'primevue/toast';
+import Toast from "primevue/toast";
+import AutoComplete from "primevue/autocomplete";
 
 import { defineRules } from '@/validation/rules.ts';
 
@@ -48,6 +49,7 @@ app.component('ConfirmPopup', ConfirmPopup);
 app.component('Checkbox', Checkbox);
 app.component('Toast', Toast);
 app.component("FileUpload",FileUpload)
+app.component('AutoComplete', AutoComplete)
 
 //Vee Validate Rules
 defineRules();
