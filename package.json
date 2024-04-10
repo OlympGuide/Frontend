@@ -5,8 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
-    "preview:local": "npm run import-meta-env:local && vite preview",
+    "build:local": "vue-tsc && vite build && npm run import-meta-env:local",
+    "build:development": "vue-tsc && vite build && npm run import-meta-env:development",
+    "build:production": "vue-tsc && vite build && npm run import-meta-env:production",
+    "preview": "vite preview",
     "test": "vitest",
     "import-meta-env:local": "import-meta-env -x .env.example.public -e .env.local",
     "import-meta-env:development": "import-meta-env -x .env.example.public -e .env.development",
