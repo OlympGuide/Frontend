@@ -31,6 +31,7 @@
               >Koordinaten <span class="text-red-800">*</span></label
             >
             <InputText
+              disabled
               id="coordinates"
               class="basic-input-area"
               :class="{ 'p-invalid': coordinatesError }"
@@ -40,7 +41,7 @@
             <small class="p-error input-error">{{ coordinatesError }}</small>
           </FloatLabel>
         </div>
-
+        <AddressCompletion @address="setCoordinates" />
         <FloatLabel class="float-label-input">
           <label for="description" class="label">Beschreibung</label>
           <TextArea
@@ -82,8 +83,11 @@ import { storeToRefs } from 'pinia';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { PostSportField } from '@/types/Map.ts';
 import SportFieldOwnerDialog from '@/components/SportFieldOwnerDialog.vue';
+import AddressCompletion from '@/components/AddressCompletion.vue';
+import { NominatimResponseItem } from '@/types/Address.ts';
 
 const checked = ref(false);
+const address = ref<NominatimResponseItem>();
 
 const props = defineProps({
   isVisible: { type: Boolean, required: true },
@@ -141,6 +145,11 @@ const closeDialog = () => {
   emit('close');
 };
 
+const setCoordinates = (autocompleteAddress: NominatimResponseItem) => {
+  address.value = autocompleteAddress;
+  coordinates.value = autocompleteAddress.lat + ', ' + autocompleteAddress.lon;
+};
+
 const submitDialog = handleSubmit(async (values: any) => {
   const validation = await validate();
 
@@ -155,6 +164,7 @@ const submitDialog = handleSubmit(async (values: any) => {
     description: values.description,
     longitude: longitude,
     latitude: latitude,
+    address: address.value?.display_name,
   };
 
   try {
