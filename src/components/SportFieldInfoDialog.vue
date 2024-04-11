@@ -68,12 +68,12 @@
 </template>
 
 <script setup lang="ts">
-import { SportField } from '@/types/Map';
+import { ShowSportField } from '@/types/Map';
 import { ref } from 'vue';
 
 const visible = defineModel('visible', { default: false });
 const props = defineProps<{
-  sportField: SportField;
+  sportField: ShowSportField;
 }>();
 
 const date = ref<Date>(new Date());

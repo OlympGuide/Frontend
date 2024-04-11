@@ -3,7 +3,7 @@
     v-model:visible="visible"
     modal
     header="Erstelle einen neuen Sportplatz"
-    class="dialog"
+    class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
     @hide="closeDialog"
   >
     <form @submit.prevent="submitDialog" novalidate>
@@ -58,9 +58,8 @@
             >Ich bin Eigentümer:in</label
           >
         </div>
-
         <div v-if="checked">
-          <SportFieldOwnerDialog />
+          <SportFieldOwnerDialog @file="handleFile" />
         </div>
       </div>
       <div class="button-layout">
@@ -88,6 +87,7 @@ const checked = ref(false);
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { PostSportFieldProposal } from '@/types/Proposal';
 const address = ref<NominatimResponseItem>();
+const file = ref<File>();
 
 const props = defineProps({
   isVisible: { type: Boolean, required: true },
@@ -142,7 +142,9 @@ watch(
 watch(
   () => props.coordinates,
   (value) => {
-    coordinates.value = value;
+    if (typeof value === 'string') {
+      coordinates.value = value;
+    }
   }
 );
 
@@ -155,6 +157,10 @@ const closeDialog = () => {
 const setCoordinates = (autocompleteAddress: NominatimResponseItem) => {
   address.value = autocompleteAddress;
   coordinates.value = autocompleteAddress.lat + ', ' + autocompleteAddress.lon;
+};
+
+const handleFile = (ownerFile: File) => {
+  file.value = ownerFile;
 };
 
 const submitDialog = handleSubmit(async (values: any) => {
@@ -172,6 +178,7 @@ const submitDialog = handleSubmit(async (values: any) => {
     sportFieldLongitude: longitude,
     sportFieldLatitude: latitude,
     sportFieldAddress: address.value?.display_name,
+    file: file.value,
   };
 
   try {
@@ -185,10 +192,6 @@ const submitDialog = handleSubmit(async (values: any) => {
 </script>
 
 <style scoped>
-.dialog {
-  @apply z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6;
-}
-
 .float-label-input {
   @apply w-full relative;
 }

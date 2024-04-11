@@ -1,11 +1,13 @@
 import { defineStore } from 'pinia';
 import { getSportFields, postSportField } from '@/api/sportFieldApi.ts';
-import { PostSportField, SportField } from '@/types/Map.ts';
+import { PostSportField, ShowSportField } from '@/types/Map.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
 
-interface SportFieldState extends ApiState {
-  sportFields: SportField[];
+interface SportFieldState {
+  sportFields: ShowSportField[];
+  isLoading: boolean;
+  errorMessage: string;
 }
 
 export const useSportFieldStore = defineStore('sportField', {
@@ -33,7 +35,8 @@ export const useSportFieldStore = defineStore('sportField', {
       this.isLoading = true;
       try {
         this.errorMessage = '';
-        const res: AxiosResponse<SportField[], any> = await getSportFields();
+        const res: AxiosResponse<ShowSportField[], any> =
+          await getSportFields();
         this.sportFields = res.data;
       } catch (e: any) {
         console.error('Error while loading sport field: ', e);
