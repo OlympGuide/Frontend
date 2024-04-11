@@ -23,12 +23,12 @@ const visible = ref(false);
 const coordinates = ref();
 
 const setMarked = (marker: L.Marker) => {
-  console.log('We are marking');
   const latLng: LatLng = marker.getLatLng();
   coordinates.value = `${latLng.lat}, ${latLng.lng}`;
 };
 
 const openDialog = () => {
+  //TODO Abfragen ob User eingeloggt ist
   visible.value = true;
 };
 </script>
