@@ -16,13 +16,14 @@ import FloatLabel from 'primevue/floatlabel';
 import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
 import InputIcon from 'primevue/inputicon';
+import Toast from 'primevue/toast';
 
-import { defineRule } from 'vee-validate';
-import { min } from '@vee-validate/rules';
+import { defineRules } from '@/validation/rules.ts';
 
+import ToastService from 'primevue/toastservice';
 import router from '@/router';
 
-const pinia = createPinia();
+export const pinia = createPinia();
 const app = createApp(App);
 
 // Primevue components, add each component as needed
@@ -33,24 +34,14 @@ app.component('FloatLabel', FloatLabel);
 app.component('TextArea', Textarea);
 app.component('Calendar', Calendar);
 app.component('InputIcon', InputIcon);
+app.component('Toast', Toast);
 
 //Vee Validate Rules
-defineRule('required', (value: string) => {
-  return value.length > 0 || 'Das Feld darf nicht leer sein';
-});
-//defineRule("required", required);
-defineRule('min', min);
-
-defineRule('coordinatePair', (value: string) => {
-  const coordinateRegex = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
-  return (
-    coordinateRegex.test(value) ||
-    'Bitte verwenden Sie das Format: Breitengrad, Längengrad'
-  );
-});
+defineRules();
 
 app.use(router);
 app.use(PrimeVue);
 app.use(pinia);
+app.use(ToastService);
 
 app.mount('#app');

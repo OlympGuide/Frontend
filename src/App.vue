@@ -2,20 +2,34 @@
   <component :is="$route.meta.layout">
     <RouterView />
   </component>
+  <Toast></Toast>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/stores/UserStore';
-import { User } from '@/types/User';
+import { watch } from 'vue';
+import { pinia } from '@/main.ts';
+import { instanceOfApiState } from '@/types/ApiState.ts';
 
-const userStore = useUserStore();
+import { useToast } from 'primevue/usetoast';
+import { ToastMessageOptions } from 'primevue/toast';
+const toast = useToast();
 
-const user: User = {
-  id: '1',
-  firstName: 'John',
-  lastName: 'Doe',
-  email: 'john.doe@abc.ch',
-};
+watch(
+  pinia.state,
+  (state: any) => {
+    Object.values(state).forEach((item: any) => {
+      if (instanceOfApiState(item) && item.errorMessage) {
+        const toastMessage: ToastMessageOptions = {
+          severity: 'error',
+          summary: 'Something went wrong',
+          detail: item.errorMessage,
+          life: 3000,
+        };
 
-userStore.setUser(user);
+        toast.add(toastMessage);
+      }
+    });
+  },
+  { deep: true }
+);
 </script>

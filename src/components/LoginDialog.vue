@@ -3,11 +3,12 @@
     v-model:visible="visible"
     modal
     header="Login"
-    :style="{ width: '25rem' }"
+    :draggable="false"
+    class="w-96"
     @hide="() => $emit('close')"
   >
     <form @submit.prevent="submitLogin" novalidate>
-      <div class="flex flex-col gap-y-10 gap-5">
+      <div class="flex flex-col gap-5">
         <FloatLabel class="w-full relative">
           <label for="email" class="font-semibold w-full">Email</label>
           <InputText
@@ -30,7 +31,15 @@
           />
           <small class="p-error input-error">{{ passwordError }}</small>
         </FloatLabel>
-        <Button class="w-[130px] button-text-center">Einloggen</Button>
+        <div>
+          <small>
+            Ich habe noch kein Profil.
+            <a @click="" class="text-primaryRed cursor-pointer">Registrieren</a>
+          </small>
+        </div>
+        <Button type="submit" class="w-[130px] button-text-center"
+          >Einloggen</Button
+        >
       </div>
     </form>
   </Dialog>
@@ -38,10 +47,13 @@
 
 <script setup lang="ts">
 import { useField, useForm } from 'vee-validate';
+import { useUserStore } from '@/stores/UserStore.ts';
+
+const userStore = useUserStore();
 
 const visible = defineModel('visible', { default: false });
 
-const {} = useForm({
+const { handleSubmit, validate } = useForm({
   initialValues: {
     email: '',
     password: '',
@@ -49,12 +61,25 @@ const {} = useForm({
   validateOnMount: false,
 });
 
-const { value: email, errorMessage: emailError } = useField<string>('email');
+const { value: email, errorMessage: emailError } = useField<string>(
+  'email',
+  'required|email'
+);
 
-const { value: password, errorMessage: passwordError } =
-  useField<string>('password');
+const { value: password, errorMessage: passwordError } = useField<string>(
+  'password',
+  'required|password'
+);
 
-const submitLogin = () => {};
+const submitLogin = handleSubmit(async (credentials: any) => {
+  const validation = await validate();
+
+  if (!validation.valid) {
+    return;
+  }
+
+  await userStore.login(credentials);
+});
 </script>
 
 <style scoped></style>
