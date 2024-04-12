@@ -70,7 +70,7 @@ jobs:
       
       - name: Install dependencies
         working-directory: ./.github
-        run: npm run install
+        run: npm install
         
       - name: Switch to Production Env
         run: npm run import-meta-env:production
