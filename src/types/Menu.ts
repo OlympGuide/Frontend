@@ -1,5 +1,6 @@
 export interface MenuItem {
-  icon: string;
+  iconImg?: string;
+  icon?: string;
   iconClasses?: string;
   link?: string;
   click?: () => void;

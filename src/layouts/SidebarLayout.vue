@@ -19,11 +19,6 @@
     v-if="showLoginDialog"
     class="absolute w-full h-full bg-gray-700 z-[1000] opacity-70"
   ></div>
-  <LoginDialog
-    v-if="showLoginDialog"
-    :visible="showLoginDialog"
-    @close="showLoginDialog = false"
-  ></LoginDialog>
   <slot></slot>
 </template>
 
@@ -31,39 +26,54 @@
 import { ref } from 'vue';
 import SidebarItem from '@/layouts/SidebarItem.vue';
 import { MenuItem } from '@/types/Menu.ts';
-import LoginDialog from '@/components/LoginDialog.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
+
+const { loginWithRedirect, logout } = useAuth0();
 
 const menuItems = ref<MenuItem[]>([
   {
     text: 'Login',
     click: () => {
-      showLoginDialog.value = !showLoginDialog.value;
+      // showLoginDialog.value = !showLoginDialog.value;
+      loginWithRedirect();
     },
-    icon: 'user.png',
+    iconImg: 'user.png',
     iconClasses: '!w-16',
     spacer: true,
   },
   {
     text: 'Karte',
     link: '/',
-    icon: 'map.png',
+    iconImg: 'map.png',
     iconClasses: '!w-12',
   },
   {
     text: 'Reservationen',
     link: '/reservations',
-    icon: 'calendar.png',
+    iconImg: 'calendar.png',
     iconClasses: '!w-10',
   },
   {
     text: 'Lieblingsplätze',
     link: '/likes',
-    icon: 'heart.png',
+    iconImg: 'heart.png',
   },
   {
     text: 'Einstellungen',
     link: '/settings',
-    icon: 'settings.png',
+    iconImg: 'settings.png',
+    spacer: true,
+  },
+  {
+    text: 'Ausloggen',
+    click: () => {
+      logout({
+        logoutParams: {
+          returnTo: window.location.origin,
+        },
+      });
+    },
+    icon: 'pi pi-sign-out',
   },
 ]);
 

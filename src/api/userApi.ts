@@ -1,16 +1,10 @@
 import { apiClient } from '@/api/axiosConfig.ts';
-import { EmailPassword, RegisterType, User } from '@/types/User.ts';
+import { User } from '@/types/User.ts';
 import { AxiosResponse } from 'axios';
 
-const LOGIN_PATH: string = '/login';
-const REGISTER_PATH: string = '/register';
+const ME_PATH: string = '/me';
 
-export const login = (
-  data: EmailPassword
-): Promise<AxiosResponse<User, any>> => {
-  return apiClient.post(LOGIN_PATH, data);
-};
-
-export const register = (data: RegisterType) => {
-  return apiClient.post(REGISTER_PATH, data);
+export const me = async (): Promise<AxiosResponse<User, any>> => {
+  const api = await apiClient();
+  return api.get(ME_PATH);
 };

@@ -6,13 +6,20 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
+import { onMounted, watch } from 'vue';
 import { pinia } from '@/main.ts';
 import { instanceOfApiState } from '@/types/ApiState.ts';
 
 import { useToast } from 'primevue/usetoast';
 import { ToastMessageOptions } from 'primevue/toast';
+import { useUserStore } from '@/stores/UserStore.ts';
+
 const toast = useToast();
+const userStore = useUserStore();
+
+onMounted(async () => {
+  await userStore.getLoggedInUser();
+});
 
 watch(
   pinia.state,

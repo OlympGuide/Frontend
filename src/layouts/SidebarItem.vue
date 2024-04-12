@@ -1,10 +1,12 @@
 <template>
   <div class="icon-wrapper">
     <img
+      v-if="item.iconImg"
       :class="item.iconClasses"
-      :src="getImageUrl(item.icon)"
+      :src="getImageUrl(item.iconImg)"
       :alt="item.text"
     />
+    <i v-if="item.icon" :class="item.icon" class="text-primaryRed text-3xl" />
   </div>
   <span class="text">{{ item.text }}</span>
 </template>

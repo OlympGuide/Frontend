@@ -22,8 +22,9 @@ import { defineRules } from '@/validation/rules.ts';
 
 import ToastService from 'primevue/toastservice';
 import router from '@/router';
-
 export const pinia = createPinia();
+
+import { createAuth0 } from '@auth0/auth0-vue';
 const app = createApp(App);
 
 // Primevue components, add each component as needed
@@ -43,5 +44,16 @@ app.use(router);
 app.use(PrimeVue);
 app.use(pinia);
 app.use(ToastService);
+
+app.use(
+  createAuth0({
+    domain: 'dev-ooenivxi0xqapns6.us.auth0.com',
+    clientId: 'cnWkVX30s8jQC2BQsfG3Yse9yAOaPHWZ',
+    authorizationParams: {
+      audience: 'OlympGuideBackend',
+      redirect_uri: window.location.origin,
+    },
+  })
+);
 
 app.mount('#app');

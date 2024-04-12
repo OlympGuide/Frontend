@@ -3,15 +3,11 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
+  picture: string;
 }
 
-export interface EmailPassword {
-  email: string;
-  password: string;
-}
+export type Auth0User = Omit<User, 'id'>;
 
-export type RegisterType = Pick<
-  User,
-  'id' | 'firstName' | 'lastName' | 'email'
-> &
-  'password';
+export const instanceOfUser = (object: any): object is User => {
+  return 'id' in object;
+};

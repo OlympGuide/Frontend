@@ -6,6 +6,7 @@ import SidebarLayout from '@/layouts/SidebarLayout.vue';
 import Reservations from '@/pages/Reservations.vue';
 import Likes from '@/pages/Likes.vue';
 import Settings from '@/pages/Settings.vue';
+import { useUserStore } from '@/stores/UserStore.ts';
 
 export const routerOptions: RouterOptions = {
   history: createWebHistory(),
@@ -51,5 +52,16 @@ export const routerOptions: RouterOptions = {
 };
 
 const router = createRouter(routerOptions);
+
+router.beforeEach(async (to, from, next) => {
+  const userStore = useUserStore();
+
+  // TODO: implement admin barrier
+  if (userStore.isAuthenticated) {
+    next();
+    return;
+  }
+  next();
+});
 
 export default router;
