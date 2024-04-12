@@ -1,0 +1,14 @@
+{
+  "name": "minimal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "import-meta-env:local": "import-meta-env -x ../.env.example.public -e ../.env.local",
+    "import-meta-env:development": "import-meta-env -x ../.env.example.public -e ../.env.development",
+    "import-meta-env:production": "import-meta-env -x ../.env.example.public -e ../.env.production"
+  },
+  "devDependencies": {
+    "@import-meta-env/cli": "^0.6.8"
+  }
+}

@@ -45,7 +45,7 @@ jobs:
         run: npm run test
 
       - name: Build Vue Project
-        run: npm run build:production
+        run: npm run build
 
   docker-build:
     needs: build
@@ -63,6 +63,18 @@ jobs:
           echo "parsed tag: $TAG"
           echo "image-tag=$TAG" >> $GITHUB_OUTPUT
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: '20.11.1'
+      
+      - name: Install dependencies
+        working-directory: ./.github
+        run: npm run install
+        
+      - name: Switch to Production Env
+        run: npm run import-meta-env:production
+      
       - name: image-build
         uses: ./.github/workflows/image-build
         with:
