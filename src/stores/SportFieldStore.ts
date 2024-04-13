@@ -26,7 +26,6 @@ export const useSportFieldStore = defineStore('sportField', {
       } catch (e: any) {
         console.error('Error while creating new sport field: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
-        throw e;
       } finally {
         this.isLoading = false;
       }
@@ -40,7 +39,6 @@ export const useSportFieldStore = defineStore('sportField', {
       } catch (e: any) {
         console.error('Error while loading sport field: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
-        throw e;
       } finally {
         this.isLoading = false;
       }

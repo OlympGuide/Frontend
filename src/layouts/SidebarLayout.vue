@@ -14,27 +14,32 @@
       <div v-if="item.spacer" class="spacer"></div>
     </div>
   </aside>
-
-  <div
-    v-if="showLoginDialog"
-    class="absolute w-full h-full bg-gray-700 z-[1000] opacity-70"
-  ></div>
   <slot></slot>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import SidebarItem from '@/layouts/SidebarItem.vue';
 import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
+import { useUserStore } from '@/stores/UserStore.ts';
+import { User } from '@/types/User.ts';
 
 const { loginWithRedirect, logout } = useAuth0();
+const userStore = useUserStore();
+
+const user = computed<User | null>(() => userStore.user);
 
 const menuItems = ref<MenuItem[]>([
   {
-    text: 'Login',
+    id: 'login',
+    text: userStore.getFullName || 'Login',
     click: () => {
-      // showLoginDialog.value = !showLoginDialog.value;
+      console.log(user.value);
+      if (user.value) {
+        return;
+      }
+
       loginWithRedirect();
     },
     iconImg: 'user.png',
@@ -72,12 +77,11 @@ const menuItems = ref<MenuItem[]>([
           returnTo: window.location.origin,
         },
       });
+      userStore.user = null;
     },
     icon: 'pi pi-sign-out',
   },
 ]);
-
-const showLoginDialog = ref<boolean>(false);
 </script>
 
 <style lang="scss">

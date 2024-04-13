@@ -13,12 +13,32 @@ import { instanceOfApiState } from '@/types/ApiState.ts';
 import { useToast } from 'primevue/usetoast';
 import { ToastMessageOptions } from 'primevue/toast';
 import { useUserStore } from '@/stores/UserStore.ts';
+import { useAuth0 } from '@auth0/auth0-vue';
+import { Auth0User } from '@/types/User.ts';
 
 const toast = useToast();
 const userStore = useUserStore();
+const { user, isAuthenticated } = useAuth0();
 
 onMounted(async () => {
   await userStore.getLoggedInUser();
+
+  if (
+    isAuthenticated.value &&
+    user.value &&
+    user.value.given_name &&
+    user.value.family_name &&
+    user.value.email &&
+    user.value.picture
+  ) {
+    const auth0User: Auth0User = {
+      firstName: user.value.given_name,
+      lastName: user.value.family_name,
+      email: user.value.email,
+      picture: user.value.picture,
+    };
+    userStore.user = auth0User;
+  }
 });
 
 watch(

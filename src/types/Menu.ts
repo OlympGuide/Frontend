@@ -1,4 +1,5 @@
 export interface MenuItem {
+  id?: string;
   iconImg?: string;
   icon?: string;
   iconClasses?: string;
@@ -6,4 +7,5 @@ export interface MenuItem {
   click?: () => void;
   text: string;
   spacer?: boolean;
+  show?: boolean;
 }
