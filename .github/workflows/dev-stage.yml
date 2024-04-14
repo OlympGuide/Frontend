@@ -78,6 +78,7 @@ jobs:
         run: npm install
       
       - name: Switch to Development Env
+        working-directory: ./.github
         run: npm run import-meta-env:development
     
       - name: image-build
