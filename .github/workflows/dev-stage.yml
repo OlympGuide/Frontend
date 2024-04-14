@@ -47,9 +47,6 @@ jobs:
       - name: Build Vue Project
         run: npm run build
 
-      - name: Copy Env Files
-        run: find ./ -type f -name '.env.*' -exec cp {} ./dist \;
-
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v2
         with:
