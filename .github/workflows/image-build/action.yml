@@ -43,6 +43,5 @@ runs:
       with:
         context: ./
         push: true
-        file: 
         tags: ${{ steps.image-meta.outputs.tags }}
         file: ${{ inputs.dockerfile }}
