@@ -73,6 +73,7 @@ jobs:
         run: npm install
         
       - name: Switch to Production Env
+        working-directory: ./.github
         run: npm run import-meta-env:production
       
       - name: image-build
