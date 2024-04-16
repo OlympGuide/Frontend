@@ -44,10 +44,6 @@ onMounted((): void => {
   map.value = createMap();
   icons.value = createIcons();
 
-  console.log(import.meta.env.API_BASE_URL)
-  console.log(import.meta.env.API_BASE_URL)
-  console.log(import.meta.env.API_BASE_URL)
-
   loadSportFields();
   addMarkers();
 });
