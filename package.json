@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview --port 8080 --host",
+    "preview": "vite preview --port 8000 --host",
     "test": "vitest",
     "import-meta-env:local": "import-meta-env -x .env.example.public -e .env.local",
     "import-meta-env:development": "import-meta-env -x .env.example.public -e .env.development",
