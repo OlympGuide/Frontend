@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "import-meta-env:local": "import-meta-env -x ../.env.example.public -e ../.env.local -p ../dist/index.html",
-    "import-meta-env:development": "import-meta-env -x ../.env.example.public -e ../.env.development -p ../dist/index.html && cat ../dist/index.html",
+    "import-meta-env:development": "cat ../dist/index.html && import-meta-env -x ../.env.example.public -e ../.env.development -p ../dist/index.html",
     "import-meta-env:production": "import-meta-env -x ../.env.example.public -e ../.env.production -p ../dist/index.html"
   },
   "devDependencies": {
