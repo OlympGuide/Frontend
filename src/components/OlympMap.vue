@@ -21,9 +21,6 @@ import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
 import { SportField } from '@/types/Map';
 
-// @ts-ignore
-import { data } from '@/testData/data.js';
-
 import 'leaflet/dist/leaflet.css';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 
