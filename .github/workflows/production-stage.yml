@@ -68,7 +68,7 @@ jobs:
         with:
           node-version: '20.11.1'
       
-      - name: Install dependencies
+      - name: Install Minimal Dependencies
         working-directory: ./.github
         run: npm install
         
