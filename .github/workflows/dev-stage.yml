@@ -81,18 +81,6 @@ jobs:
       - name: Switch to Development Env
         working-directory: ./.github
         run: npm run import-meta-env:development
-      
-      - name: Remove Build Artifact
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: vue-build-artifact
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: vue-build-artifact
-          path: dist/
-          retention-days: 5
     
       - name: image-build
         uses: ./.github/workflows/image-build
