@@ -16,6 +16,8 @@ import FloatLabel from 'primevue/floatlabel';
 import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
 import InputIcon from 'primevue/inputicon';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 
 import { defineRule } from 'vee-validate';
 import { min } from '@vee-validate/rules';
@@ -33,6 +35,8 @@ app.component('FloatLabel', FloatLabel);
 app.component('TextArea', Textarea);
 app.component('Calendar', Calendar);
 app.component('InputIcon', InputIcon);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
 
 //Vee Validate Rules
 defineRule('required', (value: string) => {

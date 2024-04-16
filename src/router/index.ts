@@ -7,6 +7,7 @@ import Reservations from '@/pages/Reservations.vue';
 import Likes from '@/pages/Likes.vue';
 import Settings from '@/pages/Settings.vue';
 import Login from "@/pages/Login.vue";
+import Proposals from "@/pages/Proposals.vue";
 
 export const routerOptions: RouterOptions = {
   history: createWebHistory(),
@@ -50,6 +51,14 @@ export const routerOptions: RouterOptions = {
         layout: SidebarLayout,
       },
       component: Settings,
+    },
+    {
+      path: '/proposals',
+      name: 'Proposals',
+      meta: {
+        layout: SidebarLayout,
+      },
+      component: Proposals,
     },
     {
       path: '/:pathMatch(.*)*',
