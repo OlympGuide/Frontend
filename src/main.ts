@@ -19,9 +19,9 @@ import Calendar from 'primevue/calendar';
 import InputIcon from 'primevue/inputicon';
 import ConfirmPopup from 'primevue/confirmpopup';
 import Checkbox from 'primevue/checkbox';
-import FileUpload from "primevue/fileupload";
-import Toast from "primevue/toast";
-import AutoComplete from "primevue/autocomplete";
+import FileUpload from 'primevue/fileupload';
+import Toast from 'primevue/toast';
+import AutoComplete from 'primevue/autocomplete';
 
 import { defineRules } from '@/validation/rules.ts';
 
@@ -30,6 +30,9 @@ import router from '@/router';
 export const pinia = createPinia();
 
 import { createAuth0 } from '@auth0/auth0-vue';
+import { useDemoStore } from '@/stores/DemoStore.ts';
+import ToggleButton from 'primevue/togglebutton';
+
 const app = createApp(App);
 
 // Primevue components, add each component as needed
@@ -40,16 +43,17 @@ app.component('FloatLabel', FloatLabel);
 app.component('TextArea', Textarea);
 app.component('Calendar', Calendar);
 app.component('InputIcon', InputIcon);
-app.component('Toast', Toast);
 app.component('ConfirmPopup', ConfirmPopup);
 app.component('Checkbox', Checkbox);
 app.component('Toast', Toast);
-app.component("FileUpload",FileUpload)
-app.component('AutoComplete', AutoComplete)
+app.component('FileUpload', FileUpload);
+app.component('AutoComplete', AutoComplete);
+app.component('ToggleButton', ToggleButton);
 
 //Vee Validate Rules
 defineRules();
 
+app.provide('demoStore', useDemoStore());
 app.use(router);
 app.use(PrimeVue);
 app.use(pinia);

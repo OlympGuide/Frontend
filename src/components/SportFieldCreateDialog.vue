@@ -52,14 +52,14 @@
             autocomplete="off"
           />
         </FloatLabel>
-        <div class="flex align-items-center">
+        <div class="flex align-items-center" v-if="!demoMode">
           <Checkbox v-model="checked" :binary="true" id="owner" class="mb-5" />
           <label @click="checked = !checked" class="ml-2 clickable"
             >Ich bin Eigentümer:in</label
           >
         </div>
         <div v-if="checked">
-          <SportFieldOwnerDialog @file="handleFile" />
+          <FileUploadFromScratch @file="handleFile" />
         </div>
       </div>
       <div class="button-layout">
@@ -76,18 +76,28 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { computed, inject, ref, watch } from 'vue';
 import { useField, useForm } from 'vee-validate';
 import { storeToRefs } from 'pinia';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { PostSportField } from '@/types/Map.ts';
-import SportFieldOwnerDialog from '@/components/SportFieldOwnerDialog.vue';
 import AddressCompletion from '@/components/AddressCompletion.vue';
 import { NominatimResponseItem } from '@/types/Address.ts';
+import FileUploadFromScratch from '@/components/FileUploadFromScratch.vue';
+import type { State, Methods } from '@/stores/DemoStore.ts';
 
 const checked = ref(false);
 const address = ref<NominatimResponseItem>();
 const file = ref<File>();
+
+const demoStore = inject<{ state: State; methods: Methods }>('demoStore');
+if (!demoStore) {
+  throw new Error('demoStore is not provided');
+}
+
+const { state } = demoStore;
+
+const demoMode = computed(() => state.demoMode);
 
 const props = defineProps({
   isVisible: { type: Boolean, required: true },

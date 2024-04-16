@@ -1,6 +1,6 @@
 <template>
   <aside class="sidebar">
-    <div v-for="item in menuItems" :key="item.link" class="w-full">
+    <div v-for="item in menuItems" :key="item.link" class="w-full" v-if="demoStore">
       <RouterLink
         v-if="!item.hide && item.link"
         :to="item.disabled ? '' : item.link"
@@ -23,12 +23,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
 import SidebarItem from '@/layouts/SidebarItem.vue';
 import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { Auth0User, User } from '@/types/User.ts';
+import { computed, inject, ref } from 'vue';
+import { Methods, State } from '@/stores/DemoStore.ts';
+
+const demoStore = inject<{ state: State; methods: Methods }>('demoStore');
+if (!demoStore) {
+  throw new Error('demoStore is not provided');
+}
+const { state } = demoStore;
 
 const { loginWithRedirect, logout } = useAuth0();
 const userStore = useUserStore();
@@ -49,6 +56,7 @@ const menuItems = computed<MenuItem[]>(() => [
     iconImg: 'user.png',
     iconClasses: '!w-16',
     spacer: true,
+    visible: true,
     disabled: !!user.value,
   },
   {
@@ -56,16 +64,20 @@ const menuItems = computed<MenuItem[]>(() => [
     link: '/',
     iconImg: 'map.png',
     iconClasses: '!w-12',
+    visible: true,
   },
   {
     text: 'Reservationen',
     link: '/reservations',
     iconImg: 'calendar.png',
     iconClasses: '!w-10',
+    visible: !state.demoMode,
   },
   {
     text: 'Lieblingsplätze',
     link: '/likes',
+    icon: 'heart.png',
+    visible: !state.demoMode,
     iconImg: 'heart.png',
   },
   {
