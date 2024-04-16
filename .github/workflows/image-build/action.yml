@@ -14,7 +14,7 @@ inputs:
     required: true
     description: github token
   dockerfile:
-    required: true
+    required: false
     description: path to the dockerfile
     default: Dockerfile
 
