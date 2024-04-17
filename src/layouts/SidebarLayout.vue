@@ -23,6 +23,9 @@
 </template>
 
 <script setup lang="ts">
+import { ref, watch } from 'vue';
+import { useDemoStore } from '@/stores/DemoStore.ts';
+import { storeToRefs } from 'pinia';
 import SidebarItem from '@/layouts/SidebarItem.vue';
 import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
@@ -31,16 +34,19 @@ import { Auth0User, User } from '@/types/User.ts';
 import { computed, inject, ref } from 'vue';
 import { Methods, State } from '@/stores/DemoStore.ts';
 
-const demoStore = inject<{ state: State; methods: Methods }>('demoStore');
-if (!demoStore) {
-  throw new Error('demoStore is not provided');
-}
-const { state } = demoStore;
+const demoStore = useDemoStore();
+const { isDemoActive } = storeToRefs(demoStore);
 
 const { loginWithRedirect, logout } = useAuth0();
 const userStore = useUserStore();
 
 const user = computed<User | Auth0User | null>(() => userStore.user);
+
+watch(isDemoActive, (newValue: boolean) => {
+  menuItems.value
+    .filter((item) => item.demo)
+    .forEach((item) => (item.visible = !newValue));
+});
 
 const menuItems = computed<MenuItem[]>(() => [
   {
@@ -71,18 +77,22 @@ const menuItems = computed<MenuItem[]>(() => [
     link: '/reservations',
     iconImg: 'calendar.png',
     iconClasses: '!w-10',
-    visible: !state.demoMode,
+    visible: true,
+    demo: true,
   },
   {
     text: 'Lieblingsplätze',
     link: '/likes',
     icon: 'heart.png',
-    visible: !state.demoMode,
+    visible: true,
+    demo: true,
     iconImg: 'heart.png',
   },
   {
     text: 'Einstellungen',
     link: '/settings',
+    icon: 'settings.png',
+    visible: true,
     iconImg: 'settings.png',
     spacer: !!user.value,
   },
