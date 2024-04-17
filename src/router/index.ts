@@ -6,6 +6,7 @@ import SidebarLayout from '@/layouts/SidebarLayout.vue';
 import Reservations from '@/pages/Reservations.vue';
 import Likes from '@/pages/Likes.vue';
 import Settings from '@/pages/Settings.vue';
+import Proposals from "@/pages/Proposals.vue";
 import { useUserStore } from '@/stores/UserStore.ts';
 
 export const routerOptions: RouterOptions = {
@@ -42,6 +43,14 @@ export const routerOptions: RouterOptions = {
         layout: SidebarLayout,
       },
       component: Settings,
+    },
+    {
+      path: '/proposals',
+      name: 'Proposals',
+      meta: {
+        layout: SidebarLayout,
+      },
+      component: Proposals,
     },
     {
       path: '/:pathMatch(.*)*',

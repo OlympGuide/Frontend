@@ -99,8 +99,8 @@ const createIcons = (): IconKeyMap => {
   return iconKeyMap;
 };
 
-const loadSportFields = async (): Promise<void> => {
-  await sportFieldStore.loadSportFields()
+const loadSportFields = (): void => {
+  sportFieldStore.loadSportFields()
   .then(_ => {
     sportFields.value = sportFieldStore.sportFields;
     addMarkers();

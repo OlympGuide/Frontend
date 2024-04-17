@@ -70,8 +70,8 @@
 import { ref, watch } from 'vue';
 import { useField, useForm } from 'vee-validate';
 import { storeToRefs } from 'pinia';
-import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
-import { PostSportField } from '@/types/Map.ts';
+import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
+import { PostSportFieldProposal } from '@/types/Proposal';
 
 const { handleSubmit, validate, resetForm } = useForm({
   initialValues: {
@@ -95,8 +95,8 @@ const { value: coordinates, errorMessage: coordinatesError } = useField<string>(
 const { value: description, errorMessage: descriptionError } =
   useField<string>('description');
 
-const sportFieldStore = useSportFieldStore();
-const { isLoading, errorMessage } = storeToRefs(sportFieldStore);
+const sportFieldProposalStore = useSportFieldProposalStore();
+const { isLoading, errorMessage } = storeToRefs(sportFieldProposalStore);
 
 const props = defineProps({
   isVisible: { type: Boolean, required: true },
@@ -127,15 +127,16 @@ const submitDialog = handleSubmit(async (values: any) => {
 
   const [latitude, longitude] = values.coordinates.split(/\s*,\s*/);
 
-  const sportField: PostSportField = {
-    name: values.name,
-    description: values.description,
-    longitude: longitude,
-    latitude: latitude,
+  const sportFieldProposal: PostSportFieldProposal = {
+    sportFieldName: values.name,
+    sportFieldDescription: values.description,
+    sportFieldLongitude: longitude,
+    sportFieldLatitude: latitude,
+    sportFieldAddress: '',
   };
 
   try {
-    await sportFieldStore.createSportField(sportField);
+    await sportFieldProposalStore.createSportFieldProposal(sportFieldProposal);
     resetForm();
     closeDialog();
   } catch (e: any) {

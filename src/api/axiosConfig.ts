@@ -1,17 +1,23 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { useAuth0 } from '@auth0/auth0-vue';
 
 // Access the base URL from Vite's environment-specific configuration
 const baseURL = import.meta.env.API_BASE_URL;
 
-export const apiClient = async () => {
-  const { getAccessTokenSilently } = useAuth0();
-  const accessToken = await getAccessTokenSilently();
+let apiClient: AxiosInstance | undefined = undefined;
 
-  return axios.create({
-    baseURL: baseURL, // Use the dynamically assigned base URL
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+export const getApiClientInstance = async () => {
+  if (!apiClient) {
+    const { getAccessTokenSilently } = useAuth0();
+    const accessToken = await getAccessTokenSilently();
+
+    apiClient = axios.create({
+      baseURL: baseURL, // Use the dynamically assigned base URL
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });    
+  }
+
+  return apiClient!;
 };

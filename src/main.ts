@@ -16,6 +16,8 @@ import FloatLabel from 'primevue/floatlabel';
 import Textarea from 'primevue/textarea';
 import Calendar from 'primevue/calendar';
 import InputIcon from 'primevue/inputicon';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
 import Toast from 'primevue/toast';
 
 import { defineRules } from '@/validation/rules.ts';
@@ -35,6 +37,8 @@ app.component('FloatLabel', FloatLabel);
 app.component('TextArea', Textarea);
 app.component('Calendar', Calendar);
 app.component('InputIcon', InputIcon);
+app.component('DataTable', DataTable);
+app.component('Column', Column);
 app.component('Toast', Toast);
 
 //Vee Validate Rules
