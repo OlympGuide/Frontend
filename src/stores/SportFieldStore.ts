@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { getSportFields, postSportField } from '@/api/sportFieldApi.ts';
 import { PostSportField, ShowSportField } from '@/types/Map.ts';
 import { AxiosResponse } from 'axios';
-import { ApiState } from '@/types/ApiState.ts';
 
 interface SportFieldState {
   sportFields: ShowSportField[];

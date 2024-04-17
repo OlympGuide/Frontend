@@ -9,7 +9,6 @@ import '@/assets/styles/olympGuideTheme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
 
-
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
@@ -30,7 +29,6 @@ import router from '@/router';
 export const pinia = createPinia();
 
 import { createAuth0 } from '@auth0/auth0-vue';
-import { useDemoStore } from '@/stores/DemoStore.ts';
 import ToggleButton from 'primevue/togglebutton';
 
 const app = createApp(App);
@@ -52,7 +50,6 @@ app.component('ToggleButton', ToggleButton);
 
 //Vee Validate Rules
 defineRules();
-
 
 app.use(router);
 app.use(PrimeVue);

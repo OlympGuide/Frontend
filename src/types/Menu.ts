@@ -9,4 +9,6 @@ export interface MenuItem {
   spacer?: boolean;
   hide?: boolean;
   disabled?: boolean;
+  visible?: boolean;
+  demo?: boolean;
 }

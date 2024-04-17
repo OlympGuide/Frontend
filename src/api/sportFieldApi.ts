@@ -5,9 +5,9 @@ import { AxiosResponse } from 'axios';
 const SPORT_FIELD_PATH = '/SportField';
 
 export const postSportField = async (data: PostSportField) => {
-    const api = await apiClient();
+  const api = await apiClient();
 
-    const formData = new FormData();
+  const formData = new FormData();
 
   formData.append('name', data.SportFieldName);
   formData.append('latitude', data.SportFieldLatitude.toString());
@@ -21,22 +21,20 @@ export const postSportField = async (data: PostSportField) => {
     formData.append('address', data.SportFieldAddress);
   }
 
-    if (data.file) {
-        formData.append('file', data.file);
-    }
+  if (data.file) {
+    formData.append('file', data.file);
+  }
 
-
-    return api.post(SPORT_FIELD_PATH, formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        },
-    });
-}
-
+  return api.post(SPORT_FIELD_PATH, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
 
 export const getSportFields = async (): Promise<
-  AxiosResponse<SportField[], any>
+  AxiosResponse<ShowSportField[], any>
 > => {
   const api = await apiClient();
-  return api.get<SportField[]>(SPORT_FIELD_PATH);
+  return api.get<ShowSportField[]>(SPORT_FIELD_PATH);
 };

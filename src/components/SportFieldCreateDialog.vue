@@ -83,7 +83,7 @@ import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { PostSportField } from '@/types/Map.ts';
 import AddressCompletion from '@/components/AddressCompletion.vue';
 import { NominatimResponseItem } from '@/types/Address.ts';
-import FileUploadFromScratch from '@/components/FileUploadFromScratch.vue';
+import FileUploadFromScratch from '@/components/FileUpload.vue';
 import { useDemoStore } from '@/stores/DemoStore.ts';
 
 const checked = ref(false);
