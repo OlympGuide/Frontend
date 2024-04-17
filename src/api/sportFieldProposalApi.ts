@@ -2,16 +2,19 @@ import { apiClient } from '@/api/axiosConfig.ts';
 import { PostSportFieldProposal, SportFieldProposal, SportFieldProposalState } from '@/types/Proposal';
 import { AxiosResponse } from 'axios';
 
-const PROPOSAL_PATH = '/sportfieldproposal/';
+const PROPOSAL_PATH = '/sportfieldproposals/';
 
-export const postSportFieldProposal = (data: PostSportFieldProposal) => {
-  return apiClient.post(PROPOSAL_PATH, data);
+export const postSportFieldProposal = async (data: PostSportFieldProposal) => {
+  const api = await apiClient();
+  return api.post(PROPOSAL_PATH, data);
 };
 
-export const getSportFieldProposals = (): Promise<AxiosResponse<SportFieldProposal[], any>> => {
-  return apiClient.get<SportFieldProposal[]>(PROPOSAL_PATH);
+export const getSportFieldProposals = async (): Promise<AxiosResponse<SportFieldProposal[], any>> => {
+  const api = await apiClient();
+  return api.get<SportFieldProposal[]>(PROPOSAL_PATH);
 };
 
-export const changeStateById = (id: string, state: SportFieldProposalState) => {
-  return apiClient.put(`${PROPOSAL_PATH}${id}`, { state });
+export const changeStateById = async (id: string, state: SportFieldProposalState) => {
+  const api = await apiClient();
+  return api.put(`${PROPOSAL_PATH}${id}`, { state });
 };
