@@ -13,6 +13,7 @@
     "import-meta-env:production": "import-meta-env -x .env.example.public -e .env.production"
   },
   "dependencies": {
+    "@auth0/auth0-vue": "^2.3.3",
     "@vee-validate/rules": "^4.12.6",
     "axios": "^1.6.7",
     "leaflet": "^1.9.4",

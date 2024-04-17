@@ -113,7 +113,7 @@ const addMarkers = (): Marker[] => {
   for (const sportField of sportFields.value) {
     // let stackCounter: number = 0;
 
-    // for (const nextPlace of testData) {
+    // for (const nextPlace of sportFields.value) {
     //   if (sportField === nextPlace) {
     //     break;
     //   }
