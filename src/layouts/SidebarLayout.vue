@@ -1,22 +1,24 @@
 <template>
   <aside class="sidebar">
     <div v-for="item in menuItems" :key="item.link" class="w-full">
-      <RouterLink
-        v-if="item.visible && !item.hide && item.link"
-        :to="item.disabled ? '' : item.link"
-        class="sidebar-item"
-      >
-        <SidebarItem :item="item"></SidebarItem>
-      </RouterLink>
-      <div
-        v-if="!item.hide && item.click"
-        @click="item.click"
-        class="sidebar-item"
-        :class="{ 'cursor-pointer': !item.disabled }"
-      >
-        <SidebarItem :item="item"></SidebarItem>
-      </div>
-      <div v-if="item.spacer" class="spacer"></div>
+      <template v-if="item.visible">
+        <RouterLink
+          v-if="!item.hide && item.link"
+          :to="item.disabled ? '' : item.link"
+          class="sidebar-item"
+        >
+          <SidebarItem :item="item"></SidebarItem>
+        </RouterLink>
+        <div
+          v-if="!item.hide && item.click"
+          @click="item.click"
+          class="sidebar-item"
+          :class="{ 'cursor-pointer': !item.disabled }"
+        >
+          <SidebarItem :item="item"></SidebarItem>
+        </div>
+        <div v-if="item.spacer" class="spacer"></div>
+      </template>
     </div>
   </aside>
   <slot></slot>
@@ -30,7 +32,7 @@ import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { Auth0User, User } from '@/types/User.ts';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 const demoStore = useDemoStore();
 const { isDemoActive } = storeToRefs(demoStore);
@@ -46,7 +48,7 @@ watch(isDemoActive, (newValue: boolean) => {
     .forEach((item) => (item.visible = !newValue));
 });
 
-const menuItems = computed<MenuItem[]>(() => [
+const menuItems = ref<MenuItem[]>([
   {
     id: 'login',
     text: user.value ? user.value.name : 'Login',
