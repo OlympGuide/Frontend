@@ -13,7 +13,6 @@ export const useSportFieldStore = defineStore('sportField', {
     return {
       sportFields: [],
       isLoading: false,
-      isShowing: false,
       errorMessage: '',
     };
   },

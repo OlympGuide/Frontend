@@ -15,7 +15,6 @@ export const useUserStore = defineStore('user', {
       isAuthenticated: false,
       user: null,
       isLoading: false,
-      isShowing: false,
       errorMessage: '',
     };
   },
