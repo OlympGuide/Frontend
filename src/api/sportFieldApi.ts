@@ -11,17 +11,17 @@ export const postSportField = async (data: PostSportField) => {
 
     const formData = new FormData();
 
-    formData.append('name', data.name);
-    formData.append('latitude', data.latitude.toString());
-    formData.append('longitude', data.longitude.toString());
+  formData.append('name', data.SportFieldName);
+  formData.append('latitude', data.SportFieldLatitude.toString());
+  formData.append('longitude', data.SportFieldLongitude.toString());
 
-    if (data.description) {
-        formData.append('description', data.description);
-    }
+  if (data.SportFieldDescription) {
+    formData.append('description', data.SportFieldDescription);
+  }
 
-    if (data.address) {
-        formData.append('address', data.address);
-    }
+  if (data.SportFieldAddress) {
+    formData.append('address', data.SportFieldAddress);
+  }
 
     if (data.file) {
         formData.append('file', data.file);

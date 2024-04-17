@@ -62,7 +62,7 @@ app.component('ToggleButton', ToggleButton);
 //Vee Validate Rules
 defineRules();
 
-app.provide('demoStore', useDemoStore());
+
 app.use(router);
 app.use(PrimeVue);
 app.use(pinia);

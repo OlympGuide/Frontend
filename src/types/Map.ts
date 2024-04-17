@@ -1,10 +1,10 @@
 export interface SportField {
   id: string;
-  name: string;
-  description?: string;
-  latitude: number;
-  longitude: number;
-  address?: string;
+  SportFieldName: string;
+  SportFieldDescription?: string;
+  SportFieldLatitude: number;
+  SportFieldLongitude: number;
+  SportFieldAddress?: string;
   file?: File;
 }
 
