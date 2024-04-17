@@ -53,7 +53,7 @@ export const routerOptions: RouterOptions = {
 
 const router = createRouter(routerOptions);
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (_to, _from, next) => {
   const userStore = useUserStore();
 
   // TODO: implement admin barrier
