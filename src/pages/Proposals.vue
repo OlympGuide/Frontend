@@ -8,6 +8,7 @@
 
       <template v-if="sportFieldProposals.length">
         <Column v-for="(value, key) in sportFieldProposals[0]" :key="key" :field="key" :header="key">
+          {{ value }}
           <!-- TODO format columns -->
           <!-- <template #body> -->
             <!-- {{ value }} -->
