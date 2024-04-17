@@ -1,16 +1,21 @@
 <template>
   <aside class="sidebar">
     <div v-for="item in menuItems" :key="item.link" class="w-full">
-      <RouterLink :to="item.link" class="sidebar-item">
-        <div class="icon-wrapper">
-          <img
-            :class="item.iconClasses"
-            :src="getImageUrl(item.icon)"
-            :alt="item.text"
-          />
-        </div>
-        <span class="text">{{ item.text }}</span>
+      <RouterLink
+        v-if="!item.hide && item.link"
+        :to="item.disabled ? '' : item.link"
+        class="sidebar-item"
+      >
+        <SidebarItem :item="item"></SidebarItem>
       </RouterLink>
+      <div
+        v-if="!item.hide && item.click"
+        @click="item.click"
+        class="sidebar-item"
+        :class="{ 'cursor-pointer': !item.disabled }"
+      >
+        <SidebarItem :item="item"></SidebarItem>
+      </div>
       <div v-if="item.spacer" class="spacer"></div>
     </div>
   </aside>
@@ -18,54 +23,74 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed } from 'vue';
+import SidebarItem from '@/layouts/SidebarItem.vue';
+import { MenuItem } from '@/types/Menu.ts';
+import { useAuth0 } from '@auth0/auth0-vue';
+import { useUserStore } from '@/stores/UserStore.ts';
+import { Auth0User, User } from '@/types/User.ts';
 
-interface MenuItem {
-  icon: string;
-  iconClasses?: string;
-  link: string;
-  text: string;
-  spacer?: boolean;
-}
+const { loginWithRedirect, logout } = useAuth0();
+const userStore = useUserStore();
 
-const menuItems = ref<MenuItem[]>([
+const user = computed<User | Auth0User | null>(() => userStore.user);
+
+const menuItems = computed<MenuItem[]>(() => [
   {
-    text: 'Login',
-    link: '/login',
-    icon: 'user.png',
+    id: 'login',
+    text: user.value ? user.value.name : 'Login',
+    click: (): void => {
+      if (user.value) {
+        return;
+      }
+
+      loginWithRedirect();
+    },
+    iconImg: 'user.png',
     iconClasses: '!w-16',
     spacer: true,
+    disabled: !!user.value,
   },
   {
     text: 'Karte',
     link: '/',
-    icon: 'map.png',
-    iconClasses: '!w-10',
+    iconImg: 'map.png',
+    iconClasses: '!w-12',
   },
   {
     text: 'Reservationen',
     link: '/reservations',
-    icon: 'calendar.png',
+    iconImg: 'calendar.png',
     iconClasses: '!w-10',
   },
   {
     text: 'Lieblingsplätze',
     link: '/likes',
-    icon: 'heart.png',
+    iconImg: 'heart.png',
   },
   {
     text: 'Einstellungen',
     link: '/settings',
-    icon: 'settings.png',
+    iconImg: 'settings.png',
+    spacer: !!user.value,
+  },
+  {
+    text: 'Ausloggen',
+    click: () => {
+      logout({
+        logoutParams: {
+          returnTo: window.location.origin,
+        },
+      });
+      userStore.user = null;
+    },
+    icon: 'pi pi-sign-out',
+    hide: !user.value,
   },
 ]);
-
-const getImageUrl = (name: string): string => {
-  return new URL(`../assets/icons/${name}`, import.meta.url).href;
-};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .sidebar {
   @apply fixed top-5 left-5 w-20 bg-white z-[1000] rounded-2xl px-3 py-4 flex flex-col justify-center items-center gap-4;
   @apply shadow-lg transition-all;

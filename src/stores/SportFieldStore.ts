@@ -2,11 +2,10 @@ import { defineStore } from 'pinia';
 import { getSportFields, postSportField } from '@/api/sportFieldApi.ts';
 import { PostSportField, SportField } from '@/types/Map.ts';
 import { AxiosResponse } from 'axios';
+import { ApiState } from '@/types/ApiState.ts';
 
-interface SportFieldState {
+interface SportFieldState extends ApiState {
   sportFields: SportField[];
-  isLoading: boolean;
-  errorMessage: string;
 }
 
 export const useSportFieldStore = defineStore('sportField', {
@@ -26,7 +25,6 @@ export const useSportFieldStore = defineStore('sportField', {
       } catch (e: any) {
         console.error('Error while creating new sport field: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
-        throw e;
       } finally {
         this.isLoading = false;
       }
@@ -40,7 +38,6 @@ export const useSportFieldStore = defineStore('sportField', {
       } catch (e: any) {
         console.error('Error while loading sport field: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
-        throw e;
       } finally {
         this.isLoading = false;
       }
