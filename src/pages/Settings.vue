@@ -4,7 +4,7 @@
     <div class="mt-5 flex items-center space-x-4">
       <p class="text-lg font-medium">Demo Mode</p>
       <ToggleButton
-        v-model="demoMode"
+        v-model="isDemoActive"
         class="w-24"
         onLabel="On"
         offLabel="Off"
@@ -14,25 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue';
-import type { Methods, State } from '@/stores/DemoStore';
+import { useDemoStore } from '@/stores/DemoStore.ts';
+import { storeToRefs } from 'pinia';
 
-const demoStore = inject<{ state: State; methods: Methods }>('demoStore');
-if (!demoStore) {
-  throw new Error('demoStore is not provided');
-}
-
-const { state, methods } = demoStore;
-
-// Sync the ToggleButton with the demoMode state
-const demoMode = computed({
-  get: () => state.demoMode,
-  set: (value) => {
-    if (state.demoMode !== value) {
-      methods.toggleDemoMode();
-    }
-  },
-});
+const demoStore = useDemoStore();
+const { isDemoActive } = storeToRefs(demoStore);
 </script>
 
 <style scoped></style>

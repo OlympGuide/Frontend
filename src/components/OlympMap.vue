@@ -173,7 +173,7 @@ const addMarkers = (): Marker[] => {
 
     // if (stackCounter === 0) {
     const marker: Marker = L.marker(
-      [sportField.latitude, sportField.longitude],
+      [sportField.SportFieldLatitude, sportField.SportFieldLongitude],
       { icon: icons.value.football }
     );
     marker.addTo(map.value!);

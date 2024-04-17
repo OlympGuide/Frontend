@@ -1,23 +1,13 @@
-import { reactive, readonly } from 'vue';
+import { defineStore } from 'pinia';
 
-export interface State {
-  demoMode: boolean;
+interface DemoState {
+  isDemoActive: boolean;
 }
 
-export interface Methods {
-  toggleDemoMode: () => void;
-}
-
-const state: State = reactive({
-  demoMode: false,
-});
-
-const methods: Methods = {
-  toggleDemoMode() {
-    state.demoMode = !state.demoMode;
+export const useDemoStore = defineStore('demo', {
+  state: (): DemoState => {
+    return {
+      isDemoActive: false,
+    };
   },
-};
-
-export function useDemoStore() {
-  return { state: readonly(state), methods };
-}
+});
