@@ -59,13 +59,14 @@ const handleProposal = ( proposalId: string, state: SportFieldProposalState ) =>
   sportFieldProposalStore.setSportFieldProposalState(proposalId, state);
 };
 
-const formatDate = (dateString: any) => {
-  return new Date(dateString).toLocaleString('de-CH');
-};
+// TODO format columns
+// const formatDate = (dateString: any) => {
+//   return new Date(dateString).toLocaleString('de-CH');
+// };
 
-const formatState = (state: any) => {
-  return SportFieldProposalState[state];
-};
+// const formatState = (state: any) => {
+//   return SportFieldProposalState[state];
+// };
 </script>
 
 <style scoped></style>
