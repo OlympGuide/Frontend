@@ -2,11 +2,11 @@ import { defineStore } from 'pinia';
 import { me } from '@/api/userApi.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
-import { User } from '@/types/User.ts';
+import { Auth0User, User } from '@/types/User.ts';
 
 interface UserState extends ApiState {
   isAuthenticated: boolean;
-  user: User | null;
+  user: User | Auth0User | null;
 }
 
 export const useUserStore = defineStore('user', {
@@ -15,6 +15,7 @@ export const useUserStore = defineStore('user', {
       isAuthenticated: false,
       user: null,
       isLoading: false,
+      isShowing: false,
       errorMessage: '',
     };
   },
@@ -32,15 +33,6 @@ export const useUserStore = defineStore('user', {
       } finally {
         this.isLoading = false;
       }
-    },
-  },
-  getters: {
-    getFullName(): string {
-      if (this.user) {
-        return `${this.user.firstName} ${this.user.lastName}`;
-      }
-
-      return '';
     },
   },
 });

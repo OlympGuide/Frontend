@@ -1,13 +1,18 @@
 <template>
   <aside class="sidebar">
     <div v-for="item in menuItems" :key="item.link" class="w-full">
-      <RouterLink v-if="item.link" :to="item.link" class="sidebar-item">
+      <RouterLink
+        v-if="!item.hide && item.link"
+        :to="item.disabled ? '' : item.link"
+        class="sidebar-item"
+      >
         <SidebarItem :item="item"></SidebarItem>
       </RouterLink>
       <div
-        v-if="item.click"
+        v-if="!item.hide && item.click"
         @click="item.click"
-        class="sidebar-item cursor-pointer"
+        class="sidebar-item"
+        :class="{ 'cursor-pointer': !item.disabled }"
       >
         <SidebarItem :item="item"></SidebarItem>
       </div>
@@ -18,24 +23,23 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import SidebarItem from '@/layouts/SidebarItem.vue';
 import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { useUserStore } from '@/stores/UserStore.ts';
-import { User } from '@/types/User.ts';
+import { Auth0User, User } from '@/types/User.ts';
 
 const { loginWithRedirect, logout } = useAuth0();
 const userStore = useUserStore();
 
-const user = computed<User | null>(() => userStore.user);
+const user = computed<User | Auth0User | null>(() => userStore.user);
 
-const menuItems = ref<MenuItem[]>([
+const menuItems = computed<MenuItem[]>(() => [
   {
     id: 'login',
-    text: userStore.getFullName || 'Login',
-    click: () => {
-      console.log(user.value);
+    text: user.value ? user.value.name : 'Login',
+    click: (): void => {
       if (user.value) {
         return;
       }
@@ -45,6 +49,7 @@ const menuItems = ref<MenuItem[]>([
     iconImg: 'user.png',
     iconClasses: '!w-16',
     spacer: true,
+    disabled: !!user.value,
   },
   {
     text: 'Karte',
@@ -67,7 +72,7 @@ const menuItems = ref<MenuItem[]>([
     text: 'Einstellungen',
     link: '/settings',
     iconImg: 'settings.png',
-    spacer: true,
+    spacer: !!user.value,
   },
   {
     text: 'Ausloggen',
@@ -80,6 +85,7 @@ const menuItems = ref<MenuItem[]>([
       userStore.user = null;
     },
     icon: 'pi pi-sign-out',
+    hide: !user.value,
   },
 ]);
 </script>

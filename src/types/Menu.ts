@@ -7,5 +7,6 @@ export interface MenuItem {
   click?: () => void;
   text: string;
   spacer?: boolean;
-  show?: boolean;
+  hide?: boolean;
+  disabled?: boolean;
 }

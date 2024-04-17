@@ -7,18 +7,39 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
-import { pinia } from '@/main.ts';
-import { instanceOfApiState } from '@/types/ApiState.ts';
+import { getActivePinia, Store } from 'pinia';
 
 import { useToast } from 'primevue/usetoast';
 import { ToastMessageOptions } from 'primevue/toast';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { Auth0User } from '@/types/User.ts';
+import { instanceOfApiState } from '@/types/ApiState.ts';
 
 const toast = useToast();
 const userStore = useUserStore();
 const { user, isAuthenticated } = useAuth0();
+const pinia: any = getActivePinia() as any;
+
+pinia?._s.forEach((store: Store) => {
+  if (instanceOfApiState(store)) {
+    watch(
+      () => store.errorMessage,
+      () => {
+        if (userStore.errorMessage) {
+          const toastMessage: ToastMessageOptions = {
+            severity: 'error',
+            summary: 'Something went wrong!',
+            detail: userStore.errorMessage,
+            life: 3000,
+          };
+
+          toast.add(toastMessage);
+        }
+      }
+    );
+  }
+});
 
 onMounted(async () => {
   await userStore.getLoggedInUser();
@@ -28,35 +49,16 @@ onMounted(async () => {
     user.value &&
     user.value.given_name &&
     user.value.family_name &&
-    user.value.email &&
-    user.value.picture
+    user.value.nickname
   ) {
     const auth0User: Auth0User = {
-      firstName: user.value.given_name,
-      lastName: user.value.family_name,
+      name: `${user.value.given_name} ${user.value.family_name}`,
+      displayName: user.value.nickname,
       email: user.value.email,
       picture: user.value.picture,
     };
-    userStore.user = auth0User;
+
+    userStore.$patch({ user: auth0User });
   }
 });
-
-watch(
-  pinia.state,
-  (state: any) => {
-    Object.values(state).forEach((item: any) => {
-      if (instanceOfApiState(item) && item.errorMessage) {
-        const toastMessage: ToastMessageOptions = {
-          severity: 'error',
-          summary: 'Something went wrong',
-          detail: item.errorMessage,
-          life: 3000,
-        };
-
-        toast.add(toastMessage);
-      }
-    });
-  },
-  { deep: true }
-);
 </script>

@@ -2,11 +2,10 @@ import { defineStore } from 'pinia';
 import { getSportFields, postSportField } from '@/api/sportFieldApi.ts';
 import { PostSportField, SportField } from '@/types/Map.ts';
 import { AxiosResponse } from 'axios';
+import { ApiState } from '@/types/ApiState.ts';
 
-interface SportFieldState {
+interface SportFieldState extends ApiState {
   sportFields: SportField[];
-  isLoading: boolean;
-  errorMessage: string;
 }
 
 export const useSportFieldStore = defineStore('sportField', {
@@ -14,6 +13,7 @@ export const useSportFieldStore = defineStore('sportField', {
     return {
       sportFields: [],
       isLoading: false,
+      isShowing: false,
       errorMessage: '',
     };
   },

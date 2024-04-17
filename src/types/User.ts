@@ -1,9 +1,9 @@
 export interface User {
   id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  picture: string;
+  name: string;
+  displayName: string;
+  email?: string;
+  picture?: string;
 }
 
 export type Auth0User = Omit<User, 'id'>;

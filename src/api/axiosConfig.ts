@@ -7,7 +7,6 @@ const baseURL = import.meta.env.API_BASE_URL;
 export const apiClient = async () => {
   const { getAccessTokenSilently } = useAuth0();
   const accessToken = await getAccessTokenSilently();
-  console.log(accessToken);
 
   return axios.create({
     baseURL: baseURL, // Use the dynamically assigned base URL
