@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
-import { getSportFieldProposals, changeStateById } from '@/api/sportFieldProposalApi.ts';
-import { SportFieldProposal, SportFieldProposalState } from '@/types/Proposal';
+import { postSportFieldProposal, getSportFieldProposals, changeStateById } from '@/api/sportFieldProposalApi.ts';
+import { PostSportFieldProposal, SportFieldProposal, SportFieldProposalState } from '@/types/Proposal';
 import { AxiosResponse } from 'axios';
 
 interface SportFieldState {
@@ -41,6 +41,18 @@ export const useSportFieldProposalStore = defineStore('sportFieldProposal', {
         console.error('Error while updating sport field proposal: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
         throw e;
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async createSportFieldProposal(sportField: PostSportFieldProposal) {
+      this.isLoading = true;
+      try {
+        this.errorMessage = '';
+        await postSportFieldProposal(sportField);
+      } catch (e: any) {
+        console.error('Error while creating new sport field: ', e);
+        this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
       } finally {
         this.isLoading = false;
       }

@@ -75,6 +75,12 @@ const menuItems = computed<MenuItem[]>(() => [
     spacer: !!user.value,
   },
   {
+    text: 'Sportplatz-Anträge',
+    link: '/proposals',
+    iconImg: 'settings.png',
+    spacer: !!user.value,
+  },
+  {
     text: 'Ausloggen',
     click: () => {
       logout({

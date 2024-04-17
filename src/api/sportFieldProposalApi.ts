@@ -11,10 +11,18 @@ export const postSportFieldProposal = async (data: PostSportFieldProposal) => {
 
 export const getSportFieldProposals = async (): Promise<AxiosResponse<SportFieldProposal[], any>> => {
   const api = await getApiClientInstance();
-  return api.get<SportFieldProposal[]>(PROPOSAL_PATH);
+  return api.get<SportFieldProposal[]>(PROPOSAL_PATH, {
+    params: {
+      state: SportFieldProposalState.Open,
+    },
+  });
 };
 
 export const changeStateById = async (id: string, state: SportFieldProposalState) => {
   const api = await getApiClientInstance();
-  return api.put(`${PROPOSAL_PATH}${id}`, { state });
+  return api.put(`${PROPOSAL_PATH}${id}`, state, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 };

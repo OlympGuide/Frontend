@@ -8,12 +8,14 @@
 
       <template v-if="sportFieldProposals.length">
         <Column v-for="(value, key) in sportFieldProposals[0]" :key="key" :field="key" :header="key">
-          <template #body>
-            <span v-if="key === 'date'">{{ formatDate(value) }}</span>
-            <span v-else-if="key === 'userId'">{{value}}</span>
+          <!-- TODO format columns -->
+          <!-- <template #body> -->
+            <!-- {{ value }} -->
+            <!-- <span v-if="key === 'date'">{{ formatDate(value) }}</span> -->
+            <!-- <span v-else-if="key === 'userId'">{{value}}</span>
             <span v-else-if="key === 'state'">{{ formatState(value) }}</span>
-            <span v-else>{{ value }}</span>
-          </template>
+            <span v-else>{{ value }}</span> -->
+          <!-- </template> -->
         </Column>
         <Column header="Actions" width>
           <template #body="proposals">
