@@ -6,7 +6,7 @@ import SidebarLayout from '@/layouts/SidebarLayout.vue';
 import Reservations from '@/pages/Reservations.vue';
 import Likes from '@/pages/Likes.vue';
 import Settings from '@/pages/Settings.vue';
-import Login from "@/pages/Login.vue";
+import Login from '@/pages/Login.vue';
 
 export const routerOptions: RouterOptions = {
   history: createWebHistory(),

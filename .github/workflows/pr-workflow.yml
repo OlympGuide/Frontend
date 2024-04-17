@@ -10,6 +10,7 @@ env:
   # DOCKER env
   IMAGE_NAME: ${{ github.repository }}/webserver
   ORGANISATION: OlympGuide
+  DOCKERFILE-PATH: Dockerfile.development
 
 jobs:
   build:  
@@ -38,7 +39,7 @@ jobs:
         uses: docker/setup-buildx-action@v1
   
       - name: Build Docker Image
-        run: docker build . --file ./Dockerfile
+        run: docker build . --file ${{ env.DOCKERFILE-PATH }}
 
   prettier:
     needs: build

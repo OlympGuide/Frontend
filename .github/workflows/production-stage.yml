@@ -12,6 +12,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/vue
   ORGANISATION: OlympGuide
+  DOCKERFILE-PATH-PRODUCTION: Dockerfile.production
 
   # HELM env
   HELM_DIRECTORY: helm
@@ -63,6 +64,19 @@ jobs:
           echo "parsed tag: $TAG"
           echo "image-tag=$TAG" >> $GITHUB_OUTPUT
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: '20.11.1'
+      
+      - name: Install Minimal Dependencies
+        working-directory: ./.github
+        run: npm install
+        
+      - name: Switch to Production Env
+        working-directory: ./.github
+        run: npm run import-meta-env:production
+      
       - name: image-build
         uses: ./.github/workflows/image-build
         with:
@@ -70,7 +84,7 @@ jobs:
           image-name: ${{ env.IMAGE_NAME }}
           tags: ${{ steps.latest-tag.outputs.image-tag }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
+          dockerfile: ${{ env.DOCKERFILE-PATH-PRODUCTION }}
 
   deploy-helm-ci:
     runs-on: ubuntu-22.04

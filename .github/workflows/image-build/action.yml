@@ -13,6 +13,10 @@ inputs:
   github-token:
     required: true
     description: github token
+  dockerfile:
+    required: true
+    description: path to the dockerfile
+    default: Dockerfile
 
 runs:
   using: "composite"
@@ -40,3 +44,4 @@ runs:
         context: ./
         push: true
         tags: ${{ steps.image-meta.outputs.tags }}
+        file: ${{ inputs.dockerfile }}

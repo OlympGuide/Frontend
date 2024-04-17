@@ -21,11 +21,10 @@ import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
 import { SportField } from '@/types/Map';
 
-// @ts-ignore
-import { data } from '@/testData/data.js';
-
 import 'leaflet/dist/leaflet.css';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
+
+import footballIconUrl from '@/assets/icons/football.png';
 
 interface IconKeyMap {
   [key: string]: Icon | DivIcon;
@@ -45,7 +44,6 @@ onMounted((): void => {
   icons.value = createIcons();
 
   loadSportFields();
-  addMarkers();
 });
 
 const createMap = (): Map => {
@@ -85,7 +83,7 @@ const createIcons = (): IconKeyMap => {
   const iconKeyMap: IconKeyMap = {};
 
   const footballIcon: Icon = L.icon({
-    iconUrl: 'src/assets/icons/football.png',
+    iconUrl: footballIconUrl,
     iconSize: [30, 30],
     iconAnchor: [15, 15],
     popupAnchor: [0, -30],
@@ -101,9 +99,12 @@ const createIcons = (): IconKeyMap => {
   return iconKeyMap;
 };
 
-const loadSportFields = (): void => {
-  sportFieldStore.loadSportFields();
-  sportFields.value = sportFieldStore.sportFields;
+const loadSportFields = async (): Promise<void> => {
+  await sportFieldStore.loadSportFields()
+  .then(_ => {
+    sportFields.value = sportFieldStore.sportFields;
+    addMarkers();
+  });
 };
 
 const addMarkers = (): Marker[] => {
