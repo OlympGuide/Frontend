@@ -9,7 +9,7 @@ export const postSportField = async (data: PostSportField) => {
   const api = await getApiClientInstance();
 
 
-    const formData = new FormData();
+  const formData = new FormData();
 
   formData.append('name', data.SportFieldName);
   formData.append('latitude', data.SportFieldLatitude.toString());
@@ -23,9 +23,9 @@ export const postSportField = async (data: PostSportField) => {
     formData.append('address', data.SportFieldAddress);
   }
 
-    if (data.file) {
-        formData.append('file', data.file);
-    }
+  if (data.file) {
+    formData.append('file', data.file);
+  }
 
 
     return api.post(SPORT_FIELD_PATH, formData, {

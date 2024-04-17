@@ -2,7 +2,7 @@
   <aside class="sidebar">
     <template v-for="item in menuItems" :key="item.link" class="w-full" v-if="demoStore">
       <RouterLink
-        v-if="!item.hide && item.link"
+        v-if="item.visible && !item.hide && item.link"
         :to="item.disabled ? '' : item.link"
         class="sidebar-item"
       >
@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
 import { useDemoStore } from '@/stores/DemoStore.ts';
 import { storeToRefs } from 'pinia';
 import SidebarItem from '@/layouts/SidebarItem.vue';
@@ -31,8 +30,7 @@ import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { Auth0User, User } from '@/types/User.ts';
-import { computed, inject, ref } from 'vue';
-import { Methods, State } from '@/stores/DemoStore.ts';
+import { computed, watch } from 'vue';
 
 const demoStore = useDemoStore();
 const { isDemoActive } = storeToRefs(demoStore);
