@@ -19,6 +19,10 @@ defineProps<{
 }>();
 
 const getImageUrl = (name: string): string => {
+  if (name.startsWith('http')) {
+    return name;
+  }
+
   return new URL(`../assets/icons/${name}`, import.meta.url).href;
 };
 </script>
