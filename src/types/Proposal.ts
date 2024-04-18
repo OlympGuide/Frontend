@@ -3,7 +3,7 @@ export interface SportFieldProposal {
   sportFieldDescription: string;
   sportFieldLongitude: number;
   sportFieldLatitude: number;
-  sportFieldAddress: string;
+  sportFieldAddress?: string;
   sportFieldFile: File;
 }
 
