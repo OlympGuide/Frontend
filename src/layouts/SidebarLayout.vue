@@ -32,7 +32,7 @@ import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { Auth0User, User } from '@/types/User.ts';
-import { computed, ref, watch } from 'vue';
+import { computed, watch } from 'vue';
 
 const demoStore = useDemoStore();
 const { isDemoActive } = storeToRefs(demoStore);
@@ -48,7 +48,7 @@ watch(isDemoActive, (newValue: boolean) => {
     .forEach((item) => (item.visible = !newValue));
 });
 
-const menuItems = ref<MenuItem[]>([
+const menuItems = computed<MenuItem[]>(() => [
   {
     id: 'login',
     text: user.value ? user.value.name : 'Login',
