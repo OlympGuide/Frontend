@@ -59,7 +59,7 @@
           >
         </div>
         <div v-if="checked">
-          <FileUploadFromScratch @file="handleFile" />
+          <FileUpload @file="handleFile" />
         </div>
       </div>
       <div class="button-layout">
@@ -79,15 +79,14 @@
 import { ref, watch } from 'vue';
 import { useField, useForm } from 'vee-validate';
 import { storeToRefs } from 'pinia';
-import SportFieldOwnerDialog from '@/components/SportFieldOwnerDialog.vue';
 import AddressCompletion from '@/components/AddressCompletion.vue';
 import { NominatimResponseItem } from '@/types/Address.ts';
-import FileUploadFromScratch from '@/components/FileUpload.vue';
+import FileUpload from '@/components/FileUpload.vue';
 import { useDemoStore } from '@/stores/DemoStore.ts';
-
-const checked = ref(false);
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { PostSportFieldProposal } from '@/types/Proposal';
+
+const checked = ref(false);
 const address = ref<NominatimResponseItem>();
 const file = ref<File>();
 
@@ -128,12 +127,6 @@ const { value: description, errorMessage: descriptionError } =
 
 const sportFieldProposalStore = useSportFieldProposalStore();
 const { isLoading, errorMessage } = storeToRefs(sportFieldProposalStore);
-
-const props = defineProps({
-  isVisible: { type: Boolean, required: true },
-});
-
-const emit = defineEmits(['close']);
 
 const visible = ref(props.isVisible);
 

@@ -10,7 +10,30 @@ const PROPOSAL_PATH = '/sportfieldproposals';
 
 export const postSportFieldProposal = async (data: PostSportFieldProposal) => {
   const api = await getApiClientInstance();
-  return api.post(PROPOSAL_PATH, data);
+
+  const formData = new FormData();
+
+  formData.append('name', data.sportFieldName);
+  formData.append('latitude', data.sportFieldLatitude.toString());
+  formData.append('longitude', data.sportFieldLongitude.toString());
+
+  if (data.sportFieldDescription) {
+    formData.append('description', data.sportFieldDescription);
+  }
+
+  if (data.sportFieldAddress) {
+    formData.append('address', data.sportFieldAddress);
+  }
+
+  if (data.sportFieldFile) {
+    formData.append('file', data.sportFieldFile);
+  }
+
+  return api.post(PROPOSAL_PATH, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };
 
 export const getSportFieldProposals = async (): Promise<
