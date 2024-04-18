@@ -1,15 +1,44 @@
 import { getApiClientInstance } from '@/api/axiosConfig.ts';
-import { PostSportFieldProposal, SportFieldProposal, SportFieldProposalState } from '@/types/Proposal';
+import {
+  PostSportFieldProposal,
+  SportFieldProposal,
+  SportFieldProposalState,
+} from '@/types/Proposal';
 import { AxiosResponse } from 'axios';
 
 const PROPOSAL_PATH = '/sportfieldproposals/';
 
 export const postSportFieldProposal = async (data: PostSportFieldProposal) => {
   const api = await getApiClientInstance();
-  return api.post(PROPOSAL_PATH, data);
+
+  const formData = new FormData();
+
+  formData.append('name', data.sportFieldName);
+  formData.append('latitude', data.sportFieldLatitude.toString());
+  formData.append('longitude', data.sportFieldLongitude.toString());
+
+  if (data.sportFieldDescription) {
+    formData.append('description', data.sportFieldDescription);
+  }
+
+  if (data.sportFieldAddress) {
+    formData.append('address', data.sportFieldAddress);
+  }
+
+  if (data.sportFieldFile) {
+    formData.append('file', data.sportFieldFile);
+  }
+
+  return api.post(PROPOSAL_PATH, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
 };
 
-export const getSportFieldProposals = async (): Promise<AxiosResponse<SportFieldProposal[], any>> => {
+export const getSportFieldProposals = async (): Promise<
+  AxiosResponse<SportFieldProposal[], any>
+> => {
   const api = await getApiClientInstance();
   return api.get<SportFieldProposal[]>(PROPOSAL_PATH, {
     params: {
@@ -18,7 +47,10 @@ export const getSportFieldProposals = async (): Promise<AxiosResponse<SportField
   });
 };
 
-export const changeStateById = async (id: string, state: SportFieldProposalState) => {
+export const changeStateById = async (
+  id: string,
+  state: SportFieldProposalState
+) => {
   const api = await getApiClientInstance();
   return api.put(`${PROPOSAL_PATH}${id}`, state, {
     headers: {
