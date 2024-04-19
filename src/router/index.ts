@@ -69,12 +69,11 @@ router.beforeEach(async (to, _from, next) => {
     if (userStore.isAdministrator) {
       next();
     } else {
-      await router.push('/');
-      return;
+      next({ path: '/' });
     }
+  } else {
+    next();
   }
-
-  next();
 });
 
 export default router;
