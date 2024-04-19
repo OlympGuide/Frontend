@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: olymp-guide-frontend
+  name: olympguide-frontend
 spec:
   rules:
     - host: {{ .Values.frontend.ingress.host }}
