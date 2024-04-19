@@ -47,12 +47,11 @@ onMounted(async () => {
   if (
     isAuthenticated.value &&
     user.value &&
-    user.value.given_name &&
-    user.value.family_name &&
+    user.value.name &&
     user.value.nickname
   ) {
     const auth0User: Auth0User = {
-      name: `${user.value.given_name} ${user.value.family_name}`,
+      name: user.value.name,
       displayName: user.value.nickname,
       email: user.value.email,
       picture: user.value.picture,

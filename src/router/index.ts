@@ -6,7 +6,7 @@ import SidebarLayout from '@/layouts/SidebarLayout.vue';
 import Reservations from '@/pages/Reservations.vue';
 import Likes from '@/pages/Likes.vue';
 import Settings from '@/pages/Settings.vue';
-import Proposals from "@/pages/Proposals.vue";
+import Proposals from '@/pages/Proposals.vue';
 import { useUserStore } from '@/stores/UserStore.ts';
 
 export const routerOptions: RouterOptions = {
@@ -49,6 +49,7 @@ export const routerOptions: RouterOptions = {
       name: 'Proposals',
       meta: {
         layout: SidebarLayout,
+        admin: true,
       },
       component: Proposals,
     },
@@ -62,14 +63,17 @@ export const routerOptions: RouterOptions = {
 
 const router = createRouter(routerOptions);
 
-router.beforeEach(async (_to, _from, next) => {
+router.beforeEach(async (to, _from, next) => {
   const userStore = useUserStore();
-
-  // TODO: implement admin barrier
-  if (userStore.isAuthenticated) {
-    next();
-    return;
+  if (to.meta.admin) {
+    if (userStore.isAdministrator) {
+      next();
+    } else {
+      await router.push('/');
+      return;
+    }
   }
+
   next();
 });
 

@@ -1,35 +1,47 @@
 <template>
   <div class="page-container-placement">
-    <p class="page-title">Proposals</p>
+    <p class="page-title">Sportplatz-Anträge</p>
     <DataTable :value="sportFieldProposals">
-      <template #header>
-        Proposals
-      </template>
-
       <template v-if="sportFieldProposals.length">
-        <Column v-for="(value, key) in sportFieldProposals[0]" :key="key" :field="key" :header="key">
-          {{ value }}
-          <!-- TODO format columns -->
-          <!-- <template #body> -->
-            <!-- {{ value }} -->
-            <!-- <span v-if="key === 'date'">{{ formatDate(value) }}</span> -->
-            <!-- <span v-else-if="key === 'userId'">{{value}}</span>
-            <span v-else-if="key === 'state'">{{ formatState(value) }}</span>
-            <span v-else>{{ value }}</span> -->
-          <!-- </template> -->
+        <Column
+          v-for="column in columns"
+          :key="column.field"
+          :field="column.field"
+          :header="column.header"
+          :sortable="column.field === 'date'"
+        >
+          <template #body="{ data, field }">
+            <span v-if="field === 'date'">{{ formatDate(data.date) }}</span>
+            <Chip
+              v-else-if="field === 'state'"
+              :label="getState(data.state)"
+              icon="pi pi-question-circle"
+            />
+            <span v-else>{{ data[field] }}</span>
+          </template>
         </Column>
         <Column header="Actions" width>
           <template #body="proposals">
-            <div class="flex justify-center">
+            <div class="flex justify-center items-center">
               <Button
                 icon="pi pi-check"
-                class="mr-2"
-                @click="handleProposal(proposals.data.id, SportFieldProposalState.Approved)"
+                class="mr-2 w-8 h-8 rounded-full"
+                @click="
+                  handleProposal(
+                    proposals.data.id,
+                    SportFieldProposalState.Approved
+                  )
+                "
               />
-              <Button 
+              <Button
                 icon="pi pi-times"
-                class="mr-2"
-                @click="handleProposal(proposals.data.id, SportFieldProposalState.Denied)"
+                class="mr-2 w-8 h-8 rounded-full"
+                @click="
+                  handleProposal(
+                    proposals.data.id,
+                    SportFieldProposalState.Denied
+                  )
+                "
               />
             </div>
           </template>
@@ -45,29 +57,43 @@ import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts'
 import { SportFieldProposal, SportFieldProposalState } from '@/types/Proposal';
 
 const sportFieldProposalStore = useSportFieldProposalStore();
-const sportFieldProposals = computed<SportFieldProposal[]>(() => sportFieldProposalStore.sportFieldProposals);
+const sportFieldProposals = computed<SportFieldProposal[]>(
+  () => sportFieldProposalStore.sportFieldProposals
+);
 
-onMounted((): void => {
-  loadProposals();
+const columns = [
+  { field: 'sportFieldName', header: 'Name' },
+  { field: 'sportFieldDescription', header: 'Beschreibung' },
+  { field: 'date', header: 'Datum' },
+  { field: 'sportFieldLatitude', header: 'Breitengrad' },
+  { field: 'sportFieldLongitude', header: 'Längengrad' },
+  { field: 'user', header: 'Benutzer' },
+  { field: 'state', header: 'Status' },
+];
+
+onMounted(async () => {
+  await loadProposals();
 });
 
-const loadProposals = (): void => {
-  console.log('load proposals')
-  sportFieldProposalStore.loadSportFieldProposals();
+const loadProposals = async () => {
+  await sportFieldProposalStore.loadSportFieldProposals();
 };
 
-const handleProposal = ( proposalId: string, state: SportFieldProposalState ) => {
-  sportFieldProposalStore.setSportFieldProposalState(proposalId, state);
+const handleProposal = async (
+  proposalId: string,
+  state: SportFieldProposalState
+) => {
+  await sportFieldProposalStore.setSportFieldProposalState(proposalId, state);
+  await loadProposals();
 };
 
-// TODO format columns
-// const formatDate = (dateString: any) => {
-//   return new Date(dateString).toLocaleString('de-CH');
-// };
+const formatDate = (dateString: string): string => {
+  return new Date(dateString).toLocaleString('de-CH');
+};
 
-// const formatState = (state: any) => {
-//   return SportFieldProposalState[state];
-// };
+const getState = (state: number): string => {
+  return SportFieldProposalState[state];
+};
 </script>
 
 <style scoped></style>
