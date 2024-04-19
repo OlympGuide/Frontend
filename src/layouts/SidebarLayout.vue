@@ -1,24 +1,22 @@
 <template>
   <aside class="sidebar">
     <div v-for="item in menuItems" :key="item.link" class="w-full">
-      <template v-if="item.visible">
-        <RouterLink
-          v-if="!item.hide && item.link"
-          :to="item.disabled ? '' : item.link"
-          class="sidebar-item"
-        >
-          <SidebarItem :item="item"></SidebarItem>
-        </RouterLink>
-        <div
-          v-if="!item.hide && item.click"
-          @click="item.click"
-          class="sidebar-item"
-          :class="{ 'cursor-pointer': !item.disabled }"
-        >
-          <SidebarItem :item="item"></SidebarItem>
-        </div>
-        <div v-if="item.spacer" class="spacer"></div>
-      </template>
+      <RouterLink
+        v-if="!item.hide && item.link"
+        :to="item.disabled ? '' : item.link"
+        class="sidebar-item"
+      >
+        <SidebarItem :item="item"></SidebarItem>
+      </RouterLink>
+      <div
+        v-if="!item.hide && item.click"
+        @click="item.click"
+        class="sidebar-item"
+        :class="{ 'cursor-pointer': !item.disabled }"
+      >
+        <SidebarItem :item="item"></SidebarItem>
+      </div>
+      <div v-if="item.spacer" class="spacer"></div>
     </div>
   </aside>
   <slot></slot>
@@ -72,28 +70,28 @@ const menuItems = computed<MenuItem[]>(() => [
     iconClasses: '!w-12',
     visible: true,
   },
-  // {
-  //   text: 'Reservationen',
-  //   link: '/reservations',
-  //   iconImg: 'calendar.png',
-  //   iconClasses: '!w-10',
-    // visible: true,
-  //   demo: true,
-  // },
-  // {
-  //   text: 'Lieblingsplätze',
-  //   link: '/likes',
-  //   iconImg: 'heart.png',
-    //visible: true,
- //    demo: true,
-  // },
-  // {
-  //   text: 'Einstellungen',
-  //   link: '/settings',
-  //   iconImg: 'settings.png',
-  //   spacer: !!user.value,
-    // visible: true,
-  // },
+  {
+    text: 'Reservationen',
+    link: '/reservations',
+    iconImg: 'calendar.png',
+    iconClasses: '!w-10',
+    visible: true,
+    demo: true,
+  },
+  {
+    text: 'Lieblingsplätze',
+    link: '/likes',
+    iconImg: 'heart.png',
+    visible: true,
+    demo: true,
+  },
+  {
+    text: 'Einstellungen',
+    link: '/settings',
+    iconImg: 'settings.png',
+    spacer: !!user.value,
+    visible: true,
+  },
   {
     text: 'Sportplatz-Anträge',
     link: '/proposals',

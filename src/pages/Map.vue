@@ -6,19 +6,27 @@
     class="absolute bottom-0 right-0 z-[1000] m-8"
     @click="openDialog"
   />
-  <SportFieldCreateDialog :is-visible="visible"  :coordinates="coordinates" @close="visible = false" />
+  <SportFieldCreateDialog
+    :is-visible="visible"
+    :coordinates="coordinates"
+    @close="visible = false"
+  />
 </template>
 
 <script setup lang="ts">
 import OlympMap from '@/components/OlympMap.vue';
 import { ref } from 'vue';
+
+import { useUserStore } from '@/stores/UserStore.ts';
 // TODO fix import
 import SportFieldCreateDialog from '@/components/SportFieldCreateDialog.vue';
-
 import { LatLng } from 'leaflet';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 const visible = ref(false);
 const coordinates = ref();
+const userStore = useUserStore();
+const { loginWithRedirect } = useAuth0();
 
 const setMarked = (marker: L.Marker) => {
   const latLng: LatLng = marker.getLatLng();
@@ -26,8 +34,11 @@ const setMarked = (marker: L.Marker) => {
 };
 
 const openDialog = () => {
-  //TODO Abfragen ob User eingeloggt ist
-  visible.value = true;
+  if (userStore.isAuthenticated) {
+    visible.value = true;
+  } else {
+    loginWithRedirect();
+  }
 };
 </script>
 
