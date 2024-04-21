@@ -176,7 +176,7 @@ const submitDialog = handleSubmit(async (values: any) => {
     sportFieldLongitude: longitude,
     sportFieldLatitude: latitude,
     sportFieldAddress: address.value?.display_name,
-    file: file.value,
+    sportFieldFile: file.value,
   };
 
   try {

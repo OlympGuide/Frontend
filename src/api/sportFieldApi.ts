@@ -2,7 +2,7 @@ import { ShowSportField } from '@/types/Map.ts';
 import { getApiClientInstance } from '@/api/axiosConfig.ts';
 import { AxiosResponse } from 'axios';
 
-const SPORT_FIELD_PATH = '/SportField';
+const SPORT_FIELD_PATH = '/SportFields';
 
 export const getSportFields = async (): Promise<
   AxiosResponse<ShowSportField[], any>

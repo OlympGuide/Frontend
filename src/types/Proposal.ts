@@ -4,7 +4,7 @@ export interface SportFieldProposal {
   sportFieldLongitude: number;
   sportFieldLatitude: number;
   sportFieldAddress?: string;
-  sportFieldFile: File;
+  sportFieldFile?: File;
 }
 
 export type PostSportFieldProposal = Omit<SportFieldProposal, 'id'>;
