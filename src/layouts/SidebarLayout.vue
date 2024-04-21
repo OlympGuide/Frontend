@@ -1,22 +1,24 @@
 <template>
   <aside class="sidebar">
     <template v-for="item in menuItems" :key="item.link" class="w-full">
-      <RouterLink
-        v-if="!item.hide && item.link"
-        :to="item.disabled ? '' : item.link"
-        class="sidebar-item"
-      >
-        <SidebarItem :item="item"></SidebarItem>
-      </RouterLink>
-      <div
-        v-if="!item.hide && item.click"
-        @click="item.click"
-        class="sidebar-item"
-        :class="{ 'cursor-pointer': !item.disabled }"
-      >
-        <SidebarItem :item="item"></SidebarItem>
-      </div>
-      <div v-if="item.spacer && !item.hide" class="spacer"></div>
+      <template v-if="item.visible">
+        <RouterLink
+          v-if="!item.hide && item.link"
+          :to="item.disabled ? '' : item.link"
+          class="sidebar-item"
+        >
+          <SidebarItem :item="item"></SidebarItem>
+        </RouterLink>
+        <div
+          v-if="!item.hide && item.click"
+          @click="item.click"
+          class="sidebar-item"
+          :class="{ 'cursor-pointer': !item.disabled }"
+        >
+          <SidebarItem :item="item"></SidebarItem>
+        </div>
+        <div v-if="item.spacer && !item.hide" class="spacer"></div>
+      </template>
     </template>
   </aside>
   <slot></slot>
@@ -30,23 +32,16 @@ import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { Auth0User, User } from '@/types/User.ts';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 
 const demoStore = useDemoStore();
 const { isDemoActive } = storeToRefs(demoStore);
 
 const { loginWithRedirect, logout } = useAuth0();
 const userStore = useUserStore();
-
 const user = computed<User | Auth0User | null>(() => userStore.user);
 
-watch(isDemoActive, (newValue: boolean) => {
-  menuItems.value
-    .filter((item) => item.demo)
-    .forEach((item) => (item.visible = !newValue));
-});
-
-const menuItems = computed<MenuItem[]>(() => [
+let menuItems = computed<MenuItem[]>(() => [
   {
     id: 'login',
     text: user.value ? user.value.name : 'Login',
@@ -75,15 +70,13 @@ const menuItems = computed<MenuItem[]>(() => [
     link: '/reservations',
     iconImg: 'calendar.png',
     iconClasses: '!w-10',
-    visible: true,
-    demo: true,
+    visible: !isDemoActive.value,
   },
   {
     text: 'Lieblingsplätze',
     link: '/likes',
     iconImg: 'heart.png',
-    visible: true,
-    demo: true,
+    visible: !isDemoActive.value,
   },
   {
     text: 'Einstellungen',
@@ -98,6 +91,7 @@ const menuItems = computed<MenuItem[]>(() => [
     iconImg: 'sportfields_proposal.png',
     spacer: !!user.value,
     hide: !userStore.isAdministrator,
+    visible: true,
   },
   {
     text: 'Ausloggen',
@@ -109,6 +103,7 @@ const menuItems = computed<MenuItem[]>(() => [
       });
       userStore.user = null;
     },
+    visible: true,
     icon: 'pi pi-sign-out',
     hide: !user.value,
   },

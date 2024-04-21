@@ -10,5 +10,4 @@ export interface MenuItem {
   hide?: boolean;
   disabled?: boolean;
   visible?: boolean;
-  demo?: boolean;
 }
