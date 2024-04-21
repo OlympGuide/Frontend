@@ -1,6 +1,6 @@
 <template>
   <aside class="sidebar">
-    <template v-for="item in menuItems" :key="item.link" class="w-full" v-if="item.visible">
+    <template v-for="item in menuItems" :key="item.link" class="w-full">
       <RouterLink
         v-if="!item.hide && item.link"
         :to="item.disabled ? '' : item.link"

@@ -5,14 +5,12 @@ import { ApiState } from '@/types/ApiState.ts';
 import { Auth0User, instanceOfUser, User, UserRole } from '@/types/User.ts';
 
 interface UserState extends ApiState {
-  isAuthenticated: boolean;
   user: User | Auth0User | null;
 }
 
 export const useUserStore = defineStore('user', {
   state: (): UserState => {
     return {
-      isAuthenticated: false,
       user: null,
       isLoading: false,
       errorMessage: '',
