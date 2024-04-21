@@ -95,7 +95,7 @@ const menuItems = computed<MenuItem[]>(() => [
   {
     text: 'Sportplatz-Anträge',
     link: '/proposals',
-    iconImg: 'settings.png',
+    iconImg: 'sportfields_proposal.png',
     spacer: !!user.value,
     hide: !userStore.isAdministrator,
   },
