@@ -144,8 +144,7 @@ const createIcons = (): IconKeyMap => {
 };
 
 const loadSportFields = (): void => {
-  sportFieldStore.loadSportFields()
-  .then(_ => {
+  sportFieldStore.loadSportFields().then((_) => {
     sportFields.value = sportFieldStore.sportFields;
     addMarkers();
   });
@@ -173,7 +172,7 @@ const addMarkers = (): Marker[] => {
 
     // if (stackCounter === 0) {
     const marker: Marker = L.marker(
-      [sportField.SportFieldLatitude, sportField.SportFieldLongitude],
+      [sportField.latitude, sportField.longitude],
       { icon: icons.value.football }
     );
     marker.addTo(map.value!);

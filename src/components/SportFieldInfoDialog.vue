@@ -2,13 +2,13 @@
   <Dialog
     v-model:visible="visible"
     modal
-    :header="props.sportField.SportFieldName"
+    :header="props.sportField.name"
     :style="{ width: '25rem' }"
   >
     <span
-      v-if="props.sportField.SportFieldDescription"
+      v-if="props.sportField.description"
       class="p-text-secondary block mb-5"
-      >{{ props.sportField.SportFieldDescription }}</span
+      >{{ props.sportField.description }}</span
     >
 
     <div class="flex flex-col gap-y-3">

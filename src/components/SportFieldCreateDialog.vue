@@ -176,7 +176,7 @@ const submitDialog = handleSubmit(async (values: any) => {
     sportFieldLongitude: longitude,
     sportFieldLatitude: latitude,
     sportFieldAddress: address.value?.display_name,
-    sportFieldFile: file.value,
+    //sportFieldFile: file.value, //TODO add again after backend accepts files
   };
 
   try {
