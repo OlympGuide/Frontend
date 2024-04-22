@@ -1,5 +1,5 @@
 <template>
-  <div class="file-upload-container mb-5 -mt-5">
+  <div class="file-upload-container">
     <p class="mb-2">
       Bitte laden Sie eine Datei hoch, die Ihre Eigentümerschaft bestätigt.
     </p>
@@ -72,5 +72,9 @@ const readableMaxSize = computed(
 .plus {
   font-size: 24px;
   vertical-align: middle;
+}
+
+.file-upload-container {
+  @apply mb-5 -mt-5;
 }
 </style>
