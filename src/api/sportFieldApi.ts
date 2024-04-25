@@ -10,3 +10,10 @@ export const getSportFields = async (): Promise<
   const api = await getApiClientInstance();
   return api.get<SportField[]>(SPORT_FIELD_PATH);
 };
+
+export const getSportFieldById = async (
+  id: string
+): Promise<AxiosResponse<SportField>> => {
+  const api = await getApiClientInstance();
+  return api.get<SportField>(`${SPORT_FIELD_PATH}/${id}`);
+};

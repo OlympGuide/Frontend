@@ -7,6 +7,7 @@ import Reservations from '@/pages/Reservations.vue';
 import Likes from '@/pages/Likes.vue';
 import Settings from '@/pages/Settings.vue';
 import Proposals from '@/pages/Proposals.vue';
+import Reserve from '@/pages/Reserve.vue';
 import { useUserStore } from '@/stores/UserStore.ts';
 
 export const routerOptions: RouterOptions = {
@@ -27,6 +28,14 @@ export const routerOptions: RouterOptions = {
         layout: SidebarLayout,
       },
       component: Reservations,
+    },
+    {
+      path: '/reserve/:id',
+      name: 'Reserve',
+      meta: {
+        layout: SidebarLayout,
+      },
+      component: Reserve,
     },
     {
       path: '/likes',
