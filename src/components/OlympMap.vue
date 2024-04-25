@@ -1,10 +1,4 @@
 <template>
-  <ConfirmPopup />
-  <Button
-    id="triggerButton"
-    ref="triggerButton"
-    class="absolute hidden right-10 top-100 z-[1000]"
-  ></Button>
   <div id="map"></div>
   <SportFieldInfoDialog
     v-if="selectedSportField"
@@ -29,9 +23,6 @@ import { ShowSportField } from '@/types/Map';
 
 import 'leaflet/dist/leaflet.css';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
-
-import Button from 'primevue/button';
-import ConfirmPopup from 'primevue/confirmpopup';
 
 import footballIconUrl from '@/assets/icons/football.png';
 
@@ -93,7 +84,6 @@ const createMap = (): Map => {
   return map;
 };
 
-const triggerButton = ref<Button>();
 const addClickListener = (): void => {
   map.value!.on('click', (e) => {
     const { lat, lng } = e.latlng;
