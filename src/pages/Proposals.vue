@@ -11,7 +11,7 @@
           :sortable="column.field === 'date'"
         >
           <template #body="{ data, field }">
-            <span v-if="field === 'date'">{{ formatDate(data.date) }}</span>
+            <span v-if="field === 'date'">{{ toLocalDate(data.date) }}</span>
             <Chip
               v-else-if="field === 'state'"
               :label="getState(data.state)"
@@ -55,6 +55,7 @@
 import { computed, onMounted } from 'vue';
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { SportFieldProposal, SportFieldProposalState } from '@/types/Proposal';
+import { toLocalDate } from '../services/dateService.ts';
 
 const sportFieldProposalStore = useSportFieldProposalStore();
 const sportFieldProposals = computed<SportFieldProposal[]>(
@@ -85,10 +86,6 @@ const handleProposal = async (
 ) => {
   await sportFieldProposalStore.setSportFieldProposalState(proposalId, state);
   await loadProposals();
-};
-
-const formatDate = (dateString: string): string => {
-  return new Date(dateString).toLocaleString('de-CH');
 };
 
 const getState = (state: number): string => {

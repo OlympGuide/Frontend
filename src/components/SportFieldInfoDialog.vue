@@ -11,65 +11,23 @@
       >{{ props.sportField.description }}</span
     >
 
-    <div class="flex flex-col gap-y-3">
-      <div class="formItem">
-        <label for="date">Date</label>
-        <Calendar
-          v-model="date"
-          id="date"
-          showIcon
-          iconDisplay="input"
-          dateFormat="dd.mm.yy"
-        />
-      </div>
-
-      <div class="formItem">
-        <label for="timeFrom">From</label>
-        <Calendar
-          v-model="timeFrom"
-          id="timeFrom"
-          showIcon
-          iconDisplay="input"
-          timeOnly
-        >
-          <template #inputicon="{ clickCallback }">
-            <InputIcon
-              class="pi pi-clock cursor-pointer"
-              @click="clickCallback"
-            />
-          </template>
-        </Calendar>
-      </div>
-
-      <div class="formItem">
-        <label for="timeTo">To</label>
-        <Calendar
-          v-model="timeTo"
-          id="timeTo"
-          showIcon
-          iconDisplay="input"
-          timeOnly
-        >
-          <template #inputicon="{ clickCallback }">
-            <InputIcon
-              class="pi pi-clock cursor-pointer"
-              @click="clickCallback"
-            />
-          </template>
-        </Calendar>
-      </div>
-    </div>
-
     <template #footer>
       <Button label="Cancel" text @click="closeDialog()"></Button>
-      <Button label="Book" outlined @click="book()" autofocus></Button>
+      <Button
+        label="Reservieren"
+        outlined
+        @click="reserve()"
+        autofocus
+      ></Button>
     </template>
   </Dialog>
 </template>
 
 <script setup lang="ts">
 import { SportField } from '@/types/Map';
-import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const visible = defineModel('visible', { default: false });
 
@@ -77,16 +35,13 @@ const props = defineProps<{
   sportField: SportField;
 }>();
 
-const date = ref<Date>(new Date());
-const timeFrom = ref<Date>(new Date());
-const timeTo = ref<Date>(new Date());
-
 const closeDialog = () => {
   visible.value = false;
 };
 
-const book = () => {
+const reserve = async () => {
   visible.value = false;
+  await router.push({ name: 'Reserve', params: { id: props.sportField.id } });
 };
 </script>
 
