@@ -19,7 +19,7 @@ import L, {
 } from 'leaflet';
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
-import { ShowSportField } from '@/types/Map';
+import { SportField } from '@/types/Map';
 
 import 'leaflet/dist/leaflet.css';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
@@ -35,8 +35,8 @@ let currentMarker: L.Marker;
 
 const map = ref<Map>();
 const sportFieldInfoDialogVisible = ref<boolean>(false);
-const selectedSportField = ref<ShowSportField | null>(null);
-const sportFields = ref<ShowSportField[]>([]);
+const selectedSportField = ref<SportField | null>(null);
+const sportFields = ref<SportField[]>([]);
 
 const icons = ref<IconKeyMap>({});
 
@@ -178,7 +178,7 @@ const addMarkers = (): Marker[] => {
   return markers;
 };
 
-const openModal = (sportField: ShowSportField): void => {
+const openModal = (sportField: SportField): void => {
   sportFieldInfoDialogVisible.value = true;
   selectedSportField.value = sportField;
 };

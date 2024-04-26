@@ -7,5 +7,3 @@ export interface SportField {
   address?: string;
   file?: File;
 }
-
-export type ShowSportField = Omit<SportField, 'file'>;

@@ -20,7 +20,7 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import { debounce } from '../utils/Debounce';
-import { NominatimResponseItem } from '@/types/Address.ts'; // Adjust the path as necessary
+import { NominatimResponseItem } from '@/types/Address.ts';
 
 const addressValue = ref('');
 const addresses = ref<NominatimResponseItem[]>([]);
@@ -37,7 +37,7 @@ const searchAddresses = async () => {
 
 const debouncedSearchAddresses = debounce(searchAddresses, 300);
 
-const selectAddress = (address: any) => {
+const selectAddress = (address: NominatimResponseItem) => {
   emit('address', address.value);
 };
 </script>
