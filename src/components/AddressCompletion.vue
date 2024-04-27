@@ -21,6 +21,7 @@ import { ref } from 'vue';
 import axios from 'axios';
 import { debounce } from '../utils/Debounce';
 import { NominatimResponseItem } from '@/types/Address.ts';
+import { AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
 
 const addressValue = ref('');
 const addresses = ref<NominatimResponseItem[]>([]);
@@ -37,8 +38,8 @@ const searchAddresses = async () => {
 
 const debouncedSearchAddresses = debounce(searchAddresses, 300);
 
-const selectAddress = (address: NominatimResponseItem) => {
-  emit('address', address.value);
+const selectAddress = (event: AutoCompleteItemSelectEvent) => {
+  emit('address', event.value);
 };
 </script>
 
