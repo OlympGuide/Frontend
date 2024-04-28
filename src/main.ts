@@ -19,6 +19,8 @@ import InputIcon from 'primevue/inputicon';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Toast from 'primevue/toast';
+import Chip from 'primevue/chip';
+import Dropdown from 'primevue/dropdown';
 
 import { defineRules } from '@/validation/rules.ts';
 
@@ -40,6 +42,8 @@ app.component('InputIcon', InputIcon);
 app.component('DataTable', DataTable);
 app.component('Column', Column);
 app.component('Toast', Toast);
+app.component('Chip', Chip);
+app.component('Dropdown', Dropdown);
 
 //Vee Validate Rules
 defineRules();

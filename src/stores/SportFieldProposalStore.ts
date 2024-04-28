@@ -1,12 +1,19 @@
 import { defineStore } from 'pinia';
-import { postSportFieldProposal, getSportFieldProposals, changeStateById } from '@/api/sportFieldProposalApi.ts';
-import { PostSportFieldProposal, SportFieldProposal, SportFieldProposalState } from '@/types/Proposal';
+import {
+  postSportFieldProposal,
+  getSportFieldProposals,
+  changeStateById,
+} from '@/api/sportFieldProposalApi.ts';
+import {
+  PostSportFieldProposal,
+  SportFieldProposal,
+  SportFieldProposalState,
+} from '@/types/Proposal';
 import { AxiosResponse } from 'axios';
+import { ApiState } from '@/types/ApiState.ts';
 
-interface SportFieldState {
+interface SportFieldState extends ApiState {
   sportFieldProposals: SportFieldProposal[];
-  isLoading: boolean;
-  errorMessage: string;
 }
 
 export const useSportFieldProposalStore = defineStore('sportFieldProposal', {
@@ -22,25 +29,26 @@ export const useSportFieldProposalStore = defineStore('sportFieldProposal', {
       this.isLoading = true;
       try {
         this.errorMessage = '';
-        const res: AxiosResponse<SportFieldProposal[], any> = await getSportFieldProposals();
+        const res: AxiosResponse<SportFieldProposal[], any> =
+          await getSportFieldProposals();
         this.sportFieldProposals = res.data;
       } catch (e: any) {
         console.error('Error while loading sport field proposal: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
-        throw e;
       } finally {
         this.isLoading = false;
       }
     },
-    async setSportFieldProposalState(id: string, state: SportFieldProposalState) {
+    async setSportFieldProposalState(
+      id: string,
+      state: SportFieldProposalState
+    ) {
       try {
         this.errorMessage = '';
-        const res: AxiosResponse<SportFieldProposal[], any> = await changeStateById(id, state);
-        this.sportFieldProposals = res.data;
+        await changeStateById(id, state);
       } catch (e: any) {
         console.error('Error while updating sport field proposal: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
-        throw e;
       } finally {
         this.isLoading = false;
       }

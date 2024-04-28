@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import { me } from '@/api/userApi.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
-import { Auth0User, User } from '@/types/User.ts';
+import { Auth0User, instanceOfUser, User, UserRole } from '@/types/User.ts';
 
 interface UserState extends ApiState {
   isAuthenticated: boolean;
@@ -32,6 +32,26 @@ export const useUserStore = defineStore('user', {
       } finally {
         this.isLoading = false;
       }
+    },
+  },
+  getters: {
+    isOperator(): boolean {
+      if (!instanceOfUser(this.user)) {
+        return false;
+      }
+
+      return !!this.user.roles.find(
+        (role: UserRole) => role === UserRole.Operator
+      );
+    },
+    isAdministrator(): boolean {
+      if (!instanceOfUser(this.user)) {
+        return false;
+      }
+
+      return !!this.user.roles.find(
+        (role: UserRole) => role === UserRole.Administrator
+      );
     },
   },
 });

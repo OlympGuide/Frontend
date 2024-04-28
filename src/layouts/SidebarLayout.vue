@@ -1,6 +1,6 @@
 <template>
   <aside class="sidebar">
-    <div v-for="item in menuItems" :key="item.link" class="w-full">
+    <template v-for="item in menuItems" :key="item.link" class="w-full">
       <RouterLink
         v-if="!item.hide && item.link"
         :to="item.disabled ? '' : item.link"
@@ -16,8 +16,8 @@
       >
         <SidebarItem :item="item"></SidebarItem>
       </div>
-      <div v-if="item.spacer" class="spacer"></div>
-    </div>
+      <div v-if="item.spacer && !item.hide" class="spacer"></div>
+    </template>
   </aside>
   <slot></slot>
 </template>
@@ -46,8 +46,8 @@ const menuItems = computed<MenuItem[]>(() => [
 
       loginWithRedirect();
     },
-    iconImg: 'user.png',
-    iconClasses: '!w-16',
+    iconImg: user.value?.picture || 'user.png',
+    iconClasses: '!w-16 rounded-full',
     spacer: true,
     disabled: !!user.value,
   },
@@ -79,6 +79,7 @@ const menuItems = computed<MenuItem[]>(() => [
     link: '/proposals',
     iconImg: 'settings.png',
     spacer: !!user.value,
+    hide: !userStore.isAdministrator,
   },
   {
     text: 'Ausloggen',
@@ -135,7 +136,7 @@ const menuItems = computed<MenuItem[]>(() => [
   }
 
   .spacer {
-    @apply w-full h-0.5 bg-gray-500 rounded mt-4;
+    @apply w-full h-[2.5px] bg-gray-500 rounded;
   }
 }
 </style>
