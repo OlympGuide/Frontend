@@ -3,9 +3,8 @@
     v-model:visible="visible"
     modal
     header="Erstelle einen neuen Sportplatz"
-    class="dialog"
+    class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
     @hide="closeDialog"
-    @show="resetForm"
   >
     <form @submit.prevent="submitDialog" novalidate>
       <div class="col-layout">
@@ -32,6 +31,7 @@
               >Koordinaten <span class="text-red-800">*</span></label
             >
             <InputText
+              disabled
               id="coordinates"
               class="basic-input-area"
               :class="{ 'p-invalid': coordinatesError }"
@@ -41,8 +41,8 @@
             <small class="p-error input-error">{{ coordinatesError }}</small>
           </FloatLabel>
         </div>
-
-        <FloatLabel class="float-label-input mb-5">
+        <AddressCompletion @address="setCoordinates" />
+        <FloatLabel class="float-label-input">
           <label for="description" class="label">Beschreibung</label>
           <TextArea
             id="description"
@@ -52,6 +52,15 @@
             autocomplete="off"
           />
         </FloatLabel>
+        <div class="flex align-items-center" v-if="!isDemoActive">
+          <Checkbox v-model="checked" :binary="true" id="owner" class="mb-5" />
+          <label @click="checked = !checked" class="ml-2 clickable"
+            >Ich bin Eigentümer:in</label
+          >
+        </div>
+        <div v-if="checked">
+          <FileUpload @file="handleFile" />
+        </div>
       </div>
       <div class="button-layout">
         <Button
@@ -76,13 +85,34 @@
 import { ref, watch } from 'vue';
 import { useField, useForm } from 'vee-validate';
 import { storeToRefs } from 'pinia';
+import AddressCompletion from '@/components/AddressCompletion.vue';
+import { NominatimResponseItem } from '@/types/Address.ts';
+import FileUpload from '@/components/FileUpload.vue';
+import { useDemoStore } from '@/stores/DemoStore.ts';
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { PostSportFieldProposal } from '@/types/Proposal';
+
+const checked = ref(false);
+const address = ref<NominatimResponseItem>();
+const file = ref<File>();
+
+const demoStore = useDemoStore();
+const { isDemoActive } = storeToRefs(demoStore);
+
+const props = defineProps({
+  isVisible: { type: Boolean, required: true },
+  coordinates: {
+    type: String,
+    required: false,
+  },
+});
+
+const emit = defineEmits(['close']);
 
 const { handleSubmit, validate, resetForm } = useForm({
   initialValues: {
     name: '',
-    coordinates: '',
+    coordinates: props.coordinates ?? '',
     description: '',
   },
   validateOnMount: false,
@@ -104,12 +134,6 @@ const { value: description, errorMessage: descriptionError } =
 const sportFieldProposalStore = useSportFieldProposalStore();
 const { isLoading, errorMessage } = storeToRefs(sportFieldProposalStore);
 
-const props = defineProps({
-  isVisible: { type: Boolean, required: true },
-});
-
-const emit = defineEmits(['close']);
-
 const visible = ref(props.isVisible);
 
 watch(
@@ -119,9 +143,28 @@ watch(
   }
 );
 
+watch(
+  () => props.coordinates,
+  (value) => {
+    if (typeof value === 'string') {
+      coordinates.value = value;
+    }
+  }
+);
+
 const closeDialog = () => {
   errorMessage.value = '';
+  resetForm();
   emit('close');
+};
+
+const setCoordinates = (autocompleteAddress: NominatimResponseItem) => {
+  address.value = autocompleteAddress;
+  coordinates.value = autocompleteAddress.lat + ', ' + autocompleteAddress.lon;
+};
+
+const handleFile = (ownerFile: File) => {
+  file.value = ownerFile;
 };
 
 const submitDialog = handleSubmit(async (values: any) => {
@@ -138,7 +181,8 @@ const submitDialog = handleSubmit(async (values: any) => {
     sportFieldDescription: values.description,
     sportFieldLongitude: longitude,
     sportFieldLatitude: latitude,
-    sportFieldAddress: '',
+    sportFieldAddress: address.value?.display_name,
+    //sportFieldFile: file.value, //TODO add again after backend accepts files
   };
 
   try {
@@ -152,10 +196,6 @@ const submitDialog = handleSubmit(async (values: any) => {
 </script>
 
 <style scoped>
-.dialog {
-  @apply z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6;
-}
-
 .float-label-input {
   @apply w-full relative;
 }
@@ -178,5 +218,9 @@ const submitDialog = handleSubmit(async (values: any) => {
 
 .col-layout {
   @apply flex flex-col gap-y-10 lg:gap-y-10 pt-5;
+}
+
+.clickable {
+  @apply cursor-pointer;
 }
 </style>

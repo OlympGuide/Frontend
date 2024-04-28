@@ -31,6 +31,7 @@ interface IconKeyMap {
 }
 
 const sportFieldStore = useSportFieldStore();
+let currentMarker: L.Marker;
 
 const map = ref<Map>();
 const sportFieldInfoDialogVisible = ref<boolean>(false);
@@ -39,11 +40,15 @@ const sportFields = ref<SportField[]>([]);
 
 const icons = ref<IconKeyMap>({});
 
+const emit = defineEmits(['marked']);
+
 onMounted((): void => {
   map.value = createMap();
   icons.value = createIcons();
 
   loadSportFields();
+  addMarkers();
+  addClickListener();
 });
 
 const createMap = (): Map => {
@@ -79,11 +84,39 @@ const createMap = (): Map => {
   return map;
 };
 
+const addClickListener = (): void => {
+  map.value!.on('click', (e) => {
+    const { lat, lng } = e.latlng;
+
+    if (currentMarker) {
+      map.value!.removeLayer(currentMarker);
+    }
+
+    currentMarker = L.marker([lat, lng], { icon: icons.value.marker }).addTo(
+      map.value!
+    );
+
+    emit('marked', currentMarker);
+
+    const popup = L.popup().setContent(
+      'Um einen Sportplatz hier zu erfassen, <br>klicken Sie auf +'
+    );
+    currentMarker.bindPopup(popup).togglePopup();
+  });
+};
+
 const createIcons = (): IconKeyMap => {
   const iconKeyMap: IconKeyMap = {};
 
   const footballIcon: Icon = L.icon({
     iconUrl: footballIconUrl,
+    iconSize: [30, 30],
+    iconAnchor: [15, 15],
+    popupAnchor: [0, -30],
+  });
+
+  const markerIcon: Icon = L.icon({
+    iconUrl: 'src/assets/icons/marker.png',
     iconSize: [30, 30],
     iconAnchor: [15, 15],
     popupAnchor: [0, -30],
@@ -95,13 +128,13 @@ const createIcons = (): IconKeyMap => {
 
   iconKeyMap['football'] = footballIcon;
   iconKeyMap['stackedIcon'] = stackedIcon;
+  iconKeyMap['marker'] = markerIcon;
 
   return iconKeyMap;
 };
 
 const loadSportFields = (): void => {
-  sportFieldStore.loadSportFields()
-  .then(_ => {
+  sportFieldStore.loadSportFields().then((_) => {
     sportFields.value = sportFieldStore.sportFields;
     addMarkers();
   });
