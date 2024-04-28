@@ -1,41 +1,47 @@
 <template>
   <aside class="sidebar">
     <template v-for="item in menuItems" :key="item.link" class="w-full">
-      <RouterLink
-        v-if="!item.hide && item.link"
-        :to="item.disabled ? '' : item.link"
-        class="sidebar-item"
-      >
-        <SidebarItem :item="item"></SidebarItem>
-      </RouterLink>
-      <div
-        v-if="!item.hide && item.click"
-        @click="item.click"
-        class="sidebar-item"
-        :class="{ 'cursor-pointer': !item.disabled }"
-      >
-        <SidebarItem :item="item"></SidebarItem>
-      </div>
-      <div v-if="item.spacer && !item.hide" class="spacer"></div>
+      <template v-if="item.visible">
+        <RouterLink
+          v-if="!item.hide && item.link"
+          :to="item.disabled ? '' : item.link"
+          class="sidebar-item"
+        >
+          <SidebarItem :item="item"></SidebarItem>
+        </RouterLink>
+        <div
+          v-if="!item.hide && item.click"
+          @click="item.click"
+          class="sidebar-item"
+          :class="{ 'cursor-pointer': !item.disabled }"
+        >
+          <SidebarItem :item="item"></SidebarItem>
+        </div>
+        <div v-if="item.spacer && !item.hide" class="spacer"></div>
+      </template>
     </template>
   </aside>
   <slot></slot>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { useDemoStore } from '@/stores/DemoStore.ts';
+import { storeToRefs } from 'pinia';
 import SidebarItem from '@/layouts/SidebarItem.vue';
 import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { Auth0User, User } from '@/types/User.ts';
+import { computed } from 'vue';
+
+const demoStore = useDemoStore();
+const { isDemoActive } = storeToRefs(demoStore);
 
 const { loginWithRedirect, logout } = useAuth0();
 const userStore = useUserStore();
-
 const user = computed<User | Auth0User | null>(() => userStore.user);
 
-const menuItems = computed<MenuItem[]>(() => [
+let menuItems = computed<MenuItem[]>(() => [
   {
     id: 'login',
     text: user.value ? user.value.name : 'Login',
@@ -49,6 +55,7 @@ const menuItems = computed<MenuItem[]>(() => [
     iconImg: user.value?.picture || 'user.png',
     iconClasses: '!w-16 rounded-full',
     spacer: true,
+    visible: true,
     disabled: !!user.value,
   },
   {
@@ -56,30 +63,35 @@ const menuItems = computed<MenuItem[]>(() => [
     link: '/',
     iconImg: 'map.png',
     iconClasses: '!w-12',
+    visible: true,
   },
-  // {
-  //   text: 'Reservationen',
-  //   link: '/reservations',
-  //   iconImg: 'calendar.png',
-  //   iconClasses: '!w-10',
-  // },
-  // {
-  //   text: 'Lieblingsplätze',
-  //   link: '/likes',
-  //   iconImg: 'heart.png',
-  // },
-  // {
-  //   text: 'Einstellungen',
-  //   link: '/settings',
-  //   iconImg: 'settings.png',
-  //   spacer: !!user.value,
-  // },
+  {
+    text: 'Reservationen',
+    link: '/reservations',
+    iconImg: 'calendar.png',
+    iconClasses: '!w-10',
+    visible: !isDemoActive.value,
+  },
+  {
+    text: 'Lieblingsplätze',
+    link: '/likes',
+    iconImg: 'heart.png',
+    visible: !isDemoActive.value,
+  },
+  {
+    text: 'Einstellungen',
+    link: '/settings',
+    iconImg: 'settings.png',
+    spacer: !!user.value,
+    visible: true,
+  },
   {
     text: 'Sportplatz-Anträge',
     link: '/proposals',
-    iconImg: 'settings.png',
+    iconImg: 'sportfields_proposal.png',
     spacer: !!user.value,
     hide: !userStore.isAdministrator,
+    visible: true,
   },
   {
     text: 'Ausloggen',
@@ -91,6 +103,7 @@ const menuItems = computed<MenuItem[]>(() => [
       });
       userStore.user = null;
     },
+    visible: true,
     icon: 'pi pi-sign-out',
     hide: !user.value,
   },

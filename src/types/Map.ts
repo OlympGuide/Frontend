@@ -4,6 +4,6 @@ export interface SportField {
   description?: string;
   latitude: number;
   longitude: number;
+  address?: string;
+  file?: File;
 }
-
-export type PostSportField = Omit<SportField, 'id'>;

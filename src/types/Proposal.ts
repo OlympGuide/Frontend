@@ -3,7 +3,8 @@ export interface SportFieldProposal {
   sportFieldDescription: string;
   sportFieldLongitude: number;
   sportFieldLatitude: number;
-  sportFieldAddress: string;
+  sportFieldAddress?: string;
+  //sportFieldFile?: File; //TODO add again after backend accepts files
 }
 
 export type PostSportFieldProposal = Omit<SportFieldProposal, 'id'>;

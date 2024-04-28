@@ -18,9 +18,13 @@ import Calendar from 'primevue/calendar';
 import InputIcon from 'primevue/inputicon';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import Toast from 'primevue/toast';
+import ConfirmPopup from 'primevue/confirmpopup';
+import Checkbox from 'primevue/checkbox';
 import Chip from 'primevue/chip';
 import Dropdown from 'primevue/dropdown';
+import FileUpload from 'primevue/fileupload';
+import Toast from 'primevue/toast';
+import AutoComplete from 'primevue/autocomplete';
 
 import { defineRules } from '@/validation/rules.ts';
 
@@ -29,6 +33,8 @@ import router from '@/router';
 export const pinia = createPinia();
 
 import { createAuth0 } from '@auth0/auth0-vue';
+import ToggleButton from 'primevue/togglebutton';
+
 const app = createApp(App);
 
 // Primevue components, add each component as needed
@@ -44,6 +50,12 @@ app.component('Column', Column);
 app.component('Toast', Toast);
 app.component('Chip', Chip);
 app.component('Dropdown', Dropdown);
+app.component('ConfirmPopup', ConfirmPopup);
+app.component('Checkbox', Checkbox);
+app.component('Toast', Toast);
+app.component('FileUpload', FileUpload);
+app.component('AutoComplete', AutoComplete);
+app.component('ToggleButton', ToggleButton);
 
 //Vee Validate Rules
 defineRules();
