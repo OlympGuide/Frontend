@@ -3,6 +3,8 @@ import { getSportFields, getSportFieldById } from '@/api/sportFieldApi.ts';
 import { SportField } from '@/types/Map.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
+import { getReservationsBySportField } from '@/api/reservationApi.ts';
+import { Reservation } from '@/types/Reservation.ts';
 
 interface SportFieldState extends ApiState {
   sportFields: SportField[];
@@ -40,6 +42,25 @@ export const useSportFieldStore = defineStore('sportField', {
         this.selectedSportField = res.data;
       } catch (e: any) {
         console.error('Error while loading sport field: ', e);
+        this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async loadReservationsBySportField(id: string) {
+      this.isLoading = true;
+      if (!this.selectedSportField) {
+        await this.loadSelectedSportField(id);
+      }
+
+      try {
+        this.errorMessage = '';
+        const res: AxiosResponse<Reservation[], any> =
+          await getReservationsBySportField(id);
+
+        this.selectedSportField!.reservations = res.data;
+      } catch (e: any) {
+        console.error('Error while loading sport field reservations: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
       } finally {
         this.isLoading = false;

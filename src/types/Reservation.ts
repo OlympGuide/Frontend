@@ -8,3 +8,9 @@ export interface Reservation {
   start: Date;
   end: Date;
 }
+
+export interface PostReservation {
+  sportField: string;
+  start: Date;
+  end: Date;
+}
