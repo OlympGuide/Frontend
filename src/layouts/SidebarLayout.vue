@@ -5,6 +5,7 @@
         <RouterLink
           v-if="!item.hide && item.link"
           :to="item.disabled ? '' : item.link"
+          :data-cy="`menu-item-${item.text}`"
           class="sidebar-item"
         >
           <SidebarItem :item="item"></SidebarItem>
@@ -13,6 +14,7 @@
           v-if="!item.hide && item.click"
           @click="item.click"
           class="sidebar-item"
+          :data-cy="`menu-item-${item.text}`"
           :class="{ 'cursor-pointer': !item.disabled }"
         >
           <SidebarItem :item="item"></SidebarItem>
