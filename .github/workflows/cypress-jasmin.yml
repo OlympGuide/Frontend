@@ -1,5 +1,5 @@
 
-name: Cypess-Test
+name: Cypess-Test-Jasmin-Delete-Me
 on:
     push:
         branches: [ "KAN-56-Frontend-Testing" ]
