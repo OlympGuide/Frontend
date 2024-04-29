@@ -21,7 +21,8 @@ describe('Create Sport Field when logged in', () => {
     cy.get('[data-cy=address-autocomplete]').type(
       'Hörnlistrasse 33 Winterthur'
     );
-    cy.get('#pv_id_2_list').first().click();
+    cy.wait(200);
+    cy.get('[id^="pv_id_"][id$="_list"]').should('be.visible').first().click();
     cy.wait(200);
     cy.get('[data-cy=address-autocomplete] input').should(
       'have.value',
