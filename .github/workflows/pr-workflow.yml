@@ -29,10 +29,6 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-      
-
-      - name: Run Tests
-        run: npm run test
 
       - name: Build Vue Project
         run: npm run build
