@@ -1,4 +1,4 @@
-name: PR-Workflow
+name: Cypess-Test
 on:
     push:
         branches: [ "KAN-80-Cypress-Pipeline-aufsetzen" ]
