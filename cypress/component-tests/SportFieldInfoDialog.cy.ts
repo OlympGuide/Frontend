@@ -1,4 +1,4 @@
-import SportFieldInfoDialog from '../../src/components/SportFieldInfoDialog.vue'
+import SportFieldInfoDialog from '../../src/components/SportFieldInfoDialog.vue';
 
 describe('<SportFieldInfoDialog />', () => {
   it('renders', () => {
@@ -11,16 +11,15 @@ describe('<SportFieldInfoDialog />', () => {
       latitude: 47,
       longitude: 8,
       address: null,
-      file: null
+      file: null,
     };
 
     cy.mount(SportFieldInfoDialog, {
       props: {
         sportField: testSportField,
-        visible: true
+        modelValue: true,
       },
-
     });
     cy.get('span').should('contain', testSportField.description);
-  })
-})
+  });
+});
