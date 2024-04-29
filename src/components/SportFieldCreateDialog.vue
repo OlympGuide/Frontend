@@ -67,9 +67,15 @@
           type="button"
           label="Verwerfen"
           severity="secondary"
+          data-cy="verwerfen-button"
           @click="closeDialog"
         ></Button>
-        <Button type="submit" label="Speichern" :loading="isLoading"></Button>
+        <Button
+          type="submit"
+          label="Speichern"
+          data-cy="speichern-button"
+          :loading="isLoading"
+        ></Button>
       </div>
     </form>
   </Dialog>
