@@ -71,7 +71,8 @@
 import { SportField } from '@/types/Map';
 import { ref } from 'vue';
 
-const visible = defineModel('visible', { default: false });
+const visible = defineModel('visible', { default: true });
+
 const props = defineProps<{
   sportField: SportField;
 }>();
