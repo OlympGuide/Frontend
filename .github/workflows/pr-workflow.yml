@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ref:  ${{ github.event.pull_request.head.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.2
@@ -27,6 +29,7 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
+      
 
       - name: Run Tests
         run: npm run test
@@ -41,8 +44,20 @@ jobs:
       - name: Build Docker Image
         run: docker build . --file ${{ env.DOCKERFILE-PATH }}
 
-  prettier:
+  cypress-run:
     needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref:  ${{ github.event.pull_request.head.ref }}
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        
+  prettier:
+    needs: cypress-run
     name: Prettier Check
     runs-on: ubuntu-latest
     steps:
