@@ -2,6 +2,7 @@
   <OlympMap @marked="setMarked" />
   <Button
     icon="pi pi-plus"
+    data-cy="sportsfield-dialog-button"
     rounded
     class="absolute bottom-0 right-0 z-[1000] m-8"
     @click="openDialog"

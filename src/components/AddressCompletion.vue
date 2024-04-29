@@ -2,6 +2,7 @@
   <div>
     <FloatLabel class="float-label-input font-bold">
       <AutoComplete
+        data-cy="address-autocomplete"
         type="text"
         class="basic-input-area w-full relative"
         forceSelection
