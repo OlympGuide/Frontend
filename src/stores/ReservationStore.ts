@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ApiState } from '@/types/ApiState.ts';
-import { postReservation } from '@/api/reservationApi.ts';
+import { deleteReservation, postReservation } from '@/api/reservationApi.ts';
 import { PostReservation, Reservation } from '@/types/Reservation.ts';
 
 interface ReservationState extends ApiState {
@@ -26,6 +26,18 @@ export const useReservationStore = defineStore('reservation', {
           'Error while creating a new sport field reservation: ',
           e
         );
+        this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    async removeReservation(id: string) {
+      this.isLoading = true;
+      try {
+        this.errorMessage = '';
+        await deleteReservation(id);
+      } catch (e: any) {
+        console.error('Error while deleting a reservation: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
       } finally {
         this.isLoading = false;
