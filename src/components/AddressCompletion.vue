@@ -7,11 +7,13 @@
         class="basic-input-area w-full relative"
         forceSelection
         v-model="addressValue"
-        @complete="debouncedSearchAddresses"
-        :suggestions="addresses"
         option-label="display_name"
+        :suggestions="addresses"
+        :class="{ 'p-invalid': error }"
+        @complete="debouncedSearchAddresses"
         @item-select="selectAddress"
       />
+      <small class="p-error input-error font-medium">{{ error }}</small>
       <label for="address" class="label">Adresse</label>
     </FloatLabel>
   </div>
@@ -24,7 +26,12 @@ import { debounce } from '../utils/Debounce';
 import { GeoapifyItem, NominatimResponseItem } from '@/types/Address.ts';
 import { AutoCompleteItemSelectEvent } from 'primevue/autocomplete';
 
-const addressValue = ref('');
+const addressValue = defineModel({ required: true, default: '' });
+
+defineProps({
+  error: String,
+});
+
 const addresses = ref<NominatimResponseItem[]>([]);
 
 const emit = defineEmits(['address']);

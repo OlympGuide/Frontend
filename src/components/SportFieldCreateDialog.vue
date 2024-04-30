@@ -55,7 +55,8 @@
           />
           <small class="p-error input-error">{{ coordinatesError }}</small>
         </FloatLabel>
-        <AddressCompletion @address="setCoordinates" />
+        <AddressCompletion @address="setCoordinates"  v-model="addressInput"
+                           :error="addressInputError"/>
         <FloatLabel class="float-label-input">
           <label for="description" class="label">Beschreibung</label>
           <TextArea
@@ -107,6 +108,7 @@ import { NominatimResponseItem } from '@/types/Address.ts';
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { PostSportFieldProposal } from '@/types/Proposal';
 import { sportFieldCategories } from '@/types/SportField.ts';
+import { useToast } from 'primevue/usetoast';
 
 // const checked = ref(false);
 const address = ref<NominatimResponseItem>();
@@ -131,6 +133,7 @@ const { handleSubmit, validate, resetForm } = useForm({
     category: undefined,
     coordinates: props.coordinates ?? '',
     description: '',
+    addressInput: '',
   },
   validateOnMount: false,
 });
@@ -144,6 +147,15 @@ const { value: category, errorMessage: categoryError } = useField<string>(
   'category',
   'requiredDropdown'
 );
+
+const { value: addressInput, errorMessage: addressInputError } =
+  useField<string>('addressInput', (value) => {
+    if (!coordinates.value && !value) {
+      return 'Die Adresse darf nicht leer sein, wenn kein Pin gesetzt wurde';
+    }
+
+    return true;
+  });
 
 const { value: coordinates, errorMessage: coordinatesError } = useField<string>(
   'coordinates',
@@ -190,6 +202,8 @@ const setCoordinates = (autocompleteAddress: NominatimResponseItem) => {
 //   file.value = ownerFile;
 // };
 
+const toast = useToast();
+
 const submitDialog = handleSubmit(async (values: any) => {
   const validation = await validate();
 
@@ -213,6 +227,12 @@ const submitDialog = handleSubmit(async (values: any) => {
     await sportFieldProposalStore.createSportFieldProposal(sportFieldProposal);
     resetForm();
     closeDialog();
+    toast.add({
+      severity: 'success',
+      summary: 'Sportplatz Anfrage erstellt',
+      detail: `${sportFieldProposal.sportFieldName}`,
+      life: 3000,
+    });
   } catch (e: any) {
     console.error(e);
   }
