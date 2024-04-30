@@ -13,12 +13,29 @@ env:
   DOCKERFILE-PATH: Dockerfile.development
 
 jobs:
-  build:  
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref:  ${{ github.event.pull_request.head.ref }}
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm run dev
+
+  build: 
+    needs: cypress-run 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          ref:  ${{ github.event.pull_request.head.ref }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4.0.2
@@ -27,9 +44,6 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-
-      - name: Run Tests
-        run: npm run test
 
       - name: Build Vue Project
         run: npm run build
@@ -41,6 +55,8 @@ jobs:
       - name: Build Docker Image
         run: docker build . --file ${{ env.DOCKERFILE-PATH }}
 
+
+        
   prettier:
     needs: build
     name: Prettier Check
@@ -48,6 +64,8 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
+        with:
+          ref:  ${{ github.event.pull_request.head.ref }}
       
       - name: Run Prettier
         uses: rutajdash/prettier-cli-action@v1.0.0
