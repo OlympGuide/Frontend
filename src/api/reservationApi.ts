@@ -33,3 +33,8 @@ export const getReservationsBySportField = async (
     },
   });
 };
+
+export const deleteReservation = async (id: string) => {
+  const api = await getApiClientInstance();
+  await api.delete(`${RESERVATION_PATH}/${id}`);
+};

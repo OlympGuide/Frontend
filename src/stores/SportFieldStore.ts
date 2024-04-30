@@ -3,9 +3,7 @@ import { getSportFields, getSportFieldById } from '@/api/sportFieldApi.ts';
 import { SportField } from '@/types/Map.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
-import { getReservationsBySportField } from '@/api/reservationApi.ts';
-import { Reservation } from '@/types/Reservation.ts';
-import { addHours } from 'date-fns';
+import { setHours } from 'date-fns';
 
 interface SportFieldState extends ApiState {
   sportFields: SportField[];
@@ -64,13 +62,13 @@ export const useSportFieldStore = defineStore('sportField', {
           {
             id: 'blabla1',
             user: {
-              id: '12e2abab-dfc8-4c95-acd1-f80c7d42541b',
+              id: 'ce36bae6-916f-4374-ac0a-3248a407a2af',
               name: 'Dario Aubry',
               displayName: 'Dario Aubry',
               roles: [0],
             },
-            start: new Date(),
-            end: addHours(new Date(), 1),
+            start: setHours(new Date(), 12),
+            end: setHours(new Date(), 13),
           },
           {
             id: 'blabla2',
@@ -80,8 +78,8 @@ export const useSportFieldStore = defineStore('sportField', {
               displayName: 'Max Mustermann',
               roles: [0],
             },
-            start: addHours(new Date(), 3),
-            end: addHours(new Date(), 4),
+            start: setHours(new Date(), 14),
+            end: setHours(new Date(), 15),
           },
         ];
 
