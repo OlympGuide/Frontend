@@ -9,11 +9,15 @@ export const postReservation = async (data: PostReservation) => {
   return api.post(RESERVATION_PATH, data);
 };
 
-export const getReservations = async (): Promise<
-  AxiosResponse<Reservation[], any>
-> => {
+export const getReservationsByUser = async (
+  userId: string
+): Promise<AxiosResponse<Reservation[], any>> => {
   const api = await getApiClientInstance();
-  return api.get<Reservation[]>(RESERVATION_PATH);
+  return api.get<Reservation[]>(RESERVATION_PATH, {
+    params: {
+      user: userId,
+    },
+  });
 };
 
 export const getReservationById = async (
