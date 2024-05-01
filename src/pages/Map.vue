@@ -4,7 +4,7 @@
     icon="pi pi-plus"
     data-cy="sportsfield-dialog-button"
     rounded
-    class="absolute bottom-0 right-0 z-[1000] m-8"
+    class="absolute bottom-0 right-0 z-[1000] m-8 !bg-primaryRed"
     @click="openDialog"
   />
   <SportFieldCreateDialog
