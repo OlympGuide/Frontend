@@ -1,6 +1,10 @@
 import { getApiClientInstance } from '@/api/axiosConfig.ts';
 import { AxiosResponse } from 'axios';
-import { PostReservation, Reservation } from '@/types/Reservation.ts';
+import {
+  PostReservation,
+  Reservation,
+  UpdateReservation,
+} from '@/types/Reservation.ts';
 
 const RESERVATION_PATH = '/reservations';
 
@@ -32,6 +36,11 @@ export const getReservationsBySportField = async (
       sportField: sportFieldId,
     },
   });
+};
+
+export const updateReservation = async (reservation: UpdateReservation) => {
+  const api = await getApiClientInstance();
+  return api.put(`${RESERVATION_PATH}/${reservation.id}`, reservation);
 };
 
 export const deleteReservation = async (id: string) => {

@@ -33,7 +33,11 @@ import { createCalendar, viewWeek, CalendarEvent } from '@schedule-x/calendar';
 import '@schedule-x/theme-default/dist/index.css';
 import { formatEventTime, toStartOfHour } from '@/services/dateService.ts';
 import { onMounted, watch } from 'vue';
-import { PostReservation, Reservation } from '@/types/Reservation.ts';
+import {
+  PostReservation,
+  Reservation,
+  UpdateReservation,
+} from '@/types/Reservation.ts';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { useRoute } from 'vue-router';
 import {
@@ -210,20 +214,46 @@ const getEventTime = (start: string, end: string): string => {
   return `${format(start, 'HH:mm')} - ${format(end, 'HH:mm')}`;
 };
 
-const reserve = (event: CalendarEvent) => {
+const reserve = async (event: CalendarEvent) => {
   if (!sportFieldStore.selectedSportField) {
     console.error('selectedSportField is undefined!');
     // TODO: implement error handling
     return;
   }
 
-  const reservation: PostReservation = {
-    sportField: sportFieldStore.selectedSportField.id,
-    start: new Date(event.start),
-    end: new Date(event.end),
-  };
+  try {
+    if (event.isNew) {
+      const reservation: PostReservation = {
+        sportFieldId: sportFieldStore.selectedSportField.id,
+        start: new Date(event.start),
+        end: new Date(event.end),
+      };
 
-  reservationStore.createReservation(reservation);
+      await reservationStore.createReservation(reservation);
+
+      toast.add({
+        severity: 'success',
+        summary: 'Reservation erstellt',
+        detail: 'Ihre Reservation wurde erfolgreich erstellt.',
+      });
+    } else {
+      const reservation: UpdateReservation = {
+        id: event.id.toString(),
+        start: new Date(event.start),
+        end: new Date(event.end),
+      };
+
+      await reservationStore.updateReservation(reservation);
+
+      toast.add({
+        severity: 'success',
+        summary: 'Reservation aktualisiert',
+        detail: 'Ihre Reservation wurde erfolgreich aktualisiert.',
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const cancel = async (event: CalendarEvent) => {
@@ -235,12 +265,14 @@ const cancel = async (event: CalendarEvent) => {
   }
 };
 
-const isMyReservation = (reservation: Reservation): boolean => {
+const isMyReservation = (_reservation: Reservation): boolean => {
   if (!instanceOfUser(userStore.user)) {
     return false;
   }
 
-  return reservation.user.id === userStore.user.id;
+  // TODO: acitvate this line when the backend bug is fixed
+  // return reservation.user.id === userStore.user.id;
+  return true;
 };
 </script>
 

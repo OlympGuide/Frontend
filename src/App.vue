@@ -7,7 +7,6 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
-import { getActivePinia, Store } from 'pinia';
 
 import { useToast } from 'primevue/usetoast';
 import { ToastMessageOptions } from 'primevue/toast';
@@ -17,6 +16,7 @@ import { Auth0User } from '@/types/User.ts';
 import { instanceOfApiState } from '@/types/ApiState.ts';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { useReservationStore } from '@/stores/ReservationStore.ts';
+import { Store } from 'pinia';
 
 const toast = useToast();
 const userStore = useUserStore();

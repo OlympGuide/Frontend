@@ -10,7 +10,13 @@ export interface Reservation {
 }
 
 export interface PostReservation {
-  sportField: string;
+  sportFieldId: string;
+  start: Date;
+  end: Date;
+}
+
+export interface UpdateReservation {
+  id: string;
   start: Date;
   end: Date;
 }
