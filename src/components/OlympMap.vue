@@ -25,6 +25,7 @@ import 'leaflet/dist/leaflet.css';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 
 import footballIconUrl from '@/assets/icons/football.png';
+import markerIconUrl from '@/assets/icons/marker.png';
 
 interface IconKeyMap {
   [key: string]: Icon | DivIcon;
@@ -116,7 +117,7 @@ const createIcons = (): IconKeyMap => {
   });
 
   const markerIcon: Icon = L.icon({
-    iconUrl: 'src/assets/icons/marker.png',
+    iconUrl: markerIconUrl,
     iconSize: [30, 30],
     iconAnchor: [15, 15],
     popupAnchor: [0, -30],
