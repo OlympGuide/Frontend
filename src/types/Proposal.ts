@@ -7,6 +7,7 @@ export interface SportFieldProposal {
   sportFieldLongitude: number;
   sportFieldLatitude: number;
   sportFieldAddress?: string;
+  id?: string;
   //sportFieldFile?: File; //TODO add again after backend accepts files
 }
 

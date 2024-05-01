@@ -1,39 +1,23 @@
-import { SportFieldProposal } from '../../src/types/Proposal';
-
 describe('View sport field', () => {
   before('create sport field', () => {
     cy.login('cypress@olympguide.ch', 'CypressTest1$');
-
-    const testSportField: SportFieldProposal = {
-      id: '',
-      name: 'Testsportfeld',
-      description: 'Testbeschreibung',
-      latitude: 47,
-      longitude: 8,
-      address: undefined,
-      file: undefined,
-    };
-
-    let proposalId = '';
-
-    cy.get('@authToken').then((token) => {
-      cy.postSportFieldProposal(testSportField, token);
-
-      cy.getSportFieldProposals().then((proposals) => {
-        expect(proposals).to.have.length(1);
-      });
-    });
-
-    cy.get('@authtoken').then((token) => {
-      cy.getSportFieldProposals().then((proposals) => {
-        expect(proposals).to.have.length(1);
-
-        proposalId = proposals[0].id;
-      });
-    });
   });
 
   it('should ', () => {
-    cy.get('#name').should('contain', Testsportfeld);
+    cy.get('#map').click();
+
+    cy.get('[data-pc-section=header]').should('contain', 'Marker test');
+
+    cy.get('[data-cy=date]').find('label').should('contain', 'Date');
+    cy.get('[data-cy=from]').find('label').should('contain', 'From');
+    cy.get('[data-cy=to]').find('label').should('contain', 'To');
+
+    cy.get('[data-cy=date]').find('input').clear();
+    cy.get('[data-cy=date]').find('input').type('06.06.2024');
+    cy.get('[data-cy=date]').find('svg').click();
+
+    cy.get('[data-cy=date]').find('input').should('have.value', '06.06.2024');
+
+    cy.get('[data-cy=button-book]').click();
   });
 });

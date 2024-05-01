@@ -43,6 +43,16 @@ describe('<SportFieldInfoDialog />', () => {
       },
     });
 
+    const today = new Date();
+    const day = String(today.getDate()).padStart(2, '0');
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const year = today.getFullYear();
+
+    const formattedDate = `${day}.${month}.${year}`;
+
     cy.get('span').should('contain', testSportField.description);
+    cy.get('[data-cy=calendar]')
+      .find('input')
+      .should('have.value', formattedDate);
   });
 });

@@ -33,6 +33,7 @@
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
+    "@cypress/code-coverage": "^3.12.38",
     "@cypress/vite-dev-server": "^5.0.7",
     "@cypress/vue": "^3.1.0",
     "@import-meta-env/cli": "^0.6.8",
@@ -42,6 +43,7 @@
     "@vitejs/plugin-vue": "^4.6.2",
     "autoprefixer": "^10.4.18",
     "cypress": "^13.8.1",
+    "nyc": "^15.1.0",
     "postcss": "^8.4.35",
     "prettier": "^3.2.5",
     "sass": "^1.71.1",
