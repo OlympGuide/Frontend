@@ -18,7 +18,6 @@
 import OlympMap from '@/components/OlympMap.vue';
 import { ref } from 'vue';
 
-// TODO fix import
 import SportFieldCreateDialog from '@/components/SportFieldCreateDialog.vue';
 import { LatLng } from 'leaflet';
 import { useAuth0 } from '@auth0/auth0-vue';

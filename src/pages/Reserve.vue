@@ -44,6 +44,7 @@ import {
   isAfter,
   isBefore,
   isEqual,
+  parse,
 } from 'date-fns';
 import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
 import { createResizePlugin } from '@schedule-x/resize';
@@ -51,22 +52,26 @@ import { useReservationStore } from '@/stores/ReservationStore.ts';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { instanceOfUser } from '@/types/User.ts';
 import { storeToRefs } from 'pinia';
+import { useToast } from 'primevue/usetoast';
 
 const sportFieldStore = useSportFieldStore();
 const reservationStore = useReservationStore();
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const route = useRoute();
+const toast = useToast();
+
+const dayBoundaries = {
+  start: '06:00',
+  end: '22:00',
+};
 
 const calendarApp = createCalendar({
   locale: 'de-CH',
   selectedDate: format(new Date(), 'yyyy-MM-dd'),
   views: [viewWeek],
   defaultView: viewWeek.name,
-  dayBoundaries: {
-    start: '06:00',
-    end: '22:00',
-  },
+  dayBoundaries,
   weekOptions: {
     gridHeight: 700,
   },
@@ -94,24 +99,10 @@ const calendarApp = createCalendar({
       calendarApp.events.add(event);
     },
     onEventUpdate(updatedEvent: CalendarEvent) {
-      const collidingEvent: CalendarEvent | undefined =
-        getCollidingEvent(updatedEvent);
+      updatedEvent = moveEventOnCollision(updatedEvent);
 
-      if (!collidingEvent) {
-        return;
-      }
+      if (updatedEvent.id === 'removed') return;
 
-      const difference = differenceInMinutes(
-        collidingEvent.end,
-        updatedEvent.start
-      );
-
-      updatedEvent.start = formatEventTime(
-        addMinutes(updatedEvent.start, difference)
-      );
-      updatedEvent.end = formatEventTime(
-        addMinutes(updatedEvent.end, difference)
-      );
       calendarApp.events.update(updatedEvent);
     },
   },
@@ -130,6 +121,46 @@ watch(user, () => {
   const events = reservationsToCalenderEvents(reservations);
   calendarApp.events.set(events);
 });
+
+/**
+ * Moves the event to the next available time slot if it collides with another event.
+ * If the event collides with multiple events, it will be moved until it doesn't collide with any event.
+ * If the event collides with the end of the day, it will be removed. The id of the event will be set to 'removed'!
+ * @param updatedEvent
+ */
+const moveEventOnCollision = (updatedEvent: CalendarEvent): CalendarEvent => {
+  const collidingEvent: CalendarEvent | undefined =
+    getCollidingEvent(updatedEvent);
+
+  if (!collidingEvent) {
+    return updatedEvent;
+  }
+
+  const dayEndBoundary = parse(dayBoundaries.end, 'HH:mm', updatedEvent.end);
+  if (isAfter(updatedEvent.end, dayEndBoundary)) {
+    toast.add({
+      severity: 'warn',
+      summary: 'Reservation überschneidet sich.',
+      detail: 'Bitte wählen Sie ein anderes Zeitfenster.',
+    });
+    calendarApp.events.remove(updatedEvent.id);
+    updatedEvent.id = 'removed';
+    return updatedEvent;
+  }
+
+  const difference = differenceInMinutes(
+    collidingEvent.end,
+    updatedEvent.start
+  );
+
+  updatedEvent.start = formatEventTime(
+    addMinutes(updatedEvent.start, difference)
+  );
+  updatedEvent.end = formatEventTime(addMinutes(updatedEvent.end, difference));
+
+  moveEventOnCollision(updatedEvent);
+  return updatedEvent;
+};
 
 const getCollidingEvent = (
   updatedEvent: CalendarEvent
