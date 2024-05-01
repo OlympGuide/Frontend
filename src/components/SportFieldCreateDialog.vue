@@ -24,7 +24,9 @@
               v-model="name"
               autocomplete="off"
             />
-            <small class="p-error input-error">{{ nameError }}</small>
+            <small data-cy="name-error" class="p-error input-error">{{
+              nameError
+            }}</small>
           </FloatLabel>
 
           <FloatLabel class="float-label-input">
@@ -53,7 +55,7 @@
             v-model="coordinates"
             autocomplete="off"
           />
-          <small class="p-error input-error">{{ coordinatesError }}</small>
+          <small class="p-error input-error" class="p-error input-error">{{ coordinatesError }}</small>
         </FloatLabel>
         <AddressCompletion @address="setCoordinates"  v-model="addressInput"
                            :error="addressInputError"/>

@@ -13,7 +13,9 @@
         @complete="debouncedSearchAddresses"
         @item-select="selectAddress"
       />
-      <small class="p-error input-error font-medium">{{ error }}</small>
+      <small data-cy="address-error" class="p-error input-error font-medium">{{
+        error
+      }}</small>
       <label for="address" class="label">Adresse</label>
     </FloatLabel>
   </div>

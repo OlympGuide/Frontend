@@ -1,4 +1,6 @@
 describe('Create sport field', () => {
+  const expectedLat = 47.497169148299186;
+  const expectedLong = 8.728895187377931;
   describe('When logged in', () => {
     beforeEach('Log in user', () => {
       cy.login('cypress@olympguide.ch', 'CypressTest1$');
@@ -43,9 +45,6 @@ describe('Create sport field', () => {
     });
 
     it('should create a new sportfield by setting a marker', () => {
-      const expectedLat = 47.497169148299186;
-      const expectedLong = 8.728895187377931;
-
       cy.get('#map').click();
       cy.get('[data-cy=sportsfield-dialog-button]')
         .should('be.visible')
@@ -63,10 +62,60 @@ describe('Create sport field', () => {
 
       cy.get('.p-toast-message-success').should('be.visible');
     });
+
+    it('should not create a sport field without a name', () => {
+      cy.get('#map').click();
+      cy.get('[data-cy=sportsfield-dialog-button]')
+        .should('be.visible')
+        .click();
+
+      cy.get('[data-cy=speichern-button]').click();
+
+      cy.get('[data-cy=name-error]').should(
+        'contain',
+        'Das Feld darf nicht leer sein'
+      );
+    });
+
+    it('should not create a sport field without an address or coordinates', () => {
+      cy.get('[data-cy=sportsfield-dialog-button]')
+        .should('be.visible')
+        .click();
+
+      cy.get('#name').type('No address test');
+      cy.get('#name').should('have.value', 'No address test');
+
+      cy.get('[data-cy=speichern-button]').click();
+
+      cy.get('[data-cy=coordinates-error]').should(
+        'contain',
+        'Das Feld darf nicht leer sein'
+      );
+
+      cy.get('[data-cy=address-error]').should(
+        'contain',
+        'Die Adresse darf nicht leer sein, wenn kein Pin gesetzt wurde'
+      );
+    });
+
+    it('should not create a sport field without an address from autocompletion', () => {
+      cy.get('[data-cy=sportsfield-dialog-button]')
+        .should('be.visible')
+        .click();
+
+      cy.get('[data-cy=address-autocomplete]').type('Teststrasse');
+
+      cy.get('[data-cy=speichern-button]').click();
+
+      cy.get('[data-cy=address-error]').should(
+        'contain',
+        'Die Adresse darf nicht leer sein, wenn kein Pin gesetzt wurde'
+      );
+    });
   });
 
   describe('When not logged in', () => {
-    beforeEach('Log in user', () => {
+    beforeEach('Go to dashboardr', () => {
       cy.visit('/');
     });
 
@@ -75,7 +124,11 @@ describe('Create sport field', () => {
         .should('be.visible')
         .click();
 
-      cy.url().should('include', 'https://dev-ooenivxi0xqapns6.us.auth0.com');
+      cy.origin('https://dev-ooenivxi0xqapns6.us.auth0.com', () => {
+        cy.url().should('include', 'https://dev-ooenivxi0xqapns6.us.auth0.com');
+
+        cy.get('#prompt-logo-center').should('be.visible');
+      });
     });
   });
 });
