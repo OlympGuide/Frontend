@@ -56,6 +56,7 @@ Cypress.Commands.add(
   }
 );
 
+/*
 Cypress.Commands.add('postSportFieldProposal', (data, token) => {
   cy.request({
     method: 'POST',
@@ -66,6 +67,8 @@ Cypress.Commands.add('postSportFieldProposal', (data, token) => {
     },
   });
 });
+
+ */
 
 /*
 Cypress.Commands.add('getSportFieldProposals', (): SportFieldProposal[] => {

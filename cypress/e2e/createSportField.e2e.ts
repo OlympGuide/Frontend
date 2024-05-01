@@ -1,3 +1,5 @@
+import '@cypress/code-coverage/support';
+
 describe('Create sport field', () => {
   const expectedLat = 47.497169148299186;
   const expectedLong = 8.728895187377931;

@@ -4,6 +4,15 @@ node_modules/
 # Build output
 /dist/
 
+#coverages
+coverage/
+e2e-coverage/
+.nyc_output
+
+#screenshots
+cypress/screenshots
+
+
 # IDE files
 /.vscode/
 /.idea/
@@ -26,3 +35,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw*
+
