@@ -12,7 +12,7 @@
 
           <div
             v-if="calendarEvent.isEditable"
-            class="flex gap-1 absolute right-1"
+            class="flex gap-1 absolute right-1 z-[1000]"
           >
             <a @click="reserve(calendarEvent)"
               ><i class="pi pi-check" style="font-size: 0.7rem"></i

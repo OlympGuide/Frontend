@@ -25,7 +25,7 @@
             <div class="flex justify-center items-center">
               <Button
                 icon="pi pi-check"
-                class="mr-2 w-8 h-8 rounded-full"
+                class="mr-2 w-8 h-8 rounded-full !bg-primaryRed"
                 @click="
                   handleProposal(
                     proposals.data.id,
@@ -35,7 +35,7 @@
               />
               <Button
                 icon="pi pi-times"
-                class="mr-2 w-8 h-8 rounded-full"
+                class="mr-2 w-8 h-8 rounded-full !bg-primaryRed"
                 @click="
                   handleProposal(
                     proposals.data.id,
