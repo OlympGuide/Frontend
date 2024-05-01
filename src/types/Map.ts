@@ -1,3 +1,5 @@
+import { Reservation } from '@/types/Reservation.ts';
+
 export interface SportField {
   id: string;
   name: string;
@@ -6,4 +8,7 @@ export interface SportField {
   longitude: number;
   address?: string;
   file?: File;
+  reservations?: Reservation[];
 }
+
+export type PostSportField = Omit<SportField, 'id'>;

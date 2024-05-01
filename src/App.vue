@@ -7,7 +7,6 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
-import { getActivePinia, Store } from 'pinia';
 
 import { useToast } from 'primevue/usetoast';
 import { ToastMessageOptions } from 'primevue/toast';
@@ -15,22 +14,28 @@ import { useUserStore } from '@/stores/UserStore.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
 import { Auth0User } from '@/types/User.ts';
 import { instanceOfApiState } from '@/types/ApiState.ts';
+import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
+import { useReservationStore } from '@/stores/ReservationStore.ts';
+import { Store } from 'pinia';
 
 const toast = useToast();
 const userStore = useUserStore();
+const sportFieldStore = useSportFieldStore();
+const reservationStore = useReservationStore();
 const { user, isAuthenticated } = useAuth0();
-const pinia: any = getActivePinia() as any;
 
-pinia?._s.forEach((store: Store) => {
+const stores: Store[] = [userStore, sportFieldStore, reservationStore];
+
+stores.forEach((store: Store) => {
   if (instanceOfApiState(store)) {
     watch(
       () => store.errorMessage,
       () => {
-        if (userStore.errorMessage) {
+        if (store.errorMessage) {
           const toastMessage: ToastMessageOptions = {
             severity: 'error',
             summary: 'Something went wrong!',
-            detail: userStore.errorMessage,
+            detail: store.errorMessage,
             life: 3000,
           };
 

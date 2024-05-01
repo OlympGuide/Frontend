@@ -4,7 +4,7 @@
     icon="pi pi-plus"
     data-cy="sportsfield-dialog-button"
     rounded
-    class="absolute bottom-0 right-0 z-[1000] m-8"
+    class="absolute bottom-0 right-0 z-[1000] m-8 !bg-primaryRed"
     @click="openDialog"
   />
   <SportFieldCreateDialog
@@ -18,7 +18,6 @@
 import OlympMap from '@/components/OlympMap.vue';
 import { ref } from 'vue';
 
-// TODO fix import
 import SportFieldCreateDialog from '@/components/SportFieldCreateDialog.vue';
 import { LatLng } from 'leaflet';
 import { useAuth0 } from '@auth0/auth0-vue';

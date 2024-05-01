@@ -52,7 +52,6 @@ app.component('Chip', Chip);
 app.component('Dropdown', Dropdown);
 app.component('ConfirmPopup', ConfirmPopup);
 app.component('Checkbox', Checkbox);
-app.component('Toast', Toast);
 app.component('FileUpload', FileUpload);
 app.component('AutoComplete', AutoComplete);
 app.component('ToggleButton', ToggleButton);
