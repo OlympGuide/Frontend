@@ -47,12 +47,12 @@ let menuItems = computed<MenuItem[]>(() => [
   {
     id: 'login',
     text: user.value ? user.value.name : 'Login',
-    click: (): void => {
+    click: async () => {
       if (user.value) {
         return;
       }
 
-      loginWithRedirect();
+      await loginWithRedirect();
     },
     iconImg: user.value?.picture || 'user.png',
     iconClasses: '!w-16 rounded-full',
@@ -97,8 +97,8 @@ let menuItems = computed<MenuItem[]>(() => [
   },
   {
     text: 'Ausloggen',
-    click: () => {
-      logout({
+    click: async () => {
+      await logout({
         logoutParams: {
           returnTo: window.location.origin,
         },
