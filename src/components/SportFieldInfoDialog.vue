@@ -15,7 +15,7 @@
     <template #footer>
       <Button label="Abbrechen" text @click="closeDialog()"></Button>
       <Button
-        data-cy="button-book"
+        data-cy="button-reserve"
         label="Reservieren"
         class="!bg-primaryRed"
         @click="reserve()"
