@@ -17,6 +17,7 @@ import { instanceOfApiState } from '@/types/ApiState.ts';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { useReservationStore } from '@/stores/ReservationStore.ts';
 import { Store } from 'pinia';
+import { initApiClient } from '@/api/axiosConfig.ts';
 
 const toast = useToast();
 const userStore = useUserStore();
@@ -47,6 +48,9 @@ stores.forEach((store: Store) => {
 });
 
 onMounted(async () => {
+  await initApiClient();
+
+  if (!isAuthenticated.value) return;
   await userStore.getLoggedInUser();
 
   if (
