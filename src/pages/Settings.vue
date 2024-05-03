@@ -9,16 +9,28 @@
         onLabel="On"
         offLabel="Off"
       />
+      <Button
+        @click="testDataButtonClicked"
+        class="w-24">
+        Testdaten (Neu)erstellen
+      </Button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { createOrRecreateTestData } from '@/api/testDataApi'
+
 import { useDemoStore } from '@/stores/DemoStore.ts';
 import { storeToRefs } from 'pinia';
 
 const demoStore = useDemoStore();
 const { isDemoActive } = storeToRefs(demoStore);
+
+const testDataButtonClicked = () => {
+  createOrRecreateTestData();
+};
+
 </script>
 
 <style scoped></style>
