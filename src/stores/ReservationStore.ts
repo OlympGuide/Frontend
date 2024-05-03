@@ -21,6 +21,7 @@ export const useReservationStore = defineStore('reservation', {
       myReservations: [],
       isLoading: false,
       errorMessage: '',
+      successMessage: '',
     };
   },
   actions: {
@@ -29,6 +30,7 @@ export const useReservationStore = defineStore('reservation', {
       try {
         this.errorMessage = '';
         await postReservation(reservation);
+        this.successMessage = 'Ihre Reservation wurde erstellt.';
       } catch (e: any) {
         console.error(
           'Error while creating a new sport field reservation: ',
@@ -45,6 +47,7 @@ export const useReservationStore = defineStore('reservation', {
       try {
         this.errorMessage = '';
         await updateReservation(reservation);
+        this.successMessage = 'Ihre Reservation wurde aktualisiert.';
       } catch (e: any) {
         console.error('Error while updating a reservation: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
@@ -58,6 +61,7 @@ export const useReservationStore = defineStore('reservation', {
       try {
         this.errorMessage = '';
         await deleteReservation(id);
+        this.successMessage = 'Ihre Reservation wurde gelöscht.';
       } catch (e: any) {
         console.error('Error while deleting a reservation: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';

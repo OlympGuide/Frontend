@@ -215,45 +215,37 @@ const getEventTime = (start: string, end: string): string => {
 };
 
 const reserve = async (event: CalendarEvent) => {
+  if (event.isNew) {
+    await createNewReservation(event);
+  } else {
+    await updateReservation(event);
+  }
+};
+
+const createNewReservation = async (event: CalendarEvent) => {
   if (!sportFieldStore.selectedSportField) {
     console.error('selectedSportField is undefined!');
-    // TODO: implement error handling
+    sportFieldStore.errorMessage = 'Sportfeld nicht gefunden.';
     return;
   }
 
-  try {
-    if (event.isNew) {
-      const reservation: PostReservation = {
-        sportFieldId: sportFieldStore.selectedSportField.id,
-        start: new Date(event.start),
-        end: new Date(event.end),
-      };
+  const reservation: PostReservation = {
+    sportFieldId: sportFieldStore.selectedSportField.id,
+    start: new Date(event.start),
+    end: new Date(event.end),
+  };
 
-      await reservationStore.createReservation(reservation);
+  await reservationStore.createReservation(reservation);
+};
 
-      toast.add({
-        severity: 'success',
-        summary: 'Reservation erstellt',
-        detail: 'Ihre Reservation wurde erfolgreich erstellt.',
-      });
-    } else {
-      const reservation: UpdateReservation = {
-        id: event.id.toString(),
-        start: new Date(event.start),
-        end: new Date(event.end),
-      };
+const updateReservation = async (event: CalendarEvent) => {
+  const reservation: UpdateReservation = {
+    id: event.id.toString(),
+    start: new Date(event.start),
+    end: new Date(event.end),
+  };
 
-      await reservationStore.updateReservation(reservation);
-
-      toast.add({
-        severity: 'success',
-        summary: 'Reservation aktualisiert',
-        detail: 'Ihre Reservation wurde erfolgreich aktualisiert.',
-      });
-    }
-  } catch (error) {
-    console.error(error);
-  }
+  await reservationStore.updateReservation(reservation);
 };
 
 const cancel = async (event: CalendarEvent) => {
