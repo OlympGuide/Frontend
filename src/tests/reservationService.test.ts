@@ -4,9 +4,11 @@ import {
   calendarApp,
   getCollidingEvent,
   moveEventOnCollision,
+  REMOVED_CLASSIFIER_ID,
 } from '@/services/reservationService.ts';
 import { formatEventTime } from '@/services/dateService.ts';
 import { CalendarEvent } from '@schedule-x/calendar';
+import { ReservationType } from '@/types/Reservation.ts';
 
 beforeEach(() => {
   calendarApp.events.set([
@@ -31,7 +33,7 @@ test('addEvent: adds event to calendarApp', () => {
   expect(event?.start).toBe(formatEventTime(new Date('2024-01-01T12:00:00')));
   expect(event?.end).toBe(formatEventTime(new Date('2024-01-01T13:00:00')));
   expect(event?.isNew).toBe(true);
-  expect(event?.calendarId).toBe('me');
+  expect(event?.calendarId).toBe(ReservationType.ME);
   expect(event?.isEditable).toBe(true);
 });
 
@@ -101,6 +103,6 @@ test('moveEventOnCollision: remove event because its outside the day boundary', 
   };
 
   const updatedEvent = moveEventOnCollision(event);
-  expect(updatedEvent?.id).toBe('removed');
+  expect(updatedEvent?.id).toBe(REMOVED_CLASSIFIER_ID);
   expect(calendarApp.events.get('4')).toBe(undefined);
 });

@@ -6,7 +6,11 @@
       >
         <div
           class="event"
-          :class="[calendarEvent.calendarId === 'others' ? 'others' : 'me']"
+          :class="[
+            calendarEvent.calendarId === ReservationType.OTHERS
+              ? ReservationType.OTHERS
+              : ReservationType.ME,
+          ]"
         >
           {{ getEventTime(calendarEvent.start, calendarEvent.end) }}
 
@@ -36,6 +40,7 @@ import { onMounted, watch } from 'vue';
 import {
   PostReservation,
   Reservation,
+  ReservationType,
   UpdateReservation,
 } from '@/types/Reservation.ts';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
@@ -86,7 +91,9 @@ const reservationsToCalenderEvents = (
         end: formatEventTime(reservation.end),
         isEditable: isMyReservation(reservation),
         isNew: false,
-        calendarId: isMyReservation(reservation) ? 'me' : 'others',
+        calendarId: isMyReservation(reservation)
+          ? ReservationType.ME
+          : ReservationType.OTHERS,
       };
     }) || []
   );

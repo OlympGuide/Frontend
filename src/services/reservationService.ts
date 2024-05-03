@@ -12,7 +12,11 @@ import {
 import { formatEventTime, toStartOfHour } from '@/services/dateService.ts';
 import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
 import { createResizePlugin } from '@schedule-x/resize';
+// @ts-ignore
 import ToastEventBus from 'primevue/toasteventbus';
+import { ReservationType } from '@/types/Reservation.ts';
+
+export const REMOVED_CLASSIFIER_ID = 'removed';
 
 const dayBoundaries = {
   start: '06:00',
@@ -29,11 +33,11 @@ export const calendarApp = createCalendar({
     gridHeight: 700,
   },
   calendars: {
-    me: {
-      colorName: 'me',
+    [ReservationType.ME]: {
+      colorName: ReservationType.ME,
     },
-    others: {
-      colorName: 'others',
+    [ReservationType.OTHERS]: {
+      colorName: ReservationType.OTHERS,
     },
   },
   callbacks: {
@@ -57,7 +61,7 @@ export const addEvent = (dateTime: string) => {
     end: formatEventTime(addHours(new Date(startDateTime), 1)),
     isEditable: true,
     isNew: true,
-    calendarId: 'me',
+    calendarId: ReservationType.ME,
   };
 
   calendarApp.events.add(event);
@@ -66,7 +70,7 @@ export const addEvent = (dateTime: string) => {
 export const updateEvent = (updatedEvent: CalendarEvent) => {
   updatedEvent = moveEventOnCollision(updatedEvent);
 
-  if (updatedEvent.id === 'removed') return;
+  if (updatedEvent.id === REMOVED_CLASSIFIER_ID) return;
 
   calendarApp.events.update(updatedEvent);
 };
@@ -106,7 +110,7 @@ export const moveEventOnCollision = (
       detail: 'Bitte wählen Sie ein anderes Zeitfenster.',
     });
     calendarApp.events.remove(updatedEvent.id);
-    updatedEvent.id = 'removed';
+    updatedEvent.id = REMOVED_CLASSIFIER_ID;
     return updatedEvent;
   }
 
