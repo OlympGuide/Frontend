@@ -18,6 +18,7 @@ export const useSportFieldStore = defineStore('sportField', {
       selectedSportField: undefined,
       isLoading: false,
       errorMessage: '',
+      successMessage: '',
     };
   },
   actions: {

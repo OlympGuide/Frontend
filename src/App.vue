@@ -18,14 +18,21 @@ import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { useReservationStore } from '@/stores/ReservationStore.ts';
 import { Store } from 'pinia';
 import { initApiClient } from '@/api/axiosConfig.ts';
+import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 
 const toast = useToast();
 const userStore = useUserStore();
 const sportFieldStore = useSportFieldStore();
 const reservationStore = useReservationStore();
+const sportFieldProposalStore = useSportFieldProposalStore();
 const { user, isAuthenticated } = useAuth0();
 
-const stores: Store[] = [userStore, sportFieldStore, reservationStore];
+const stores: Store[] = [
+  userStore,
+  sportFieldStore,
+  reservationStore,
+  sportFieldProposalStore,
+];
 
 stores.forEach((store: Store) => {
   if (instanceOfApiState(store)) {
@@ -37,6 +44,22 @@ stores.forEach((store: Store) => {
             severity: 'error',
             summary: 'Something went wrong!',
             detail: store.errorMessage,
+            life: 3000,
+          };
+
+          toast.add(toastMessage);
+        }
+      }
+    );
+
+    watch(
+      () => store.successMessage,
+      () => {
+        if (store.successMessage) {
+          const toastMessage: ToastMessageOptions = {
+            severity: 'success',
+            summary: 'Success!',
+            detail: store.successMessage,
             life: 3000,
           };
 
