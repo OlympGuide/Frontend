@@ -17,5 +17,6 @@ export enum SportFieldCategory {
   Basketball,
   Volleyball,
   Swimming,
+  Tennis,
   Miscellaneous,
 }

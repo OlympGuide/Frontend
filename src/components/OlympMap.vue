@@ -1,6 +1,16 @@
 <template>
   <div id="map"></div>
-  <div class="filters"></div>
+  <div class="filters">
+    <template v-for="icon in iconObjects" :key="icon.key">
+      <Chip
+        class="bg-white"
+        v-if="icon.isFilterable"
+        :label="icon.name"
+        :image="icon.url"
+        @click="filterSportFields(icon)"
+      />
+    </template>
+  </div>
   <SportFieldInfoDialog
     v-if="selectedSportField"
     v-model:visible="sportFieldInfoDialogVisible"
@@ -10,14 +20,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import L, {
-  DivIcon,
-  Icon,
-  LatLngTuple,
-  Map,
-  MapOptions,
-  Marker,
-} from 'leaflet';
+import L, { LatLngTuple, LayerGroup, Map, MapOptions, Marker } from 'leaflet';
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
 import { SportField } from '@/types/SportField.ts';
@@ -25,16 +28,20 @@ import { SportField } from '@/types/SportField.ts';
 import 'leaflet/dist/leaflet.css';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 
-import { getIconName, iconObjects } from '@/services/iconService.ts';
-
-interface IconKeyMap {
-  [key: string]: Icon | DivIcon;
-}
+import {
+  createIcons,
+  getIconKey,
+  IconKeyMap,
+  IconObject,
+  iconObjects,
+} from '@/services/iconService.ts';
 
 const sportFieldStore = useSportFieldStore();
 let currentMarker: L.Marker;
 
 const map = ref<Map>();
+const markers = new LayerGroup();
+
 const sportFieldInfoDialogVisible = ref<boolean>(false);
 const selectedSportField = ref<SportField | null>(null);
 const sportFields = ref<SportField[]>([]);
@@ -106,37 +113,15 @@ const addClickListener = (): void => {
   });
 };
 
-const createIcons = (): IconKeyMap => {
-  const iconKeyMap: IconKeyMap = {};
-
-  iconObjects.forEach(({ name, url }) => {
-    iconKeyMap[name] = L.icon({
-      iconUrl: url,
-      iconSize: [30, 30],
-      iconAnchor: [15, 15],
-      popupAnchor: [0, -30],
-    });
-  });
-
-  iconKeyMap['stackedIcon'] = L.divIcon({
-    html: '<span>1</span>',
-  });
-
-  return iconKeyMap;
+const loadSportFields = async () => {
+  await sportFieldStore.loadSportFields();
+  sportFields.value = sportFieldStore.sportFields;
+  addMarkers();
 };
 
-const loadSportFields = (): void => {
-  sportFieldStore.loadSportFields().then(() => {
-    sportFields.value = sportFieldStore.sportFields;
-    addMarkers();
-  });
-};
-
-const addMarkers = (): Marker[] => {
-  const markers: Marker[] = [];
-
+const addMarkers = () => {
   for (const sportField of sportFields.value) {
-    const iconName = getIconName(sportField.category);
+    const iconName = getIconKey(sportField.category);
     if (!iconName) {
       continue;
     }
@@ -152,25 +137,45 @@ const addMarkers = (): Marker[] => {
 
     marker.addTo(map.value!);
     marker.on('click', () => openModal(sportField));
-    markers.push(marker);
+    markers.value.push(marker);
   }
-
-  return markers;
 };
 
 const openModal = (sportField: SportField): void => {
   sportFieldInfoDialogVisible.value = true;
   selectedSportField.value = sportField;
 };
+
+const filterSportFields = (item: IconObject) => {
+  sportFieldStore.addOrRemoveCategoryFilter(item.category);
+  sportFields.value = sportFieldStore.sportFields.filter((sportField) =>
+    sportFieldStore.categoryFilters.includes(sportField.category)
+  );
+  markers.clearLayers();
+  addMarkers();
+};
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 #map {
   height: 100%;
   width: 100%;
 }
 
 .filters {
-  @apply fixed h-20 w-60 bg-white z-[1000] top-5 right-5 rounded-2xl px-3 py-4 flex flex-col justify-center items-center;
+  @apply fixed z-[1000] top-8 left-72 flex justify-center items-center ml-4 gap-4;
+
+  .p-chip {
+    @apply shadow-2xl;
+  }
+
+  .p-chip:hover {
+    @apply cursor-pointer;
+  }
+
+  .p-chip-image img {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
 }
 </style>

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getSportFields, getSportFieldById } from '@/api/sportFieldApi.ts';
-import { SportField } from '@/types/SportField.ts';
+import { SportField, SportFieldCategory } from '@/types/SportField.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
 import { Reservation } from '@/types/Reservation.ts';
@@ -9,6 +9,7 @@ import { getReservationsBySportField } from '@/api/reservationApi.ts';
 interface SportFieldState extends ApiState {
   sportFields: SportField[];
   selectedSportField: SportField | undefined;
+  categoryFilters: SportFieldCategory[];
 }
 
 export const useSportFieldStore = defineStore('sportField', {
@@ -16,6 +17,7 @@ export const useSportFieldStore = defineStore('sportField', {
     return {
       sportFields: [],
       selectedSportField: undefined,
+      categoryFilters: [],
       isLoading: false,
       errorMessage: '',
       successMessage: '',
@@ -65,6 +67,15 @@ export const useSportFieldStore = defineStore('sportField', {
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';
       } finally {
         this.isLoading = false;
+      }
+    },
+    addOrRemoveCategoryFilter(category: SportFieldCategory) {
+      if (this.categoryFilters.includes(category)) {
+        this.categoryFilters = this.categoryFilters.filter(
+          (filter) => filter !== category
+        );
+      } else {
+        this.categoryFilters.push(category);
       }
     },
   },
