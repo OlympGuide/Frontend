@@ -74,6 +74,7 @@
           type="submit"
           label="Speichern"
           data-cy="speichern-button"
+          class="!bg-primaryRed"
           :loading="isLoading"
         ></Button>
       </div>
