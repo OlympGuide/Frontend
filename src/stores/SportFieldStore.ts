@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getSportFields, getSportFieldById } from '@/api/sportFieldApi.ts';
-import { SportField } from '@/types/Map.ts';
+import { SportField } from '@/types/SportField.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
 import { Reservation } from '@/types/Reservation.ts';

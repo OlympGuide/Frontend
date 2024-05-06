@@ -1,5 +1,5 @@
 import SportFieldInfoDialog from '../../src/components/SportFieldInfoDialog.vue';
-import { SportField } from '../../src/types/Map';
+import { SportField, SportFieldCategory } from '../../src/types/SportField';
 
 describe('<SportFieldInfoDialog />', () => {
   it('renders', () => {
@@ -11,6 +11,7 @@ describe('<SportFieldInfoDialog />', () => {
       description: 'Testbeschreibung',
       latitude: 47,
       longitude: 8,
+      category: SportFieldCategory.Football,
       address: undefined,
       file: undefined,
     };

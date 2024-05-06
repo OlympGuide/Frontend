@@ -1,5 +1,6 @@
 <template>
   <div id="map"></div>
+  <div class="filters"></div>
   <SportFieldInfoDialog
     v-if="selectedSportField"
     v-model:visible="sportFieldInfoDialogVisible"
@@ -19,13 +20,12 @@ import L, {
 } from 'leaflet';
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
-import { SportField } from '@/types/Map';
+import { SportField } from '@/types/SportField.ts';
 
 import 'leaflet/dist/leaflet.css';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 
-import footballIconUrl from '@/assets/icons/football.png';
-import markerIconUrl from '@/assets/icons/marker.png';
+import { getIconName, iconObjects } from '@/services/iconService.ts';
 
 interface IconKeyMap {
   [key: string]: Icon | DivIcon;
@@ -109,33 +109,24 @@ const addClickListener = (): void => {
 const createIcons = (): IconKeyMap => {
   const iconKeyMap: IconKeyMap = {};
 
-  const footballIcon: Icon = L.icon({
-    iconUrl: footballIconUrl,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15],
-    popupAnchor: [0, -30],
+  iconObjects.forEach(({ name, url }) => {
+    iconKeyMap[name] = L.icon({
+      iconUrl: url,
+      iconSize: [30, 30],
+      iconAnchor: [15, 15],
+      popupAnchor: [0, -30],
+    });
   });
 
-  const markerIcon: Icon = L.icon({
-    iconUrl: markerIconUrl,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15],
-    popupAnchor: [0, -30],
-  });
-
-  const stackedIcon: DivIcon = L.divIcon({
+  iconKeyMap['stackedIcon'] = L.divIcon({
     html: '<span>1</span>',
   });
-
-  iconKeyMap['football'] = footballIcon;
-  iconKeyMap['stackedIcon'] = stackedIcon;
-  iconKeyMap['marker'] = markerIcon;
 
   return iconKeyMap;
 };
 
 const loadSportFields = (): void => {
-  sportFieldStore.loadSportFields().then((_) => {
+  sportFieldStore.loadSportFields().then(() => {
     sportFields.value = sportFieldStore.sportFields;
     addMarkers();
   });
@@ -145,35 +136,23 @@ const addMarkers = (): Marker[] => {
   const markers: Marker[] = [];
 
   for (const sportField of sportFields.value) {
-    // let stackCounter: number = 0;
+    const iconName = getIconName(sportField.category);
+    if (!iconName) {
+      continue;
+    }
 
-    // for (const nextPlace of sportFields.value) {
-    //   if (sportField === nextPlace) {
-    //     break;
-    //   }
+    if (icons.value[iconName] === undefined) {
+      continue;
+    }
 
-    // TODO: Finish in KAN-39: https://olympguide.atlassian.net/browse/KAN-39
-    // const latLngThis: LatLng = latLng(sportField.coordinates);
-    // const latLngNext: LatLng = latLng(nextPlace.coordinates);
-
-    // if (latLngThis.distanceTo(latLngNext) < 2000) {
-    //   stackCounter++;
-    // }
-    // }
-
-    // if (stackCounter === 0) {
     const marker: Marker = L.marker(
       [sportField.latitude, sportField.longitude],
-      { icon: icons.value.football }
+      { icon: icons.value[iconName] }
     );
+
     marker.addTo(map.value!);
     marker.on('click', () => openModal(sportField));
     markers.push(marker);
-    // } else if (stackCounter === 1) {
-    //   const marker: Marker = L.marker([sportField.latitude, sportField.longitude], {icon: icons.value.stackedIcon});
-    //   marker.addTo(map.value!);
-    //   markers.push(marker);
-    // }
   }
 
   return markers;
@@ -185,9 +164,13 @@ const openModal = (sportField: SportField): void => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #map {
   height: 100%;
   width: 100%;
+}
+
+.filters {
+  @apply fixed h-20 w-60 bg-white z-[1000] top-5 right-5 rounded-2xl px-3 py-4 flex flex-col justify-center items-center;
 }
 </style>

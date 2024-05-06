@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { SportField } from '@/types/Map';
+import { SportField } from '@/types/SportField.ts';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();

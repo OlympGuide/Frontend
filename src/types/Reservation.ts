@@ -1,4 +1,4 @@
-import { SportField } from '@/types/Map.ts';
+import { SportField } from '@/types/SportField.ts';
 import { User } from '@/types/User.ts';
 
 export enum ReservationType {

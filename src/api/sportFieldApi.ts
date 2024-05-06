@@ -1,4 +1,4 @@
-import { SportField } from '@/types/Map.ts';
+import { SportField } from '@/types/SportField.ts';
 import { getApiClientInstance } from '@/api/axiosConfig.ts';
 import { AxiosResponse } from 'axios';
 

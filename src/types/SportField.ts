@@ -6,9 +6,16 @@ export interface SportField {
   description?: string;
   latitude: number;
   longitude: number;
+  category: SportFieldCategory;
   address?: string;
   file?: File;
   reservations?: Reservation[];
 }
 
-export type PostSportField = Omit<SportField, 'id'>;
+export enum SportFieldCategory {
+  Football,
+  Basketball,
+  Volleyball,
+  Swimming,
+  Miscellaneous,
+}
