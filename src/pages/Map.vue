@@ -33,7 +33,7 @@ const setMarked = (marker: L.Marker) => {
 };
 
 const openDialog = () => {
-  if (isAuthenticated) {
+  if (isAuthenticated.value) {
     visible.value = true;
   } else {
     loginWithRedirect();

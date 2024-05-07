@@ -3,7 +3,8 @@ import { getSportFields, getSportFieldById } from '@/api/sportFieldApi.ts';
 import { SportField } from '@/types/Map.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
-import { setHours } from 'date-fns';
+import { Reservation } from '@/types/Reservation.ts';
+import { getReservationsBySportField } from '@/api/reservationApi.ts';
 
 interface SportFieldState extends ApiState {
   sportFields: SportField[];
@@ -17,6 +18,7 @@ export const useSportFieldStore = defineStore('sportField', {
       selectedSportField: undefined,
       isLoading: false,
       errorMessage: '',
+      successMessage: '',
     };
   },
   actions: {
@@ -54,36 +56,10 @@ export const useSportFieldStore = defineStore('sportField', {
 
       try {
         this.errorMessage = '';
-        // TODO: Implement API call to get reservations by sport field when ready
-        // const res: AxiosResponse<Reservation[], any> =
-        //   await getReservationsBySportField(id);
+        const res: AxiosResponse<Reservation[], any> =
+          await getReservationsBySportField(id);
 
-        this.selectedSportField!.reservations = [
-          {
-            id: 'blabla1',
-            user: {
-              id: 'ce36bae6-916f-4374-ac0a-3248a407a2af',
-              name: 'Dario Aubry',
-              displayName: 'Dario Aubry',
-              roles: [0],
-            },
-            start: setHours(new Date(), 12),
-            end: setHours(new Date(), 13),
-          },
-          {
-            id: 'blabla2',
-            user: {
-              id: 'aaaaaaa-dfc8-4c95-acd1-f80c7d42541b',
-              name: 'Max Mustermann',
-              displayName: 'Max Mustermann',
-              roles: [0],
-            },
-            start: setHours(new Date(), 14),
-            end: setHours(new Date(), 15),
-          },
-        ];
-
-        // this.selectedSportField!.reservations = res.data;
+        this.selectedSportField!.reservations = res.data;
       } catch (e: any) {
         console.error('Error while loading sport field reservations: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';

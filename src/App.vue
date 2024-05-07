@@ -7,7 +7,6 @@
 
 <script setup lang="ts">
 import { onMounted, watch } from 'vue';
-import { getActivePinia, Store } from 'pinia';
 
 import { useToast } from 'primevue/usetoast';
 import { ToastMessageOptions } from 'primevue/toast';
@@ -17,14 +16,23 @@ import { Auth0User } from '@/types/User.ts';
 import { instanceOfApiState } from '@/types/ApiState.ts';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { useReservationStore } from '@/stores/ReservationStore.ts';
+import { Store } from 'pinia';
+import { initApiClient } from '@/api/axiosConfig.ts';
+import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 
 const toast = useToast();
 const userStore = useUserStore();
 const sportFieldStore = useSportFieldStore();
 const reservationStore = useReservationStore();
+const sportFieldProposalStore = useSportFieldProposalStore();
 const { user, isAuthenticated } = useAuth0();
 
-const stores: Store[] = [userStore, sportFieldStore, reservationStore];
+const stores: Store[] = [
+  userStore,
+  sportFieldStore,
+  reservationStore,
+  sportFieldProposalStore,
+];
 
 stores.forEach((store: Store) => {
   if (instanceOfApiState(store)) {
@@ -43,10 +51,29 @@ stores.forEach((store: Store) => {
         }
       }
     );
+
+    watch(
+      () => store.successMessage,
+      () => {
+        if (store.successMessage) {
+          const toastMessage: ToastMessageOptions = {
+            severity: 'success',
+            summary: 'Success!',
+            detail: store.successMessage,
+            life: 3000,
+          };
+
+          toast.add(toastMessage);
+        }
+      }
+    );
   }
 });
 
 onMounted(async () => {
+  await initApiClient();
+
+  if (!isAuthenticated.value) return;
   await userStore.getLoggedInUser();
 
   if (

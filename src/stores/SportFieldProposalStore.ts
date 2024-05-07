@@ -22,6 +22,7 @@ export const useSportFieldProposalStore = defineStore('sportFieldProposal', {
       sportFieldProposals: [],
       isLoading: false,
       errorMessage: '',
+      successMessage: '',
     };
   },
   actions: {
@@ -58,6 +59,7 @@ export const useSportFieldProposalStore = defineStore('sportFieldProposal', {
       try {
         this.errorMessage = '';
         await postSportFieldProposal(sportField);
+        this.successMessage = 'Proposal wurde erfolgreich eingereicht';
       } catch (e: any) {
         console.error('Error while creating new sport field: ', e);
         this.errorMessage = 'Es gab ein Problem beim Übermitteln der Daten';

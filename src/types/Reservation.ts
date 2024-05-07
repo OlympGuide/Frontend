@@ -1,6 +1,11 @@
 import { SportField } from '@/types/Map.ts';
 import { User } from '@/types/User.ts';
 
+export enum ReservationType {
+  ME = 'me',
+  OTHERS = 'others',
+}
+
 export interface Reservation {
   id: string;
   sportField?: SportField;
@@ -10,7 +15,13 @@ export interface Reservation {
 }
 
 export interface PostReservation {
-  sportField: string;
+  sportFieldId: string;
+  start: Date;
+  end: Date;
+}
+
+export interface UpdateReservation {
+  id: string;
   start: Date;
   end: Date;
 }

@@ -6,7 +6,11 @@
       >
         <div
           class="event"
-          :class="[calendarEvent.calendarId === 'others' ? 'others' : 'me']"
+          :class="[
+            calendarEvent.calendarId === ReservationType.OTHERS
+              ? ReservationType.OTHERS
+              : ReservationType.ME,
+          ]"
         >
           {{ getEventTime(calendarEvent.start, calendarEvent.end) }}
 
@@ -29,86 +33,30 @@
 
 <script setup lang="ts">
 import { ScheduleXCalendar } from '@schedule-x/vue';
-import { createCalendar, viewWeek, CalendarEvent } from '@schedule-x/calendar';
+import { CalendarEvent } from '@schedule-x/calendar';
 import '@schedule-x/theme-default/dist/index.css';
-import { formatEventTime, toStartOfHour } from '@/services/dateService.ts';
+import { formatEventTime } from '@/services/dateService.ts';
 import { onMounted, watch } from 'vue';
-import { PostReservation, Reservation } from '@/types/Reservation.ts';
+import {
+  PostReservation,
+  Reservation,
+  ReservationType,
+  UpdateReservation,
+} from '@/types/Reservation.ts';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 import { useRoute } from 'vue-router';
-import {
-  addHours,
-  addMinutes,
-  differenceInMinutes,
-  format,
-  isAfter,
-  isBefore,
-  isEqual,
-  parse,
-} from 'date-fns';
-import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
-import { createResizePlugin } from '@schedule-x/resize';
+import { format } from 'date-fns';
 import { useReservationStore } from '@/stores/ReservationStore.ts';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { instanceOfUser } from '@/types/User.ts';
 import { storeToRefs } from 'pinia';
-import { useToast } from 'primevue/usetoast';
+import { calendarApp } from '@/services/reservationService.ts';
 
 const sportFieldStore = useSportFieldStore();
 const reservationStore = useReservationStore();
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const route = useRoute();
-const toast = useToast();
-
-const dayBoundaries = {
-  start: '06:00',
-  end: '22:00',
-};
-
-const calendarApp = createCalendar({
-  locale: 'de-CH',
-  selectedDate: format(new Date(), 'yyyy-MM-dd'),
-  views: [viewWeek],
-  defaultView: viewWeek.name,
-  dayBoundaries,
-  weekOptions: {
-    gridHeight: 700,
-  },
-  calendars: {
-    me: {
-      colorName: 'me',
-    },
-    others: {
-      colorName: 'others',
-    },
-  },
-  callbacks: {
-    async onClickDateTime(dateTime: string) {
-      const startDateTime = formatEventTime(toStartOfHour(new Date(dateTime)));
-
-      const event: CalendarEvent = {
-        id: Date.now().toString(),
-        start: startDateTime,
-        end: formatEventTime(addHours(new Date(startDateTime), 1)),
-        isEditable: true,
-        isNew: true,
-        calendarId: 'me',
-      };
-
-      calendarApp.events.add(event);
-    },
-    onEventUpdate(updatedEvent: CalendarEvent) {
-      updatedEvent = moveEventOnCollision(updatedEvent);
-
-      if (updatedEvent.id === 'removed') return;
-
-      calendarApp.events.update(updatedEvent);
-    },
-  },
-  events: [],
-  plugins: [createDragAndDropPlugin(), createResizePlugin()],
-});
 
 onMounted(async () => {
   await loadReservations();
@@ -121,63 +69,6 @@ watch(user, () => {
   const events = reservationsToCalenderEvents(reservations);
   calendarApp.events.set(events);
 });
-
-/**
- * Moves the event to the next available time slot if it collides with another event.
- * If the event collides with multiple events, it will be moved until it doesn't collide with any event.
- * If the event collides with the end of the day, it will be removed. The id of the event will be set to 'removed'!
- * @param updatedEvent
- */
-const moveEventOnCollision = (updatedEvent: CalendarEvent): CalendarEvent => {
-  const collidingEvent: CalendarEvent | undefined =
-    getCollidingEvent(updatedEvent);
-
-  if (!collidingEvent) {
-    return updatedEvent;
-  }
-
-  const dayEndBoundary = parse(dayBoundaries.end, 'HH:mm', updatedEvent.end);
-  if (isAfter(updatedEvent.end, dayEndBoundary)) {
-    toast.add({
-      severity: 'warn',
-      summary: 'Reservation überschneidet sich.',
-      detail: 'Bitte wählen Sie ein anderes Zeitfenster.',
-    });
-    calendarApp.events.remove(updatedEvent.id);
-    updatedEvent.id = 'removed';
-    return updatedEvent;
-  }
-
-  const difference = differenceInMinutes(
-    collidingEvent.end,
-    updatedEvent.start
-  );
-
-  updatedEvent.start = formatEventTime(
-    addMinutes(updatedEvent.start, difference)
-  );
-  updatedEvent.end = formatEventTime(addMinutes(updatedEvent.end, difference));
-
-  moveEventOnCollision(updatedEvent);
-  return updatedEvent;
-};
-
-const getCollidingEvent = (
-  updatedEvent: CalendarEvent
-): CalendarEvent | undefined => {
-  return calendarApp.events.getAll().find((event: CalendarEvent) => {
-    if (updatedEvent.id === event.id) return false;
-
-    return !(
-      (isBefore(updatedEvent.start, event.start) &&
-        isBefore(updatedEvent.end, event.start)) ||
-      (isAfter(updatedEvent.start, event.end) &&
-        isAfter(updatedEvent.end, event.end)) ||
-      isEqual(updatedEvent.end, event.start) ||
-      isEqual(updatedEvent.start, event.end)
-    );
-  });
-};
 
 const loadReservations = async () => {
   const sportFieldId: string = route.params.id as string;
@@ -200,7 +91,9 @@ const reservationsToCalenderEvents = (
         end: formatEventTime(reservation.end),
         isEditable: isMyReservation(reservation),
         isNew: false,
-        calendarId: isMyReservation(reservation) ? 'me' : 'others',
+        calendarId: isMyReservation(reservation)
+          ? ReservationType.ME
+          : ReservationType.OTHERS,
       };
     }) || []
   );
@@ -210,20 +103,38 @@ const getEventTime = (start: string, end: string): string => {
   return `${format(start, 'HH:mm')} - ${format(end, 'HH:mm')}`;
 };
 
-const reserve = (event: CalendarEvent) => {
+const reserve = async (event: CalendarEvent) => {
+  if (event.isNew) {
+    await createNewReservation(event);
+  } else {
+    await updateReservation(event);
+  }
+};
+
+const createNewReservation = async (event: CalendarEvent) => {
   if (!sportFieldStore.selectedSportField) {
     console.error('selectedSportField is undefined!');
-    // TODO: implement error handling
+    sportFieldStore.errorMessage = 'Sportfeld nicht gefunden.';
     return;
   }
 
   const reservation: PostReservation = {
-    sportField: sportFieldStore.selectedSportField.id,
+    sportFieldId: sportFieldStore.selectedSportField.id,
     start: new Date(event.start),
     end: new Date(event.end),
   };
 
-  reservationStore.createReservation(reservation);
+  await reservationStore.createReservation(reservation);
+};
+
+const updateReservation = async (event: CalendarEvent) => {
+  const reservation: UpdateReservation = {
+    id: event.id.toString(),
+    start: new Date(event.start),
+    end: new Date(event.end),
+  };
+
+  await reservationStore.updateReservation(reservation);
 };
 
 const cancel = async (event: CalendarEvent) => {
@@ -235,12 +146,14 @@ const cancel = async (event: CalendarEvent) => {
   }
 };
 
-const isMyReservation = (reservation: Reservation): boolean => {
+const isMyReservation = (_reservation: Reservation): boolean => {
   if (!instanceOfUser(userStore.user)) {
     return false;
   }
 
-  return reservation.user.id === userStore.user.id;
+  // TODO: acitvate this line when the backend bug is fixed
+  // return reservation.user.id === userStore.user.id;
+  return true;
 };
 </script>
 

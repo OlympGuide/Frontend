@@ -1,6 +1,10 @@
 import { getApiClientInstance } from '@/api/axiosConfig.ts';
 import { AxiosResponse } from 'axios';
-import { PostReservation, Reservation } from '@/types/Reservation.ts';
+import {
+  PostReservation,
+  Reservation,
+  UpdateReservation,
+} from '@/types/Reservation.ts';
 
 const RESERVATION_PATH = '/reservations';
 
@@ -9,15 +13,11 @@ export const postReservation = async (data: PostReservation) => {
   return api.post(RESERVATION_PATH, data);
 };
 
-export const getReservationsByUser = async (
-  userId: string
-): Promise<AxiosResponse<Reservation[], any>> => {
+export const getReservations = async (): Promise<
+  AxiosResponse<Reservation[], any>
+> => {
   const api = await getApiClientInstance();
-  return api.get<Reservation[]>(RESERVATION_PATH, {
-    params: {
-      user: userId,
-    },
-  });
+  return api.get<Reservation[]>(RESERVATION_PATH);
 };
 
 export const getReservationById = async (
@@ -36,6 +36,11 @@ export const getReservationsBySportField = async (
       sportField: sportFieldId,
     },
   });
+};
+
+export const updateReservation = async (reservation: UpdateReservation) => {
+  const api = await getApiClientInstance();
+  return api.put(`${RESERVATION_PATH}/${reservation.id}`, reservation);
 };
 
 export const deleteReservation = async (id: string) => {
