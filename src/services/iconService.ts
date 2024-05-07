@@ -1,10 +1,16 @@
 import { SportFieldCategory } from '@/types/SportField.ts';
 import footballIconUrl from '@/assets/icons/football.png';
+import footballPinIconUrl from '@/assets/icons/football_pin.png';
 import volleyballIconUrl from '@/assets/icons/volleyball.png';
+import volleyballPinIconUrl from '@/assets/icons/volleyball_pin.png';
 import basketballIconUrl from '@/assets/icons/basketball.png';
+import basketballPinIconUrl from '@/assets/icons/basketball_pin.png';
 import swimmingIconUrl from '@/assets/icons/swimming.png';
+import swimmingPinIconUrl from '@/assets/icons/swimming_pin.png';
 import tennisIconUrl from '@/assets/icons/tennis.png';
+import tennisPinIconUrl from '@/assets/icons/tennis_pin.png';
 import miscellaneousIconUrl from '@/assets/icons/miscellaneous.png';
+import miscellaneousPinIconUrl from '@/assets/icons/miscellaneous_pin.png';
 import markerIconUrl from '@/assets/icons/marker.png';
 import L, { DivIcon, Icon } from 'leaflet';
 
@@ -17,6 +23,7 @@ export interface IconObject {
   name?: string;
   category: SportFieldCategory;
   url: string;
+  filterIconUrl?: string;
   isFilterable: boolean;
 }
 
@@ -25,42 +32,48 @@ export const iconObjects: IconObject[] = [
     key: 'football',
     name: 'Fussball',
     category: SportFieldCategory.Football,
-    url: footballIconUrl,
+    url: footballPinIconUrl,
+    filterIconUrl: footballIconUrl,
     isFilterable: true,
   },
   {
     key: 'volleyball',
     name: 'Volleyball',
     category: SportFieldCategory.Volleyball,
-    url: volleyballIconUrl,
+    url: volleyballPinIconUrl,
+    filterIconUrl: volleyballIconUrl,
     isFilterable: true,
   },
   {
     key: 'basketball',
     name: 'Basketball',
     category: SportFieldCategory.Basketball,
-    url: basketballIconUrl,
+    url: basketballPinIconUrl,
+    filterIconUrl: basketballIconUrl,
     isFilterable: true,
   },
   {
     key: 'swimming',
     name: 'Schwimmen',
     category: SportFieldCategory.Swimming,
-    url: swimmingIconUrl,
+    url: swimmingPinIconUrl,
+    filterIconUrl: swimmingIconUrl,
     isFilterable: true,
   },
   {
     key: 'tennis',
     name: 'Tennis',
     category: SportFieldCategory.Tennis,
-    url: tennisIconUrl,
+    url: tennisPinIconUrl,
+    filterIconUrl: tennisIconUrl,
     isFilterable: true,
   },
   {
     key: 'miscellaneous',
     name: 'Sonstiges',
     category: SportFieldCategory.Miscellaneous,
-    url: miscellaneousIconUrl,
+    url: miscellaneousPinIconUrl,
+    filterIconUrl: miscellaneousIconUrl,
     isFilterable: true,
   },
   {
@@ -77,9 +90,9 @@ export const createIcons = (): IconKeyMap => {
   iconObjects.forEach(({ key, url }) => {
     iconKeyMap[key] = L.icon({
       iconUrl: url,
-      iconSize: [30, 30],
-      iconAnchor: [15, 15],
-      popupAnchor: [0, -30],
+      iconSize: [35, 35],
+      iconAnchor: [17.5, 35],
+      popupAnchor: [0, -15],
     });
   });
 

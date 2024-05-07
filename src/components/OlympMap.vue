@@ -4,9 +4,10 @@
     <template v-for="icon in iconObjects" :key="icon.key">
       <Chip
         class="bg-white"
+        :class="{ selected: isFilterSelected(icon) }"
         v-if="icon.isFilterable"
         :label="icon.name"
-        :image="icon.url"
+        :image="icon.filterIconUrl"
         @click="filterSportFields(icon)"
       />
     </template>
@@ -20,7 +21,14 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
-import L, { LatLngTuple, LayerGroup, Map, MapOptions, Marker } from 'leaflet';
+import L, {
+  LatLngTuple,
+  Layer,
+  LayerGroup,
+  Map,
+  MapOptions,
+  Marker,
+} from 'leaflet';
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
 import { SportField } from '@/types/SportField.ts';
@@ -37,15 +45,14 @@ import {
 } from '@/services/iconService.ts';
 
 const sportFieldStore = useSportFieldStore();
-let currentMarker: L.Marker;
+let currentMarker = ref<Layer>();
 
 const map = ref<Map>();
-const markers = new LayerGroup();
+const markers = ref<LayerGroup>(new LayerGroup());
 
 const sportFieldInfoDialogVisible = ref<boolean>(false);
 const selectedSportField = ref<SportField | null>(null);
 const sportFields = ref<SportField[]>([]);
-
 const icons = ref<IconKeyMap>({});
 
 const emit = defineEmits(['marked']);
@@ -96,25 +103,25 @@ const addClickListener = (): void => {
   map.value!.on('click', (e) => {
     const { lat, lng } = e.latlng;
 
-    if (currentMarker) {
-      map.value!.removeLayer(currentMarker);
+    if (currentMarker.value) {
+      map.value!.removeLayer(currentMarker.value);
     }
 
-    currentMarker = L.marker([lat, lng], { icon: icons.value.marker }).addTo(
-      map.value!
-    );
+    currentMarker.value = L.marker([lat, lng], {
+      icon: icons.value.marker,
+    }).addTo(map.value!);
 
-    emit('marked', currentMarker);
+    emit('marked', currentMarker.value);
 
     const popup = L.popup().setContent(
       'Um einen Sportplatz hier zu erfassen, <br>klicken Sie auf +'
     );
-    currentMarker.bindPopup(popup).togglePopup();
+    currentMarker.value.bindPopup(popup).togglePopup();
   });
 };
 
 const loadSportFields = async () => {
-  await sportFieldStore.loadSportFields();
+  await sportFieldStore.loadFilteredSportFields();
   sportFields.value = sportFieldStore.sportFields;
   addMarkers();
 };
@@ -135,10 +142,11 @@ const addMarkers = () => {
       { icon: icons.value[iconName] }
     );
 
-    marker.addTo(map.value!);
     marker.on('click', () => openModal(sportField));
-    markers.value.push(marker);
+    markers.value.addLayer(marker);
   }
+
+  markers.value.addTo(map.value!);
 };
 
 const openModal = (sportField: SportField): void => {
@@ -146,13 +154,14 @@ const openModal = (sportField: SportField): void => {
   selectedSportField.value = sportField;
 };
 
-const filterSportFields = (item: IconObject) => {
-  sportFieldStore.addOrRemoveCategoryFilter(item.category);
-  sportFields.value = sportFieldStore.sportFields.filter((sportField) =>
-    sportFieldStore.categoryFilters.includes(sportField.category)
-  );
-  markers.clearLayers();
-  addMarkers();
+const filterSportFields = async (item: IconObject) => {
+  sportFieldStore.setCategoryFilter(item.category);
+  markers.value.clearLayers();
+  await loadSportFields();
+};
+
+const isFilterSelected = (item: IconObject) => {
+  return item.category === sportFieldStore.categoryFilter;
 };
 </script>
 
@@ -163,7 +172,7 @@ const filterSportFields = (item: IconObject) => {
 }
 
 .filters {
-  @apply fixed z-[1000] top-8 left-72 flex justify-center items-center ml-4 gap-4;
+  @apply fixed z-[1000] top-8 left-72 flex justify-center items-center ml-4 gap-4 transition-colors;
 
   .p-chip {
     @apply shadow-2xl;
@@ -174,8 +183,15 @@ const filterSportFields = (item: IconObject) => {
   }
 
   .p-chip-image img {
-    width: 2rem !important;
-    height: 2rem !important;
+    width: 1.8rem !important;
+    height: 1.8rem !important;
+    margin-left: -0.5rem !important;
   }
+}
+</style>
+
+<style lang="scss" scoped>
+.selected {
+  @apply text-white bg-primaryRed;
 }
 </style>

@@ -9,7 +9,7 @@ import { getReservationsBySportField } from '@/api/reservationApi.ts';
 interface SportFieldState extends ApiState {
   sportFields: SportField[];
   selectedSportField: SportField | undefined;
-  categoryFilters: SportFieldCategory[];
+  categoryFilter: SportFieldCategory | undefined;
 }
 
 export const useSportFieldStore = defineStore('sportField', {
@@ -17,18 +17,20 @@ export const useSportFieldStore = defineStore('sportField', {
     return {
       sportFields: [],
       selectedSportField: undefined,
-      categoryFilters: [],
+      categoryFilter: undefined,
       isLoading: false,
       errorMessage: '',
       successMessage: '',
     };
   },
   actions: {
-    async loadSportFields() {
+    async loadFilteredSportFields() {
       this.isLoading = true;
       try {
         this.errorMessage = '';
-        const res: AxiosResponse<SportField[], any> = await getSportFields();
+        const res: AxiosResponse<SportField[], any> = await getSportFields(
+          this.categoryFilter
+        );
         this.sportFields = res.data;
       } catch (e: any) {
         console.error('Error while loading sport field: ', e);
@@ -69,14 +71,13 @@ export const useSportFieldStore = defineStore('sportField', {
         this.isLoading = false;
       }
     },
-    addOrRemoveCategoryFilter(category: SportFieldCategory) {
-      if (this.categoryFilters.includes(category)) {
-        this.categoryFilters = this.categoryFilters.filter(
-          (filter) => filter !== category
-        );
-      } else {
-        this.categoryFilters.push(category);
+    setCategoryFilter(category: SportFieldCategory) {
+      if (this.categoryFilter === category) {
+        this.categoryFilter = undefined;
+        return;
       }
+
+      this.categoryFilter = category;
     },
   },
 });
