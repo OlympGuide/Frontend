@@ -27,6 +27,17 @@ export const getReservationById = async (
   return api.get<Reservation>(`${RESERVATION_PATH}/${id}`);
 };
 
+export const getReservationsByUser = async (
+  userId: string
+): Promise<AxiosResponse<Reservation[], any>> => {
+  const api = await getApiClientInstance();
+  return api.get<Reservation[]>(RESERVATION_PATH, {
+    params: {
+      user: userId,
+    },
+  });
+};
+
 export const getReservationsBySportField = async (
   sportFieldId: string
 ): Promise<AxiosResponse<Reservation[]>> => {
