@@ -38,6 +38,14 @@ export const routerOptions: RouterOptions = {
       component: Reserve,
     },
     {
+      path: '/reserve/:id/reservation/:reservationId',
+      name: 'Reservation',
+      meta: {
+        layout: SidebarLayout,
+      },
+      component: Reserve,
+    },
+    {
       path: '/likes',
       name: 'Likes',
       meta: {

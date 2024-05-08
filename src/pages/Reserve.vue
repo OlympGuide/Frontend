@@ -9,7 +9,9 @@
           :class="[
             calendarEvent.calendarId === ReservationType.OTHERS
               ? ReservationType.OTHERS
-              : ReservationType.ME,
+              : reservationId && calendarEvent.id === reservationId
+                ? `${ReservationType.ME}-selected`
+                : ReservationType.ME,
           ]"
         >
           {{ getEventTime(calendarEvent.start, calendarEvent.end) }}
@@ -57,6 +59,8 @@ const reservationStore = useReservationStore();
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const route = useRoute();
+
+const reservationId: string = route.params.reservationId as string;
 
 onMounted(async () => {
   await loadReservations();
@@ -189,6 +193,10 @@ const isMyReservation = (_reservation: Reservation): boolean => {
 
   .me {
     background-color: theme('colors.primaryRedLight');
+  }
+
+  .me-selected {
+    background-color: theme('colors.primaryRedDark');
   }
 }
 </style>

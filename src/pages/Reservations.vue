@@ -3,21 +3,25 @@
     <p class="page-title">Meine Reservationen</p>
     <DataTable :value="reservations">
       <template v-if="reservations.length">
-        <Column
-          v-for="column in columns"
-          :key="column.field"
-          :field="column.field"
-          :header="column.header"
-          :sortable="column.field === 'date'"
-        >
+        <Column v-for="column in columns" :key="column.field" :field="column.field" :header="column.header"
+          :sortable="column.field === 'date'">
           <template #body="{ data, field }">
-            <span v-if="field === 'sportfieldName'">{{ data }}</span>
-            <span v-else-if="field === 'start'">{{
-              toLocalDate(data.start)
-            }}</span>
-            <span v-else-if="field === 'end'">{{ toLocalDate(data.end) }}</span>
-
-            <span v-else>{{ data[field] }}</span>
+            <span v-if="field === 'sportfieldName'">{{ data.sportFieldId }}</span>
+            <span v-else-if="field === 'start'">
+              {{ toLocalDate(data.start) }}
+            </span>
+            <span v-else-if="field === 'end'">
+              {{ toLocalDate(data.end) }}
+            </span>
+            <span v-else>
+              {{ data[field] }}
+            </span>
+          </template>
+        </Column>
+        <Column header="Kalender" width>
+          <template #body="{ data }">
+            <router-link :to="`/reserve/${data.sportFieldId}/reservation/${data.id}`"
+              class="p-button p-button-text">Verwalten</router-link>
           </template>
         </Column>
       </template>
