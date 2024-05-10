@@ -27,20 +27,33 @@
           </FloatLabel>
 
           <FloatLabel class="float-label-input">
-            <label for="coordinates" class="label"
-              >Koordinaten <span class="text-red-800">*</span></label
+            <Dropdown
+              v-model="category"
+              :options="sportFieldCategories"
+              option-label="name"
+              class="w-full"
+              :class="{ 'p-invalid': categoryError }"
+            ></Dropdown>
+            <label for="description" class="label"
+              >Kategorie <span class="text-red-800">*</span></label
             >
-            <InputText
-              disabled
-              id="coordinates"
-              class="basic-input-area"
-              :class="{ 'p-invalid': coordinatesError }"
-              v-model="coordinates"
-              autocomplete="off"
-            />
-            <small class="p-error input-error">{{ coordinatesError }}</small>
+            <small class="p-error input-error">{{ categoryError }}</small>
           </FloatLabel>
         </div>
+        <FloatLabel class="float-label-input">
+          <label for="coordinates" class="label"
+            >Koordinaten <span class="text-red-800">*</span></label
+          >
+          <InputText
+            disabled
+            id="coordinates"
+            class="basic-input-area"
+            :class="{ 'p-invalid': coordinatesError }"
+            v-model="coordinates"
+            autocomplete="off"
+          />
+          <small class="p-error input-error">{{ coordinatesError }}</small>
+        </FloatLabel>
         <AddressCompletion @address="setCoordinates" />
         <FloatLabel class="float-label-input">
           <label for="description" class="label">Beschreibung</label>
@@ -92,6 +105,7 @@ import FileUpload from '@/components/FileUpload.vue';
 import { useDemoStore } from '@/stores/DemoStore.ts';
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { PostSportFieldProposal } from '@/types/Proposal';
+import { sportFieldCategories } from '@/types/SportField.ts';
 
 const checked = ref(false);
 const address = ref<NominatimResponseItem>();
@@ -113,6 +127,7 @@ const emit = defineEmits(['close']);
 const { handleSubmit, validate, resetForm } = useForm({
   initialValues: {
     name: '',
+    category: undefined,
     coordinates: props.coordinates ?? '',
     description: '',
   },
@@ -122,6 +137,11 @@ const { handleSubmit, validate, resetForm } = useForm({
 const { value: name, errorMessage: nameError } = useField<string>(
   'name',
   'required'
+);
+
+const { value: category, errorMessage: categoryError } = useField<string>(
+  'category',
+  'requiredDropdown'
 );
 
 const { value: coordinates, errorMessage: coordinatesError } = useField<string>(
@@ -179,6 +199,7 @@ const submitDialog = handleSubmit(async (values: any) => {
 
   const sportFieldProposal: PostSportFieldProposal = {
     sportFieldName: values.name,
+    sportFieldCategory: values.category.category,
     sportFieldDescription: values.description,
     sportFieldLongitude: longitude,
     sportFieldLatitude: latitude,

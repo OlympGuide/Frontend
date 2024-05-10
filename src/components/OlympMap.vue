@@ -155,6 +155,8 @@ const openModal = (sportField: SportField): void => {
 };
 
 const filterSportFields = async (item: IconObject) => {
+  if (item.category === undefined) return;
+
   sportFieldStore.setCategoryFilter(item.category);
   markers.value.clearLayers();
   await loadSportFields();
@@ -166,6 +168,14 @@ const isFilterSelected = (item: IconObject) => {
 </script>
 
 <style lang="scss">
+.filters .p-chip-image img {
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+  margin-left: -0.5rem !important;
+}
+</style>
+
+<style lang="scss" scoped>
 #map {
   height: 100%;
   width: 100%;
@@ -179,19 +189,12 @@ const isFilterSelected = (item: IconObject) => {
   }
 
   .p-chip:hover {
-    @apply cursor-pointer;
-  }
-
-  .p-chip-image img {
-    width: 1.8rem !important;
-    height: 1.8rem !important;
-    margin-left: -0.5rem !important;
+    @apply cursor-pointer text-primaryRed;
   }
 }
-</style>
 
-<style lang="scss" scoped>
 .selected {
-  @apply text-white bg-primaryRed;
+  @apply bg-primaryRed;
+  color: white !important;
 }
 </style>
