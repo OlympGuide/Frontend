@@ -124,12 +124,28 @@ const createNewReservation = async (event: CalendarEvent) => {
     end: new Date(event.end),
   };
 
-  await reservationStore.createReservation(reservation);
+  const newReservation = await reservationStore.createReservation(reservation);
+
+  if (!newReservation) {
+    return;
+  }
+
+  event.isNew = false;
+  event.id = newReservation.id;
+
+  calendarApp.events.update(event);
 };
 
 const updateReservation = async (event: CalendarEvent) => {
+  if (!sportFieldStore.selectedSportField) {
+    console.error('selectedSportField is undefined!');
+    sportFieldStore.errorMessage = 'Sportfeld nicht gefunden.';
+    return;
+  }
+
   const reservation: UpdateReservation = {
     id: event.id.toString(),
+    sportFieldId: sportFieldStore.selectedSportField.id,
     start: new Date(event.start),
     end: new Date(event.end),
   };
