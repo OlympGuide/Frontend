@@ -146,14 +146,12 @@ const cancel = async (event: CalendarEvent) => {
   }
 };
 
-const isMyReservation = (_reservation: Reservation): boolean => {
+const isMyReservation = (reservation: Reservation): boolean => {
   if (!instanceOfUser(userStore.user)) {
     return false;
   }
 
-  // TODO: acitvate this line when the backend bug is fixed
-  // return reservation.user.id === userStore.user.id;
-  return true;
+  return reservation.user.id === userStore.user.id;
 };
 </script>
 
