@@ -1,36 +1,41 @@
 import SportFieldCreateDialog from '../../src/components/SportFieldCreateDialog.vue';
-import PrimeVue from 'primevue/config';
-import Button from 'primevue/button';
-import Dialog from 'primevue/dialog';
-import FloatLabel from 'primevue/floatlabel';
-import InputText from 'primevue/inputtext';
-import TextArea from 'primevue/textarea';
-import Checkbox from 'primevue/checkbox';
+import { createTestingPinia } from '@pinia/testing';
+import { useSportFieldProposalStore } from '../../src/stores/SportFieldProposalStore';
 
-import '../../src/assets/styles/style.css';
-import '../../src/assets/styles/olympGuideTheme.css';
-import 'primevue/resources/primevue.min.css';
-import 'primeicons/primeicons.css';
 describe('<SportFieldCreateDialog />', () => {
+  beforeEach(() => {
+    createTestingPinia({
+      initialState: {
+        sportFieldProposal: {
+          proposals: [
+            {
+              id: '1',
+              state: 0,
+              name: 'Marker test',
+              description: 'Testbeschreibung',
+              latitude: 47,
+              longitude: 8,
+              address: undefined,
+              file: undefined,
+            },
+          ],
+        },
+      },
+      createSpy: cy.spy,
+    });
+    cy.wrap(useSportFieldProposalStore()).as('store');
+  });
+
   it('renders', () => {
     // see: https://on.cypress.io/mounting-vue
 
-    cy.mount(SportFieldCreateDialog, {
-      global: {
-        plugins: [PrimeVue],
-        components: {
-          FloatLabel,
-          Button,
-          InputText,
-          Dialog,
-          TextArea,
-          Checkbox,
-        },
-      },
+    cy.mountWithSetup(SportFieldCreateDialog, {
       props: {
         isVisible: true,
       },
     });
+
+    cy.get('@store').its('loadSportFieldProposals').should('not.be.called');
 
     //todo
   });

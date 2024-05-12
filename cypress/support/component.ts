@@ -14,51 +14,84 @@
 // ***********************************************************
 
 import { mount } from 'cypress/vue';
+import PrimeVue from 'primevue/config';
+import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext';
+import FloatLabel from 'primevue/floatlabel';
+import Textarea from 'primevue/textarea';
+import Calendar from 'primevue/calendar';
+import InputIcon from 'primevue/inputicon';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import ConfirmPopup from 'primevue/confirmpopup';
+import Checkbox from 'primevue/checkbox';
+import Chip from 'primevue/chip';
+import Dropdown from 'primevue/dropdown';
+import FileUpload from 'primevue/fileupload';
+import Toast from 'primevue/toast';
+import AutoComplete from 'primevue/autocomplete';
+import ToggleButton from 'primevue/togglebutton';
 
-// Augment the Cypress namespace to include type definitions for
-// your custom command.
-// Alternatively, can be defined in cypress/support/component.d.ts
-// with a <reference path="./component" /> at the top of your spec.
+import ToastService from 'primevue/toastservice';
+
+import '../../src/assets/styles/style.css';
+import '../../src/assets/styles/olympGuideTheme.css';
+import 'primevue/resources/primevue.min.css';
+import 'primeicons/primeicons.css';
+import { defineRules } from '../../src/validation/rules';
+
 declare global {
   namespace Cypress {
     interface Chainable {
-      mount: typeof mount;
-      //mountWithPinia: typeof mountWithPinia;
+      mountWithSetup(
+        component: any,
+        options?: {
+          props?: any;
+          data?: any;
+          computed?: any;
+          methods?: any;
+          slots?: any;
+          global?: any;
+        }
+      ): Chainable<any>;
     }
   }
 }
 
 //Cypress.Commands.add('mountWithPinia', mountWithPinia);
-Cypress.Commands.add('mount', mount);
+Cypress.Commands.add('mountWithSetup', (component, options) => {
+  defineRules();
 
-import { createPinia, Pinia, setActivePinia } from 'pinia';
-import { DefineComponent } from 'vue';
-
-//let pinia: Pinia;
-
-// Run this code before each *test*.
-
-/*
-beforeEach(() => {
-  // New Pinia
-  pinia = createPinia();
-
-  // Set current Pinia instance
-  setActivePinia(pinia);
-});
-
-
-function mountWithPinia(
-  Comp: DefineComponent,
-  options?: Parameters<typeof mount>[1]
-): Cypress.Chainable {
-  return mount(Comp, {
+  // merge the global options
+  options = {
     ...options,
     global: {
-      ...options?.global,
-      plugins: [...(options?.global?.plugins ?? []), pinia],
+      ...options.global,
+      plugins: [PrimeVue, ToastService],
+      components: {
+        Button,
+        Dialog,
+        InputText,
+        FloatLabel,
+        Textarea,
+        Calendar,
+        InputIcon,
+        DataTable,
+        Column,
+        ConfirmPopup,
+        Checkbox,
+        Chip,
+        Dropdown,
+        FileUpload,
+        Toast,
+        AutoComplete,
+        ToggleButton,
+        ...options.global?.components,
+      },
     },
-  });
-}
+  };
 
- */
+  // call the original mount function with the new options
+  return mount(component, options);
+});
