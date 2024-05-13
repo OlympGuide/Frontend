@@ -26,8 +26,10 @@
 <script setup lang="ts">
 import { SportField } from '@/types/SportField.ts';
 import { useRouter } from 'vue-router';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 const router = useRouter();
+const { loginWithRedirect, isAuthenticated } = useAuth0();
 
 const visible = defineModel('visible', { default: false });
 
@@ -41,7 +43,12 @@ const closeDialog = () => {
 
 const reserve = async () => {
   visible.value = false;
-  await router.push({ name: 'Reserve', params: { id: props.sportField.id } });
+
+  if (isAuthenticated.value) {
+    await router.push({ name: 'Reserve', params: { id: props.sportField.id } });
+  } else {
+    await loginWithRedirect();
+  }
 };
 </script>
 
