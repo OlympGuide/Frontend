@@ -5,6 +5,7 @@
     header="Erstelle einen neuen Sportplatz"
     class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
     @hide="closeDialog"
+    :draggable="false"
   >
     <form @submit.prevent="submitDialog" novalidate>
       <div class="col-layout">
@@ -65,15 +66,15 @@
             autocomplete="off"
           />
         </FloatLabel>
-        <div class="flex align-items-center" v-if="!isDemoActive">
-          <Checkbox v-model="checked" :binary="true" id="owner" class="mb-5" />
-          <label @click="checked = !checked" class="ml-2 clickable"
-            >Ich bin Eigentümer:in</label
-          >
-        </div>
-        <div v-if="checked">
-          <FileUpload @file="handleFile" />
-        </div>
+        <!--        <div class="flex align-items-center" v-if="!isDemoActive">-->
+        <!--          <Checkbox v-model="checked" :binary="true" id="owner" class="mb-5" />-->
+        <!--          <label @click="checked = !checked" class="ml-2 clickable"-->
+        <!--            >Ich bin Eigentümer:in</label-->
+        <!--          >-->
+        <!--        </div>-->
+        <!--        <div v-if="checked">-->
+        <!--          <FileUpload @file="handleFile" />-->
+        <!--        </div>-->
       </div>
       <div class="button-layout">
         <Button
@@ -101,18 +102,18 @@ import { useField, useForm } from 'vee-validate';
 import { storeToRefs } from 'pinia';
 import AddressCompletion from '@/components/AddressCompletion.vue';
 import { NominatimResponseItem } from '@/types/Address.ts';
-import FileUpload from '@/components/FileUpload.vue';
-import { useDemoStore } from '@/stores/DemoStore.ts';
+// import FileUpload from '@/components/FileUpload.vue';
+// import { useDemoStore } from '@/stores/DemoStore.ts';
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { PostSportFieldProposal } from '@/types/Proposal';
 import { sportFieldCategories } from '@/types/SportField.ts';
 
-const checked = ref(false);
+// const checked = ref(false);
 const address = ref<NominatimResponseItem>();
-const file = ref<File>();
+// const file = ref<File>();
 
-const demoStore = useDemoStore();
-const { isDemoActive } = storeToRefs(demoStore);
+// const demoStore = useDemoStore();
+// const { isDemoActive } = storeToRefs(demoStore);
 
 const props = defineProps({
   isVisible: { type: Boolean, required: true },
@@ -167,6 +168,7 @@ watch(
 watch(
   () => props.coordinates,
   (value) => {
+    // @ts-ignore-next-line
     if (typeof value === 'string') {
       coordinates.value = value;
     }
@@ -184,9 +186,9 @@ const setCoordinates = (autocompleteAddress: NominatimResponseItem) => {
   coordinates.value = autocompleteAddress.lat + ', ' + autocompleteAddress.lon;
 };
 
-const handleFile = (ownerFile: File) => {
-  file.value = ownerFile;
-};
+// const handleFile = (ownerFile: File) => {
+//   file.value = ownerFile;
+// };
 
 const submitDialog = handleSubmit(async (values: any) => {
   const validation = await validate();
@@ -231,7 +233,7 @@ const submitDialog = handleSubmit(async (values: any) => {
 }
 
 .button-layout {
-  @apply flex gap-2;
+  @apply flex gap-2 mt-4;
 }
 
 .switch-row-col-layout {
@@ -242,7 +244,7 @@ const submitDialog = handleSubmit(async (values: any) => {
   @apply flex flex-col gap-y-10 lg:gap-y-10 pt-5;
 }
 
-.clickable {
+/*.clickable {
   @apply cursor-pointer;
-}
+}*/
 </style>

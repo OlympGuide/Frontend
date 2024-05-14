@@ -4,6 +4,7 @@
     modal
     :header="props.sportField.name"
     :style="{ width: '25rem' }"
+    :draggable="false"
   >
     <span
       v-if="props.sportField.description"
@@ -12,12 +13,11 @@
     >
 
     <template #footer>
-      <Button label="Cancel" text @click="closeDialog()"></Button>
+      <Button label="Abbrechen" text @click="closeDialog()"></Button>
       <Button
         label="Reservieren"
-        outlined
+        class="!bg-primaryRed"
         @click="reserve()"
-        autofocus
       ></Button>
     </template>
   </Dialog>
