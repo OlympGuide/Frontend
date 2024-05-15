@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { getSportFields, getSportFieldById } from '@/api/sportFieldApi.ts';
-import { SportField } from '@/types/Map.ts';
+import { SportField, SportFieldCategory } from '@/types/SportField.ts';
 import { AxiosResponse } from 'axios';
 import { ApiState } from '@/types/ApiState.ts';
 import { Reservation } from '@/types/Reservation.ts';
@@ -9,6 +9,7 @@ import { getReservationsBySportField } from '@/api/reservationApi.ts';
 interface SportFieldState extends ApiState {
   sportFields: SportField[];
   selectedSportField: SportField | undefined;
+  categoryFilter: SportFieldCategory | undefined;
 }
 
 export const useSportFieldStore = defineStore('sportField', {
@@ -16,17 +17,20 @@ export const useSportFieldStore = defineStore('sportField', {
     return {
       sportFields: [],
       selectedSportField: undefined,
+      categoryFilter: undefined,
       isLoading: false,
       errorMessage: '',
       successMessage: '',
     };
   },
   actions: {
-    async loadSportFields() {
+    async loadFilteredSportFields() {
       this.isLoading = true;
       try {
         this.errorMessage = '';
-        const res: AxiosResponse<SportField[], any> = await getSportFields();
+        const res: AxiosResponse<SportField[], any> = await getSportFields(
+          this.categoryFilter
+        );
         this.sportFields = res.data;
       } catch (e: any) {
         console.error('Error while loading sport field: ', e);
@@ -66,6 +70,14 @@ export const useSportFieldStore = defineStore('sportField', {
       } finally {
         this.isLoading = false;
       }
+    },
+    setCategoryFilter(category: SportFieldCategory) {
+      if (this.categoryFilter === category) {
+        this.categoryFilter = undefined;
+        return;
+      }
+
+      this.categoryFilter = category;
     },
   },
 });

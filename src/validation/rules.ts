@@ -5,6 +5,10 @@ export const defineRules = () => {
     return value.length > 0 || 'Das Feld darf nicht leer sein';
   });
 
+  defineRule('requiredDropdown', (value: object): string | boolean => {
+    return !!value || 'Bitte wählen Sie eine Option aus';
+  });
+
   defineRule('coordinatePair', (value: string): string | boolean => {
     const coordinateRegex: RegExp = /^-?\d+(\.\d+)?,\s*-?\d+(\.\d+)?$/;
     return (

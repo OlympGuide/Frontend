@@ -1,5 +1,17 @@
 <template>
   <div id="map"></div>
+  <div class="filters">
+    <template v-for="icon in iconObjects" :key="icon.key">
+      <Chip
+        class="bg-white"
+        :class="{ selected: isFilterSelected(icon) }"
+        v-if="icon.isFilterable"
+        :label="icon.name"
+        :image="icon.filterIconUrl"
+        @click="filterSportFields(icon)"
+      />
+    </template>
+  </div>
   <SportFieldInfoDialog
     v-if="selectedSportField"
     v-model:visible="sportFieldInfoDialogVisible"
@@ -10,35 +22,37 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import L, {
-  DivIcon,
-  Icon,
   LatLngTuple,
+  Layer,
+  LayerGroup,
   Map,
   MapOptions,
   Marker,
 } from 'leaflet';
 import SportFieldInfoDialog from '@/components/SportFieldInfoDialog.vue';
 
-import { SportField } from '@/types/Map';
+import { SportField } from '@/types/SportField.ts';
 
 import 'leaflet/dist/leaflet.css';
 import { useSportFieldStore } from '@/stores/SportFieldStore.ts';
 
-import footballIconUrl from '@/assets/icons/football.png';
-import markerIconUrl from '@/assets/icons/marker.png';
-
-interface IconKeyMap {
-  [key: string]: Icon | DivIcon;
-}
+import {
+  createIcons,
+  getIconKey,
+  IconKeyMap,
+  IconObject,
+  iconObjects,
+} from '@/services/iconService.ts';
 
 const sportFieldStore = useSportFieldStore();
-let currentMarker: L.Marker;
+let currentMarker = ref<Layer>();
 
 const map = ref<Map>();
+const markers = ref<LayerGroup>(new LayerGroup());
+
 const sportFieldInfoDialogVisible = ref<boolean>(false);
 const selectedSportField = ref<SportField | null>(null);
 const sportFields = ref<SportField[]>([]);
-
 const icons = ref<IconKeyMap>({});
 
 const emit = defineEmits(['marked']);
@@ -89,105 +103,98 @@ const addClickListener = (): void => {
   map.value!.on('click', (e) => {
     const { lat, lng } = e.latlng;
 
-    if (currentMarker) {
-      map.value!.removeLayer(currentMarker);
+    if (currentMarker.value) {
+      map.value!.removeLayer(currentMarker.value);
     }
 
-    currentMarker = L.marker([lat, lng], { icon: icons.value.marker }).addTo(
-      map.value!
-    );
+    currentMarker.value = L.marker([lat, lng], {
+      icon: icons.value.marker,
+    }).addTo(map.value!);
 
-    emit('marked', currentMarker);
+    emit('marked', currentMarker.value);
 
     const popup = L.popup().setContent(
       'Um einen Sportplatz hier zu erfassen, <br>klicken Sie auf +'
     );
-    currentMarker.bindPopup(popup).togglePopup();
+    currentMarker.value.bindPopup(popup).togglePopup();
   });
 };
 
-const createIcons = (): IconKeyMap => {
-  const iconKeyMap: IconKeyMap = {};
-
-  const footballIcon: Icon = L.icon({
-    iconUrl: footballIconUrl,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15],
-    popupAnchor: [0, -30],
-  });
-
-  const markerIcon: Icon = L.icon({
-    iconUrl: markerIconUrl,
-    iconSize: [30, 30],
-    iconAnchor: [15, 15],
-    popupAnchor: [0, -30],
-  });
-
-  const stackedIcon: DivIcon = L.divIcon({
-    html: '<span>1</span>',
-  });
-
-  iconKeyMap['football'] = footballIcon;
-  iconKeyMap['stackedIcon'] = stackedIcon;
-  iconKeyMap['marker'] = markerIcon;
-
-  return iconKeyMap;
+const loadSportFields = async () => {
+  await sportFieldStore.loadFilteredSportFields();
+  sportFields.value = sportFieldStore.sportFields;
+  addMarkers();
 };
 
-const loadSportFields = (): void => {
-  sportFieldStore.loadSportFields().then((_) => {
-    sportFields.value = sportFieldStore.sportFields;
-    addMarkers();
-  });
-};
-
-const addMarkers = (): Marker[] => {
-  const markers: Marker[] = [];
-
+const addMarkers = () => {
   for (const sportField of sportFields.value) {
-    // let stackCounter: number = 0;
+    const iconName = getIconKey(sportField.category);
+    if (!iconName) {
+      continue;
+    }
 
-    // for (const nextPlace of sportFields.value) {
-    //   if (sportField === nextPlace) {
-    //     break;
-    //   }
+    if (icons.value[iconName] === undefined) {
+      continue;
+    }
 
-    // TODO: Finish in KAN-39: https://olympguide.atlassian.net/browse/KAN-39
-    // const latLngThis: LatLng = latLng(sportField.coordinates);
-    // const latLngNext: LatLng = latLng(nextPlace.coordinates);
-
-    // if (latLngThis.distanceTo(latLngNext) < 2000) {
-    //   stackCounter++;
-    // }
-    // }
-
-    // if (stackCounter === 0) {
     const marker: Marker = L.marker(
       [sportField.latitude, sportField.longitude],
-      { icon: icons.value.football }
+      { icon: icons.value[iconName] }
     );
-    marker.addTo(map.value!);
+
     marker.on('click', () => openModal(sportField));
-    markers.push(marker);
-    // } else if (stackCounter === 1) {
-    //   const marker: Marker = L.marker([sportField.latitude, sportField.longitude], {icon: icons.value.stackedIcon});
-    //   marker.addTo(map.value!);
-    //   markers.push(marker);
-    // }
+    markers.value.addLayer(marker);
   }
 
-  return markers;
+  markers.value.addTo(map.value!);
 };
 
 const openModal = (sportField: SportField): void => {
   sportFieldInfoDialogVisible.value = true;
   selectedSportField.value = sportField;
 };
+
+const filterSportFields = async (item: IconObject) => {
+  if (item.category === undefined) return;
+
+  sportFieldStore.setCategoryFilter(item.category);
+  markers.value.clearLayers();
+  await loadSportFields();
+};
+
+const isFilterSelected = (item: IconObject) => {
+  return item.category === sportFieldStore.categoryFilter;
+};
 </script>
 
-<style scoped>
+<style lang="scss">
+.filters .p-chip-image img {
+  width: 1.8rem !important;
+  height: 1.8rem !important;
+  margin-left: -0.5rem !important;
+}
+</style>
+
+<style lang="scss" scoped>
 #map {
   height: 100%;
   width: 100%;
+}
+
+.filters {
+  @apply fixed z-[1000] top-8 left-72 flex justify-center items-center ml-4 gap-4 transition-colors;
+
+  .p-chip {
+    @apply shadow-2xl;
+  }
+
+  .p-chip:hover {
+    @apply cursor-pointer text-primaryRed;
+  }
+}
+
+.selected {
+  @apply bg-primaryRed;
+  color: white !important;
 }
 </style>
