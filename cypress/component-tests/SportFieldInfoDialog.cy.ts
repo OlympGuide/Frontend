@@ -1,5 +1,4 @@
 import SportFieldInfoDialog from '../../src/components/SportFieldInfoDialog.vue';
-import { SportField } from '../../src/types/Map';
 import { SportField, SportFieldCategory } from '../../src/types/SportField';
 
 describe('<SportFieldInfoDialog />', () => {

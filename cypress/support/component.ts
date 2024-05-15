@@ -67,7 +67,7 @@ Cypress.Commands.add('mountWithSetup', (component, options) => {
   options = {
     ...options,
     global: {
-      ...options.global,
+      ...options?.global,
       plugins: [PrimeVue, ToastService],
       components: {
         Button,
@@ -87,7 +87,7 @@ Cypress.Commands.add('mountWithSetup', (component, options) => {
         Toast,
         AutoComplete,
         ToggleButton,
-        ...options.global?.components,
+        ...options?.global?.components,
       },
     },
   };

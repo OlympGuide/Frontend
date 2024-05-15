@@ -36,7 +36,9 @@ describe('<Proposals />', () => {
     cy.mountWithSetup(Proposals, {});
 
     cy.get('@store').then((store) => {
+      //@ts-ignore
       expect(store.sportFieldProposals).to.have.length(1);
+      //@ts-ignore
       expect(store.sportFieldProposals[0]).to.deep.equal({
         id: '1',
         state: 0,

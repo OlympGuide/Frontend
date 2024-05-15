@@ -21,16 +21,13 @@ Cypress.Commands.add('login', (email: string, password: string) => {
   );
 });
 
-const sportFieldProposalUrl = `${Cypress.env('apiUrl')}sportfieldproposals`;
-
 Cypress.Commands.add(
   'loginByAuth0Api',
   (username: string, password: string) => {
     cy.log(`Logging in as ${username}`);
     const client_id = 'cnWkVX30s8jQC2BQsfG3Yse9yAOaPHWZ';
     const audience = 'OlympGuideBackend';
-    const secret =
-      'vR0P4RT_od-cz0BW91UAquEgtDJrmDDsemYQ5BjfEbBqYgQTy_q-WSJaYt8rF8RO';
+    //const secret = ('vR0P4RT_od-cz0BW91UAquEgtDJrmDDsemYQ5BjfEbBqYgQTy_q-WSJaYt8rF8RO');
 
     cy.request({
       method: 'POST',
@@ -57,35 +54,3 @@ Cypress.Commands.add(
     });
   }
 );
-
-/*
-Cypress.Commands.add('postSportFieldProposal', (data, token) => {
-  cy.request({
-    method: 'POST',
-    url: sportFieldProposalUrl,
-    body: data,
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-});
-
- */
-
-/*
-Cypress.Commands.add('getSportFieldProposals', (): SportFieldProposal[] => {
-  return cy
-    .request({
-      method: 'GET',
-      url: sportFieldProposalUrl,
-      qs: {
-        state: 'Open',
-      },
-    })
-    .then((response) => {
-      expect(response.status).to.eq(200);
-      return response.body;
-    });
-});
-
- */

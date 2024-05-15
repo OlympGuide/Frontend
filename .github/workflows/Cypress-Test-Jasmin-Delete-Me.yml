@@ -26,6 +26,9 @@ jobs:
           repository: OlympGuide/Backend
           path: backend
 
+      - name: List contents of backend directory
+        run: ls -la ./backend
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -36,19 +39,20 @@ jobs:
         working-directory: ./frontend
 
       - name: Start services with Docker Compose
-        run: docker-compose up -d backend db
+        run: docker compose up --build -d backend db
         working-directory: ./backend
 
       - name: Wait for services to be ready
-        run: sleep 160 # Adjust the wait time as necessary
+        run: sleep 30 # Adjust the wait time as necessary
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
           working-directory: ./frontend
           build: npm run build
-          start: 'npm run cy:run'
+          start: npm run dev
+          #start: 'npm run cy:run'
 
       - name: Stop Docker Compose
-        run: docker-compose down
+        run: docker compose down
         working-directory: ./backend
