@@ -1,5 +1,5 @@
 describe('View sport field', () => {
-  before('login', () => {
+  before('Log in user', () => {
     cy.login('cypress@olympguide.ch', 'CypressTest1$');
   });
 

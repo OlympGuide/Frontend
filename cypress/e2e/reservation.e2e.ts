@@ -13,8 +13,20 @@ describe('Make a reservation', () => {
         cy.get('.pi-check').click();
       });
 
+      cy.get('.p-toast-message-success').should('be.visible');
+
       cy.reload();
       cy.get('div.event.me').should('exist');
+
+      cy.get('div.event.me').within(() => {
+        cy.get('.pi-trash').click();
+      });
+
+      cy.get('.p-toast-message-success').should('be.visible');
+      cy.get('.p-toast-detail').should(
+        'contain',
+        'Ihre Reservation wurde gelöscht'
+      );
     });
   });
 });

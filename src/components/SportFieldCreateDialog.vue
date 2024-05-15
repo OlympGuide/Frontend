@@ -241,7 +241,7 @@ const submitDialog = handleSubmit(async (values: any) => {
       severity: 'success',
       summary: 'Sportplatz Anfrage erstellt',
       detail: `${sportFieldProposal.sportFieldName}`,
-      life: 3000,
+      life: 12000,
     });
   } catch (e: any) {
     console.error(e);
