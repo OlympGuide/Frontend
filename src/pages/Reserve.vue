@@ -6,13 +6,7 @@
       >
         <div
           class="event"
-          :class="[
-            calendarEvent.calendarId === ReservationType.OTHERS
-              ? ReservationType.OTHERS
-              : reservationId && calendarEvent.id === reservationId
-                ? `${ReservationType.ME}-selected`
-                : ReservationType.ME,
-          ]"
+          :class="getEventClassName(calendarEvent, reservationId)"
         >
           {{ getEventTime(calendarEvent.start, calendarEvent.end) }}
 
@@ -106,6 +100,19 @@ const reservationsToCalenderEvents = (
 const getEventTime = (start: string, end: string): string => {
   return `${format(start, 'HH:mm')} - ${format(end, 'HH:mm')}`;
 };
+
+const getEventClassName = (calendarEvent: CalendarEvent, reservationId: string): string => {
+  let className = '';
+  if (calendarEvent.calendarId === ReservationType.OTHERS) {
+    className =  ReservationType.OTHERS;
+  } else if (reservationId && calendarEvent.id === reservationId) {
+    className =  `${ReservationType.ME}-selected`;
+  } else {
+    className =  ReservationType.ME;
+  }
+  return className;
+}
+
 
 const reserve = async (event: CalendarEvent) => {
   if (event.isNew) {
