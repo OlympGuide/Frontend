@@ -7,6 +7,10 @@ describe('View sport field', () => {
     cy.get('#map').click(900, 895);
 
     cy.get('[data-pc-section=header]').should('contain', 'Marker test');
+    cy.get('[data-pc-section=content]').should(
+      'contain',
+      'This is the marker test'
+    );
 
     cy.get('[data-cy=button-reserve]').should('contain.text', 'Reservieren');
   });

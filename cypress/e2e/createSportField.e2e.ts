@@ -21,23 +21,17 @@ describe('Create sport field', () => {
         'Hörnlistrasse 33 Winterthur'
       );
       cy.wait(200);
-      cy.get('[id^="pv_id_"][id$="_list"]')
-        .should('be.visible')
-        .first()
-        .click();
+      cy.get('[id$="_0"]').should('be.visible').click();
       cy.wait(200);
       cy.get('[data-cy=address-autocomplete] input').should(
         'have.value',
-        'Schulhaus Hörnlistrasse, Hörnlistrasse 33, 8400 Winterthur, Schweiz'
+        'Hörnlistrasse 33, 8400 Winterthur, Schweiz'
       );
 
       cy.get('[data-cy=category]').click();
       cy.get('[id$="_0"]').should('be.visible').click();
 
-      cy.get('#coordinates').should(
-        'have.value',
-        '47.492729499999996, 8.745953891759001'
-      );
+      cy.get('#coordinates').should('have.value', '47.492946, 8.745693');
 
       cy.get('#description').type('This is my first cypress test description');
       cy.get('#description').should(

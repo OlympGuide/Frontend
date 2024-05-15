@@ -17,7 +17,7 @@ describe('<Proposals />', () => {
               sportFieldLongitude: 8,
               sportFieldAddress: undefined,
               user: {
-                name: 'Bouba',
+                name: 'User',
               },
             },
           ],
@@ -48,7 +48,7 @@ describe('<Proposals />', () => {
         sportFieldLongitude: 8,
         sportFieldAddress: undefined,
         user: {
-          name: 'Bouba',
+          name: 'User',
         },
       });
     });
