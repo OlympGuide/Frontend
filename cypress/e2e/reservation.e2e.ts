@@ -5,7 +5,8 @@ describe('Make a reservation', () => {
     });
 
     it('should make a reservation', () => {
-      cy.get('#map').click();
+      cy.wait(5000);
+      cy.get('#map').click(900, 895);
       cy.get('[data-cy=button-reserve]').click();
       cy.get('div.sx-vue-calendar-wrapper.calendar').click();
 
