@@ -26,7 +26,7 @@ describe('Create Sport Field when logged in', () => {
     cy.wait(200);
     cy.get('[data-cy=address-autocomplete] input').should(
       'have.value',
-      'Schulhaus Hörnlistrasse, 33, Hörnlistrasse, Gutschick, Mattenbach, Winterthur, Bezirk Winterthur, Zurich, 8400, Switzerland'
+      'Schulhaus Hörnlistrasse, Hörnlistrasse 33, 8400 Winterthur, Schweiz'
     );
 
     cy.get('#coordinates').should(

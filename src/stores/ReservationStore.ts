@@ -52,11 +52,15 @@ export const useReservationStore = defineStore('reservation', {
         this.isLoading = false;
       }
     },
-    async createReservation(reservation: PostReservation) {
+    async createReservation(
+      reservation: PostReservation
+    ): Promise<Reservation | undefined> {
+      let newReservation: Reservation | undefined = undefined;
       this.isLoading = true;
       try {
         this.errorMessage = '';
-        await postReservation(reservation);
+        const res = await postReservation(reservation);
+        newReservation = res.data;
         this.successMessage = 'Ihre Reservation wurde erstellt.';
       } catch (e: any) {
         console.error(
@@ -68,6 +72,8 @@ export const useReservationStore = defineStore('reservation', {
       } finally {
         this.isLoading = false;
       }
+
+      return newReservation;
     },
     async updateReservation(reservation: UpdateReservation) {
       this.isLoading = true;

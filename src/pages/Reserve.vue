@@ -128,12 +128,28 @@ const createNewReservation = async (event: CalendarEvent) => {
     end: new Date(event.end),
   };
 
-  await reservationStore.createReservation(reservation);
+  const newReservation = await reservationStore.createReservation(reservation);
+
+  if (!newReservation) {
+    return;
+  }
+
+  event.isNew = false;
+  event.id = newReservation.id;
+
+  calendarApp.events.update(event);
 };
 
 const updateReservation = async (event: CalendarEvent) => {
+  if (!sportFieldStore.selectedSportField) {
+    console.error('selectedSportField is undefined!');
+    sportFieldStore.errorMessage = 'Sportfeld nicht gefunden.';
+    return;
+  }
+
   const reservation: UpdateReservation = {
     id: event.id.toString(),
+    sportFieldId: sportFieldStore.selectedSportField.id,
     start: new Date(event.start),
     end: new Date(event.end),
   };
@@ -150,14 +166,12 @@ const cancel = async (event: CalendarEvent) => {
   }
 };
 
-const isMyReservation = (_reservation: Reservation): boolean => {
+const isMyReservation = (reservation: Reservation): boolean => {
   if (!instanceOfUser(userStore.user)) {
     return false;
   }
 
-  // TODO: acitvate this line when the backend bug is fixed
-  // return reservation.user.id === userStore.user.id;
-  return true;
+  return reservation.user.id === userStore.user.id;
 };
 </script>
 

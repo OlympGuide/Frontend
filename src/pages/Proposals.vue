@@ -17,6 +17,7 @@
               :label="getState(data.state)"
               icon="pi pi-question-circle"
             />
+            <span v-else-if="field === 'user'">{{ data.user.name }}</span>
             <span v-else>{{ data[field] }}</span>
           </template>
         </Column>
