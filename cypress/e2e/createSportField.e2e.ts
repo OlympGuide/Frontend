@@ -3,11 +3,11 @@ import '@cypress/code-coverage/support';
 describe('Create sport field', () => {
   const expectedLat = 47.497169148299186;
   const expectedLong = 8.728895187377931;
+
   describe('When logged in', () => {
     beforeEach('Log in user', () => {
       cy.login('cypress@olympguide.ch', 'CypressTest1$');
     });
-
     it('should create a new sport field with its address', () => {
       cy.get('[data-cy=sportsfield-dialog-button]')
         .should('be.visible')
@@ -27,8 +27,11 @@ describe('Create sport field', () => {
       cy.wait(200);
       cy.get('[data-cy=address-autocomplete] input').should(
         'have.value',
-        'Schulhaus Hörnlistrasse, 33, Hörnlistrasse, Gutschick, Mattenbach, Winterthur, Bezirk Winterthur, Zurich, 8400, Switzerland'
+        'Schulhaus Hörnlistrasse, Hörnlistrasse 33, 8400 Winterthur, Schweiz'
       );
+
+      cy.get('[data-cy=category]').click();
+      cy.get('[id$="_0"]').should('be.visible').click();
 
       cy.get('#coordinates').should(
         'have.value',
@@ -56,6 +59,9 @@ describe('Create sport field', () => {
         'have.value',
         expectedLat + ', ' + expectedLong
       );
+
+      cy.get('[data-cy=category]').click();
+      cy.get('[id$="_1"]').should('be.visible').click();
 
       cy.get('#name').type('Marker test');
       cy.get('#name').should('have.value', 'Marker test');
@@ -112,6 +118,23 @@ describe('Create sport field', () => {
       cy.get('[data-cy=address-error]').should(
         'contain',
         'Die Adresse darf nicht leer sein, wenn kein Pin gesetzt wurde'
+      );
+    });
+
+    it('should not create a sport field without a category', () => {
+      cy.get('#map').click();
+
+      cy.get('[data-cy=sportsfield-dialog-button]')
+        .should('be.visible')
+        .click();
+
+      cy.get('#name').type('No category test');
+
+      cy.get('[data-cy=speichern-button]').click();
+
+      cy.get('[data-cy=category-error]').should(
+        'contain',
+        'Bitte wählen Sie eine Option aus'
       );
     });
   });

@@ -31,6 +31,7 @@
 
           <FloatLabel class="float-label-input">
             <Dropdown
+              data-cy="category"
               v-model="category"
               :options="sportFieldCategories"
               option-label="name"
@@ -40,7 +41,9 @@
             <label for="description" class="label"
               >Kategorie <span class="text-red-800">*</span></label
             >
-            <small class="p-error input-error">{{ categoryError }}</small>
+            <small data-cy="category-error" class="p-error input-error">{{
+              categoryError
+            }}</small>
           </FloatLabel>
         </div>
         <FloatLabel class="float-label-input">
@@ -55,10 +58,15 @@
             v-model="coordinates"
             autocomplete="off"
           />
-          <small class="p-error input-error" class="p-error input-error">{{ coordinatesError }}</small>
+          <small data-cy="coordinates-error" class="p-error input-error">{{
+            coordinatesError
+          }}</small>
         </FloatLabel>
-        <AddressCompletion @address="setCoordinates"  v-model="addressInput"
-                           :error="addressInputError"/>
+        <AddressCompletion
+          @address="setCoordinates"
+          v-model="addressInput"
+          :error="addressInputError"
+        />
         <FloatLabel class="float-label-input">
           <label for="description" class="label">Beschreibung</label>
           <TextArea

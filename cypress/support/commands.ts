@@ -16,7 +16,9 @@ Cypress.Commands.add('login', (email: string, password: string) => {
     }
   );
 
-  cy.get('[data-cy="menu-item-Ausloggen"]').should('be.visible');
+  cy.get('[data-cy="menu-item-Ausloggen"]', { timeout: 10000 }).should(
+    'be.visible'
+  );
 });
 
 const sportFieldProposalUrl = `${Cypress.env('apiUrl')}sportfieldproposals`;
