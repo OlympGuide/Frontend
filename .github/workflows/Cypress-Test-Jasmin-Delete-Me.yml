@@ -1,9 +1,7 @@
-
 name: Cypess-Test-Jasmin-Delete-Me
 on:
   push:
-    branches: [ "KAN-56-Frontend-Testing" ]
-
+    branches: [ "KAN-80-Cypress-Pipeline-aufsetzen" ]
 
 env:
   # GENERAL
@@ -17,20 +15,40 @@ jobs:
   cypress-run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout frontend repository
         uses: actions/checkout@v4
-
-      - name: action-docker-compose
-          # You may pin to the exact commit or the version.
-          # uses: sudo-bot/action-docker-compose@ef4c4da08a9673f93d4eb8a5da1e942bf24a37ea
-        uses: sudo-bot/action-docker-compose@latest
         with:
-          # Command line arguments
-          cli-args: up --build -d backend db
+          path: frontend
 
+      - name: Checkout backend repository
+        uses: actions/checkout@v4
+        with:
+          repository: OlympGuide/Backend
+          path: backend
 
-      - name: Cypress run
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Start services with Docker Compose
+        run: docker-compose up -d backend db
+        working-directory: ./backend
+
+      - name: Wait for services to be ready
+        run: sleep 160 # Adjust the wait time as necessary
+
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
+          working-directory: ./frontend
           build: npm run build
-          start: npm run dev
+          start: 'npm run cy:run'
+
+      - name: Stop Docker Compose
+        run: docker-compose down
+        working-directory: ./backend

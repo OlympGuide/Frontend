@@ -73,7 +73,7 @@ describe('Create sport field', () => {
 
       cy.get('.p-toast-message-success').should('be.visible');
     });
-    /*
+
     it('should not create a sport field without a name', () => {
       cy.get('#map').click();
       cy.get('[data-cy=sportsfield-dialog-button]')
@@ -158,7 +158,5 @@ describe('Create sport field', () => {
         cy.get('#prompt-logo-center').should('be.visible');
       });
     });
-
- */
   });
 });
