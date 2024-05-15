@@ -37,6 +37,12 @@ describe('<SportFieldCreateDialog />', () => {
 
     cy.get('@store').its('loadSportFieldProposals').should('not.be.called');
 
-    //todo
+    cy.get('#name').type('Sportfield test');
+    cy.get('[data-cy=address-autocomplete]').type(
+      'Tösstalstrasse 3 Winterthur'
+    );
+
+    cy.get('[id^="pv_id_"][id$="_list"]').should('be.visible').first().click();
+    cy.get('[data-cy=speichern-button]').click();
   });
 });

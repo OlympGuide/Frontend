@@ -3,7 +3,7 @@
     v-model:visible="visible"
     modal
     header="Erstelle einen neuen Sportplatz"
-    class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
+    class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6 min-w-[600px]"
     @hide="closeDialog"
     :draggable="false"
   >
