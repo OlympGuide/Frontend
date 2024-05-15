@@ -118,7 +118,6 @@ import { NominatimResponseItem } from '@/types/Address.ts';
 import { useSportFieldProposalStore } from '@/stores/SportFieldProposalStore.ts';
 import { PostSportFieldProposal } from '@/types/Proposal';
 import { sportFieldCategories } from '@/types/SportField.ts';
-import { useToast } from 'primevue/usetoast';
 
 // const checked = ref(false);
 const address = ref<NominatimResponseItem>();
@@ -212,8 +211,6 @@ const setCoordinates = (autocompleteAddress: NominatimResponseItem) => {
 //   file.value = ownerFile;
 // };
 
-const toast = useToast();
-
 const submitDialog = handleSubmit(async (values: any) => {
   const validation = await validate();
 
@@ -237,12 +234,6 @@ const submitDialog = handleSubmit(async (values: any) => {
     await sportFieldProposalStore.createSportFieldProposal(sportFieldProposal);
     resetForm();
     closeDialog();
-    toast.add({
-      severity: 'success',
-      summary: 'Sportplatz Anfrage erstellt',
-      detail: `${sportFieldProposal.sportFieldName}`,
-      life: 12000,
-    });
   } catch (e: any) {
     console.error(e);
   }
