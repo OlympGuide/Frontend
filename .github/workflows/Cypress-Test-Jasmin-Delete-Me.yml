@@ -1,7 +1,14 @@
-name: Cypess-Test-Jasmin-Delete-Me
+name: cypress-complete-e2e-test
 on:
+  pull_request:
+    branches:
+      - '*'
   push:
-    branches: [ "KAN-56-Frontend-Testing" ]
+    branches:
+      - main
+      - release/*
+  schedule:
+    - cron: '0 2 * * *' # Nightly at 2 AM
 
 env:
   # GENERAL
