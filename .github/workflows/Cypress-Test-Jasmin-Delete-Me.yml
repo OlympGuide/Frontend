@@ -1,7 +1,7 @@
 name: Cypess-Test-Jasmin-Delete-Me
 on:
   push:
-    branches: [ "KAN-80-Cypress-Pipeline-aufsetzen" ]
+    branches: [ "KAN-56-Frontend-Testing" ]
 
 env:
   # GENERAL
