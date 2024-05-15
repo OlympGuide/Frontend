@@ -1,8 +1,8 @@
 name: cypress-complete-e2e-test
 on:
   pull_request:
-    branches:
-      - '*'
+    branches: [ "main", "dev" ]
+    types: [ opened, synchronize ]
   push:
     branches:
       - main
