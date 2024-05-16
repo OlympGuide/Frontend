@@ -9,10 +9,13 @@ describe('View sport field', () => {
       'fetchData'
     );
 
-    cy.get('[data-cy="menu-item-Sportplatz-Anträge"]').click();
+    cy.get('[data-cy="menu-item-Sportplatz-Anträge"]')
+      .should('be.visible')
+      .click();
 
     // Wait for the network request to complete
     cy.wait('@fetchData');
+    cy.wait(2000);
 
     cy.get('table')
       .contains('td', 'Sportfield test')
@@ -29,9 +32,13 @@ describe('View sport field', () => {
     cy.intercept('GET', 'http://localhost:8081/sportfieldproposals?state=0').as(
       'fetchData'
     );
-    cy.get('[data-cy="menu-item-Sportplatz-Anträge"]').click();
+
+    cy.get('[data-cy="menu-item-Sportplatz-Anträge"]')
+      .should('be.visible')
+      .click();
     cy.wait('@fetchData');
 
+    cy.wait(2000);
     cy.get('table').contains('td', 'Marker test');
     cy.get('table').contains('td', 'This is the marker test');
     cy.get('table').contains('td', '47.488470002922504');
@@ -46,9 +53,12 @@ describe('View sport field', () => {
     cy.intercept('GET', 'http://localhost:8081/sportfieldproposals?state=0').as(
       'fetchData'
     );
-    cy.get('[data-cy="menu-item-Sportplatz-Anträge"]').click();
-    cy.wait('@fetchData');
 
+    cy.get('[data-cy="menu-item-Sportplatz-Anträge"]')
+      .should('be.visible')
+      .click();
+    cy.wait('@fetchData');
+    cy.wait(2000);
     cy.get('table')
       .contains('td', 'Marker test')
       .then((tableCell) => {
