@@ -77,4 +77,20 @@ describe('Make a reservation', () => {
       );
     });
   });
+
+  describe('When not logged in', () => {
+    it('should not be possible to create a reservation', () => {
+      cy.visit('/');
+      cy.wait(2000);
+      cy.get('#map').should('be.visible').click(900, 895);
+      cy.get('[data-cy=button-reserve]').click();
+
+      cy.wait(500);
+      cy.origin('https://dev-ooenivxi0xqapns6.us.auth0.com', () => {
+        cy.url().should('include', 'https://dev-ooenivxi0xqapns6.us.auth0.com');
+
+        cy.get('#prompt-logo-center').should('be.visible');
+      });
+    });
+  });
 });
