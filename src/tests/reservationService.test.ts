@@ -1,7 +1,7 @@
 import { expect, test, beforeEach } from 'vitest';
 import {
   addEvent,
-  calendarApp,
+  createCalendarApp,
   getCollidingEvent,
   moveEventOnCollision,
   REMOVED_CLASSIFIER_ID,
@@ -9,6 +9,8 @@ import {
 import { formatEventTime } from '@/services/dateService.ts';
 import { CalendarEvent } from '@schedule-x/calendar';
 import { ReservationType } from '@/types/Reservation.ts';
+
+const calendarApp = createCalendarApp();
 
 beforeEach(() => {
   calendarApp.events.set([
