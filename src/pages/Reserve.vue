@@ -58,11 +58,15 @@ const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const route = useRoute();
 
+const sportFieldId: string = route.params.id as string;
 const reservationId: string = route.params.reservationId as string;
 
 const calendarApp = createCalendarApp();
 
 onMounted(async () => {
+  sportFieldStore.selectedSportField = sportFieldStore.sportFields.find(
+    (sportField) => sportField.id === sportFieldId
+  );
   await loadReservations();
 });
 
