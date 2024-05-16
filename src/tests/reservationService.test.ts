@@ -13,7 +13,7 @@ import { ReservationType } from '@/types/Reservation.ts';
 const calendarApp = createCalendarApp();
 
 beforeEach(() => {
-  calendarApp.events.set([
+  calendarApp?.events.set([
     {
       id: '1',
       start: formatEventTime(new Date('2024-01-01T10:00:00')),
@@ -30,7 +30,7 @@ beforeEach(() => {
 test('addEvent: adds event to calendarApp', () => {
   addEvent('2024-01-01T12:00:00');
 
-  const event = calendarApp.events.getAll()[2];
+  const event = calendarApp?.events.getAll()[2];
 
   expect(event?.start).toBe(formatEventTime(new Date('2024-01-01T12:00:00')));
   expect(event?.end).toBe(formatEventTime(new Date('2024-01-01T13:00:00')));
@@ -56,7 +56,7 @@ test('getCollidingEvent: returns event with id 1', () => {
     end: formatEventTime(new Date('2024-01-01T13:00:00')),
   };
 
-  expect(getCollidingEvent(event)?.id).toBe(calendarApp.events.get('1')?.id);
+  expect(getCollidingEvent(event)?.id).toBe(calendarApp?.events.get('1')?.id);
 });
 
 test('moveEventOnCollision: moves event to 15:00', () => {
@@ -92,7 +92,7 @@ test('moveEventOnCollision: moves event 2 times to 15:00', () => {
 });
 
 test('moveEventOnCollision: remove event because its outside the day boundary', () => {
-  calendarApp.events.add({
+  calendarApp?.events.add({
     id: '4',
     start: formatEventTime(new Date('2024-01-01T15:30:00')),
     end: formatEventTime(new Date('2024-01-01T21:00:00')),
@@ -106,5 +106,5 @@ test('moveEventOnCollision: remove event because its outside the day boundary', 
 
   const updatedEvent = moveEventOnCollision(event);
   expect(updatedEvent?.id).toBe(REMOVED_CLASSIFIER_ID);
-  expect(calendarApp.events.get('4')).toBe(undefined);
+  expect(calendarApp?.events.get('4')).toBe(undefined);
 });
