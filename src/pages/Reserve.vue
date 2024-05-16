@@ -46,7 +46,11 @@ import { useReservationStore } from '@/stores/ReservationStore.ts';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { instanceOfUser } from '@/types/User.ts';
 import { storeToRefs } from 'pinia';
-import { calendarApp } from '@/services/reservationService.ts';
+import {
+  createCalendarApp,
+  getEventClassName,
+  goToReservation,
+} from '@/services/reservationService.ts';
 
 const sportFieldStore = useSportFieldStore();
 const reservationStore = useReservationStore();
@@ -55,6 +59,8 @@ const { user } = storeToRefs(userStore);
 const route = useRoute();
 
 const reservationId: string = route.params.reservationId as string;
+
+const calendarApp = createCalendarApp();
 
 onMounted(async () => {
   await loadReservations();
@@ -76,6 +82,10 @@ const loadReservations = async () => {
 
   const events = reservationsToCalenderEvents(reservations);
   calendarApp.events.set(events);
+
+  if (reservationId) {
+    goToReservation(reservationId);
+  }
 };
 
 const reservationsToCalenderEvents = (
@@ -100,19 +110,6 @@ const reservationsToCalenderEvents = (
 const getEventTime = (start: string, end: string): string => {
   return `${format(start, 'HH:mm')} - ${format(end, 'HH:mm')}`;
 };
-
-const getEventClassName = (calendarEvent: CalendarEvent, reservationId: string): string => {
-  let className = '';
-  if (calendarEvent.calendarId === ReservationType.OTHERS) {
-    className =  ReservationType.OTHERS;
-  } else if (reservationId && calendarEvent.id === reservationId) {
-    className =  `${ReservationType.ME}-selected`;
-  } else {
-    className =  ReservationType.ME;
-  }
-  return className;
-}
-
 
 const reserve = async (event: CalendarEvent) => {
   if (event.isNew) {

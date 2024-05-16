@@ -31,7 +31,10 @@ export const useReservationStore = defineStore('reservation', {
   actions: {
     async loadMyReservations() {
       const userStore = useUserStore();
-      if (!userStore.user) return; // TODO: Error handling
+      if (!userStore.user) {
+        console.error('Not logged in!');
+        return;
+      }
       if (!instanceOfUser(userStore.user)) {
         await userStore.getLoggedInUser();
       }

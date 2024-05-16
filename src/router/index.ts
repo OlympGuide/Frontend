@@ -26,6 +26,7 @@ export const routerOptions: RouterOptions = {
       name: 'Reservations',
       meta: {
         layout: SidebarLayout,
+        loggedIn: true,
       },
       component: Reservations,
     },
@@ -34,6 +35,7 @@ export const routerOptions: RouterOptions = {
       name: 'Reserve',
       meta: {
         layout: SidebarLayout,
+        loggedIn: true,
       },
       component: Reserve,
     },
@@ -42,6 +44,7 @@ export const routerOptions: RouterOptions = {
       name: 'Reservation',
       meta: {
         layout: SidebarLayout,
+        loggedIn: true,
       },
       component: Reserve,
     },
@@ -50,6 +53,7 @@ export const routerOptions: RouterOptions = {
       name: 'Likes',
       meta: {
         layout: SidebarLayout,
+        loggedIn: true,
       },
       component: Likes,
     },
@@ -84,6 +88,12 @@ router.beforeEach(async (to, _from, next) => {
   const userStore = useUserStore();
   if (to.meta.admin) {
     if (userStore.isAdministrator) {
+      next();
+    } else {
+      next({ path: '/' });
+    }
+  } else if (to.meta.loggedIn) {
+    if (userStore.user) {
       next();
     } else {
       next({ path: '/' });
