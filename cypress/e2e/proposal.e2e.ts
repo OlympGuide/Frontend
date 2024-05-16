@@ -1,5 +1,5 @@
 describe('View sport field', () => {
-  before('Log in user', () => {
+  beforeEach('Log in user', () => {
     cy.login('cypress@olympguide.ch', 'CypressTest1$');
   });
 
@@ -14,6 +14,12 @@ describe('View sport field', () => {
     // Wait for the network request to complete
     cy.wait('@fetchData');
 
+    cy.get('table')
+      .contains('td', 'Sportfield test')
+      .then((tableCell) => {
+        const tableRow = tableCell.closest('tr');
+        cy.wrap(tableRow).find('.pi-times').click();
+      });
     cy.get('table').contains('td', 'Sportfield test').should('not.exist');
   });
 
