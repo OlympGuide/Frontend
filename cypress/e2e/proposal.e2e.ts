@@ -33,7 +33,7 @@ describe('View sport field', () => {
     cy.wait('@fetchData');
 
     cy.get('table').contains('td', 'Marker test');
-    cy.get('table').contains('td', 'This is my first cypress test description');
+    cy.get('table').contains('td', 'This is the marker test');
     cy.get('table').contains('td', '47.488470002922504');
     cy.get('table').contains('td', '8.726320266723635');
     cy.get('table').contains('td', 'cypress@olympguide.ch');

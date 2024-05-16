@@ -15,7 +15,6 @@ describe('Make a reservation', () => {
 
       cy.get('.p-toast-message-success').should('be.visible');
 
-      cy.reload();
       cy.get('div.event.me').should('exist');
 
       cy.get('div.event.me').within(() => {
