@@ -6,11 +6,7 @@
       >
         <div
           class="event"
-          :class="[
-            calendarEvent.calendarId === ReservationType.OTHERS
-              ? ReservationType.OTHERS
-              : ReservationType.ME,
-          ]"
+          :class="getEventClassName(calendarEvent, reservationId)"
         >
           {{ getEventTime(calendarEvent.start, calendarEvent.end) }}
 
@@ -50,13 +46,21 @@ import { useReservationStore } from '@/stores/ReservationStore.ts';
 import { useUserStore } from '@/stores/UserStore.ts';
 import { instanceOfUser } from '@/types/User.ts';
 import { storeToRefs } from 'pinia';
-import { calendarApp } from '@/services/reservationService.ts';
+import {
+  createCalendarApp,
+  getEventClassName,
+  goToReservation,
+} from '@/services/reservationService.ts';
 
 const sportFieldStore = useSportFieldStore();
 const reservationStore = useReservationStore();
 const userStore = useUserStore();
 const { user } = storeToRefs(userStore);
 const route = useRoute();
+
+const reservationId: string = route.params.reservationId as string;
+
+const calendarApp = createCalendarApp();
 
 onMounted(async () => {
   await loadReservations();
@@ -78,6 +82,10 @@ const loadReservations = async () => {
 
   const events = reservationsToCalenderEvents(reservations);
   calendarApp.events.set(events);
+
+  if (reservationId) {
+    goToReservation(reservationId);
+  }
 };
 
 const reservationsToCalenderEvents = (
@@ -203,6 +211,10 @@ const isMyReservation = (reservation: Reservation): boolean => {
 
   .me {
     background-color: theme('colors.primaryRedLight');
+  }
+
+  .me-selected {
+    background-color: theme('colors.primaryRedDark');
   }
 }
 </style>

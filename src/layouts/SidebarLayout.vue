@@ -72,7 +72,8 @@ let menuItems = computed<MenuItem[]>(() => [
     link: '/reservations',
     iconImg: 'calendar.png',
     iconClasses: '!w-10',
-    visible: !isDemoActive.value,
+    visible: true,
+    hide: !user.value,
   },
   {
     text: 'Lieblingsplätze',

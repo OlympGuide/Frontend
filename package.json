@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@auth0/auth0-vue": "^2.3.3",
+    "@schedule-x/calendar-controls": "^1.41.0",
     "@schedule-x/drag-and-drop": "^1.34.0",
     "@schedule-x/resize": "^1.34.0",
     "@schedule-x/theme-default": "^1.34.0",
