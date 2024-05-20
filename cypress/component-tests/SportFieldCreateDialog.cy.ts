@@ -43,6 +43,6 @@ describe('<SportFieldCreateDialog />', () => {
     );
 
     cy.get('[id^="pv_id_"][id$="_list"]').should('be.visible').first().click();
-    cy.get('[data-cy=speichern-button]').click();
+    cy.get('[data-cy=save-button]').click();
   });
 });

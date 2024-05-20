@@ -5,9 +5,10 @@ describe('View sport field', () => {
 
   it('should decline the proposal', () => {
     // Intercept the network request that fetches the data
-    cy.intercept('GET', 'http://localhost:8081/sportfieldproposals?state=0').as(
-      'fetchData'
-    );
+    cy.intercept(
+      'GET',
+      `${Cypress.env('apiUrl')}sportfieldproposals?state=0`
+    ).as('fetchData');
 
     cy.get('[data-cy="menu-item-Sportplatz-Anträge"]')
       .should('be.visible')
@@ -29,9 +30,10 @@ describe('View sport field', () => {
   it('should check out all columns of a row', () => {
     cy.visit('/');
 
-    cy.intercept('GET', 'http://localhost:8081/sportfieldproposals?state=0').as(
-      'fetchData'
-    );
+    cy.intercept(
+      'GET',
+      `${Cypress.env('apiUrl')}sportfieldproposals?state=0`
+    ).as('fetchData');
 
     cy.get('[data-cy="menu-item-Sportplatz-Anträge"]')
       .should('be.visible')
@@ -50,9 +52,10 @@ describe('View sport field', () => {
   it('should accept proposal', () => {
     cy.visit('/');
 
-    cy.intercept('GET', 'http://localhost:8081/sportfieldproposals?state=0').as(
-      'fetchData'
-    );
+    cy.intercept(
+      'GET',
+      `${Cypress.env('apiUrl')}sportfieldproposals?state=0`
+    ).as('fetchData');
 
     cy.get('[data-cy="menu-item-Sportplatz-Anträge"]')
       .should('be.visible')

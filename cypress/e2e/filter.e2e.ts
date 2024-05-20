@@ -7,7 +7,7 @@ describe('Use sport field filter', () => {
     cy.get('[data-cy=category]').click();
     cy.get('[id$="_1"]').should('be.visible').click();
     cy.get('#name').type('Volleyball test');
-    cy.get('[data-cy=speichern-button]').click();
+    cy.get('[data-cy=save-button]').click();
     cy.get('[data-cy="menu-item-Sportplatz-Anträge"]').click();
     cy.get('table')
       .contains('td', 'Volleyball test')

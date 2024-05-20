@@ -98,7 +98,7 @@
         <Button
           type="submit"
           label="Speichern"
-          data-cy="speichern-button"
+          data-cy="save-button"
           class="!bg-primaryRed"
           :loading="isLoading"
         ></Button>

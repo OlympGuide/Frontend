@@ -4,6 +4,7 @@ import coverageTask from '@cypress/code-coverage/task';
 export default defineConfig({
   env: {
     apiUrl: 'http://localhost:8081/',
+    auth0Url: 'https://dev-ooenivxi0xqapns6.us.auth0.com',
   },
 
   viewportWidth: 1920,

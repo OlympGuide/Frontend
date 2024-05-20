@@ -6,6 +6,9 @@ describe('Create sport field', () => {
 
   describe('When logged in', () => {
     beforeEach('Log in user', () => {
+      console.log('Cypres env ', Cypress.env);
+      console.log('Env value ', Cypress.env('AUTH0_URL'));
+
       cy.login('cypress@olympguide.ch', 'CypressTest1$');
     });
 
@@ -39,7 +42,7 @@ describe('Create sport field', () => {
         'This is my first cypress test description'
       );
 
-      cy.get('[data-cy=speichern-button]').click();
+      cy.get('[data-cy=save-button]').click();
 
       cy.get('.p-toast-message-success').should('be.visible');
     });
@@ -63,7 +66,7 @@ describe('Create sport field', () => {
 
       cy.get('#description').type('This is the marker test');
 
-      cy.get('[data-cy=speichern-button]').click();
+      cy.get('[data-cy=save-button]').click();
 
       cy.get('.p-toast-message-success').should('be.visible');
     });
@@ -74,7 +77,7 @@ describe('Create sport field', () => {
         .should('be.visible')
         .click();
 
-      cy.get('[data-cy=speichern-button]').click();
+      cy.get('[data-cy=save-button]').click();
 
       cy.get('[data-cy=name-error]').should(
         'contain',
@@ -90,7 +93,7 @@ describe('Create sport field', () => {
       cy.get('#name').type('No address test');
       cy.get('#name').should('have.value', 'No address test');
 
-      cy.get('[data-cy=speichern-button]').click();
+      cy.get('[data-cy=save-button]').click();
 
       cy.get('[data-cy=coordinates-error]').should(
         'contain',
@@ -110,7 +113,7 @@ describe('Create sport field', () => {
 
       cy.get('[data-cy=address-autocomplete]').type('Teststrasse');
 
-      cy.get('[data-cy=speichern-button]').click();
+      cy.get('[data-cy=save-button]').click();
 
       cy.get('[data-cy=address-error]').should(
         'contain',
@@ -127,7 +130,7 @@ describe('Create sport field', () => {
 
       cy.get('#name').type('No category test');
 
-      cy.get('[data-cy=speichern-button]').click();
+      cy.get('[data-cy=save-button]').click();
 
       cy.get('[data-cy=category-error]').should(
         'contain',
@@ -137,7 +140,7 @@ describe('Create sport field', () => {
   });
 
   describe('When not logged in', () => {
-    beforeEach('Go to dashboardr', () => {
+    beforeEach('Go to dashboard', () => {
       cy.visit('/');
     });
 
