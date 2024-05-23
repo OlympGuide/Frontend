@@ -6,7 +6,7 @@
         <Column v-for="column in columns" :key="column.field" :field="column.field" :header="column.header"
           :sortable="column.field === 'date'">
           <template #body="{ data, field }">
-            <span v-if="field === 'sportfieldName'">{{ data.sportFieldId }}</span>
+            <span v-if="field === 'sportfieldName'">{{ data.sportField.name }}</span>
             <span v-else-if="field === 'start'">
               {{ toLocalDate(data.start) }}
             </span>
@@ -20,7 +20,7 @@
         </Column>
         <Column header="Kalender" width>
           <template #body="{ data }">
-            <router-link :to="`/reserve/${data.sportFieldId}/reservation/${data.id}`"
+            <router-link :to="`/reserve/${data.sportField.id}/reservation/${data.id}`"
               class="p-button p-button-text">Verwalten</router-link>
           </template>
         </Column>
