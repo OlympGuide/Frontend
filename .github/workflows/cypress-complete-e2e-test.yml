@@ -1,0 +1,65 @@
+name: cypress-complete-e2e-test
+on:
+  pull_request:
+    branches: [ "main", "dev" ]
+    types: [ opened, synchronize ]
+  push:
+    branches:
+      - main
+      - release/*
+  schedule:
+    - cron: '0 2 * * *' # Nightly at 2 AM
+
+env:
+  # GENERAL
+  BACKEND_DIRECTORY: OlympGuide
+  # DOCKER env
+  IMAGE_NAME: ${{ github.repository }}/webserver
+  ORGANISATION: OlympGuide
+  DOCKERFILE-PATH: Dockerfile.development
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout frontend repository
+        uses: actions/checkout@v4
+        with:
+          path: frontend
+
+      - name: Checkout backend repository
+        uses: actions/checkout@v4
+        with:
+          repository: OlympGuide/Backend
+          path: backend
+
+      - name: List contents of backend directory
+        run: ls -la ./backend
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: ./frontend
+
+      - name: Start services with Docker Compose
+        run: docker compose up --build -d backend db
+        working-directory: ./backend
+
+      - name: Wait for services to be ready
+        run: sleep 30 # Adjust the wait time as necessary
+
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./frontend
+          build: npm run build
+          start: npm run dev
+          #start: 'npm run cy:run'
+
+      - name: Stop Docker Compose
+        run: docker compose down
+        working-directory: ./backend

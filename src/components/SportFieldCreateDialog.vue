@@ -3,7 +3,7 @@
     v-model:visible="visible"
     modal
     header="Erstelle einen neuen Sportplatz"
-    class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6"
+    class="z-[1000] border-2 w-4/5 md:w-3/5 lg:w-3/6 min-w-[600px]"
     @hide="closeDialog"
     :draggable="false"
   >
@@ -24,11 +24,14 @@
               v-model="name"
               autocomplete="off"
             />
-            <small class="p-error input-error">{{ nameError }}</small>
+            <small data-cy="name-error" class="p-error input-error">{{
+              nameError
+            }}</small>
           </FloatLabel>
 
           <FloatLabel class="float-label-input">
             <Dropdown
+              data-cy="category"
               v-model="category"
               :options="sportFieldCategories"
               option-label="name"
@@ -38,7 +41,9 @@
             <label for="description" class="label"
               >Kategorie <span class="text-red-800">*</span></label
             >
-            <small class="p-error input-error">{{ categoryError }}</small>
+            <small data-cy="category-error" class="p-error input-error">{{
+              categoryError
+            }}</small>
           </FloatLabel>
         </div>
         <FloatLabel class="float-label-input">
@@ -53,9 +58,15 @@
             v-model="coordinates"
             autocomplete="off"
           />
-          <small class="p-error input-error">{{ coordinatesError }}</small>
+          <small data-cy="coordinates-error" class="p-error input-error">{{
+            coordinatesError
+          }}</small>
         </FloatLabel>
-        <AddressCompletion @address="setCoordinates" />
+        <AddressCompletion
+          @address="setCoordinates"
+          v-model="addressInput"
+          :error="addressInputError"
+        />
         <FloatLabel class="float-label-input">
           <label for="description" class="label">Beschreibung</label>
           <TextArea
@@ -87,7 +98,7 @@
         <Button
           type="submit"
           label="Speichern"
-          data-cy="speichern-button"
+          data-cy="save-button"
           class="!bg-primaryRed"
           :loading="isLoading"
         ></Button>
@@ -131,6 +142,7 @@ const { handleSubmit, validate, resetForm } = useForm({
     category: undefined,
     coordinates: props.coordinates ?? '',
     description: '',
+    addressInput: '',
   },
   validateOnMount: false,
 });
@@ -144,6 +156,15 @@ const { value: category, errorMessage: categoryError } = useField<string>(
   'category',
   'requiredDropdown'
 );
+
+const { value: addressInput, errorMessage: addressInputError } =
+  useField<string>('addressInput', (value) => {
+    if (!coordinates.value && !value) {
+      return 'Die Adresse darf nicht leer sein, wenn kein Pin gesetzt wurde';
+    }
+
+    return true;
+  });
 
 const { value: coordinates, errorMessage: coordinatesError } = useField<string>(
   'coordinates',
