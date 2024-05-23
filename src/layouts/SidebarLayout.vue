@@ -89,6 +89,12 @@ let menuItems = computed<MenuItem[]>(() => [
     visible: true,
   },
   {
+    text: 'Tutorial',
+    link: '/tutorial',
+    iconImg: 'tutorial.png',
+    visible: true,
+  },
+  {
     text: 'Sportplatz-Anträge',
     link: '/proposals',
     iconImg: 'sportfields_proposal.png',
