@@ -20,7 +20,7 @@
         </Column>
         <Column header="Kalender" width>
           <template #body="{ data }">
-            <router-link :to="`/reserve/${data.sportFieldId}/reservation/${data.id}`"
+            <router-link :to="`/reserve/${data.sportField.id}/reservation/${data.id}`"
               class="p-button p-button-text">Verwalten</router-link>
           </template>
         </Column>
