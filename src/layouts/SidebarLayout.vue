@@ -27,8 +27,8 @@
 </template>
 
 <script setup lang="ts">
-import { useDemoStore } from '@/stores/DemoStore.ts';
-import { storeToRefs } from 'pinia';
+// import { useDemoStore } from '@/stores/DemoStore.ts';
+// import { storeToRefs } from 'pinia';
 import SidebarItem from '@/layouts/SidebarItem.vue';
 import { MenuItem } from '@/types/Menu.ts';
 import { useAuth0 } from '@auth0/auth0-vue';
@@ -36,8 +36,9 @@ import { useUserStore } from '@/stores/UserStore.ts';
 import { Auth0User, User } from '@/types/User.ts';
 import { computed } from 'vue';
 
-const demoStore = useDemoStore();
-const { isDemoActive } = storeToRefs(demoStore);
+// Reimplement for future functionalities
+// const demoStore = useDemoStore();
+// const { isDemoActive } = storeToRefs(demoStore);
 
 const { loginWithRedirect, logout } = useAuth0();
 const userStore = useUserStore();
@@ -79,7 +80,7 @@ let menuItems = computed<MenuItem[]>(() => [
     text: 'Lieblingsplätze',
     link: '/likes',
     iconImg: 'heart.png',
-    visible: !isDemoActive.value,
+    visible: false,
   },
   {
     text: 'Einstellungen',
@@ -94,6 +95,12 @@ let menuItems = computed<MenuItem[]>(() => [
     iconImg: 'sportfields_proposal.png',
     spacer: !!user.value,
     hide: !userStore.isAdministrator,
+    visible: true,
+  },
+  {
+    text: 'Tutorial',
+    link: '/tutorial',
+    iconImg: 'tutorial.png',
     visible: true,
   },
   {
