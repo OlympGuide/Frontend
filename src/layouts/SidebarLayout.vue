@@ -79,7 +79,7 @@ let menuItems = computed<MenuItem[]>(() => [
     text: 'Lieblingsplätze',
     link: '/likes',
     iconImg: 'heart.png',
-    visible: !isDemoActive.value,
+    visible: false,
   },
   {
     text: 'Einstellungen',
@@ -89,17 +89,17 @@ let menuItems = computed<MenuItem[]>(() => [
     visible: true,
   },
   {
-    text: 'Tutorial',
-    link: '/tutorial',
-    iconImg: 'tutorial.png',
-    visible: true,
-  },
-  {
     text: 'Sportplatz-Anträge',
     link: '/proposals',
     iconImg: 'sportfields_proposal.png',
     spacer: !!user.value,
     hide: !userStore.isAdministrator,
+    visible: true,
+  },
+  {
+    text: 'Tutorial',
+    link: '/tutorial',
+    iconImg: 'tutorial.png',
     visible: true,
   },
   {
